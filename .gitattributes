@@ -1,0 +1,16 @@
+# Normalize line endings to LF in the repository for cross-platform consistency
+* text=auto eol=lf
+
+# Python files — always LF
+*.py text eol=lf
+
+# Markdown files — always LF
+*.md text eol=lf
+
+# Config and text files — always LF
+*.txt text eol=lf
+*.csv text eol=lf
+
+# Binary files — no line ending conversion
+*.docx binary
+*.xpt  binary

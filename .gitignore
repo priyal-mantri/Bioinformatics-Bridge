@@ -1,0 +1,54 @@
+# ── Python ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Virtual environments ─────────────────────────────────────────────────────
+.env
+.venv
+env/
+venv/
+ENV/
+
+# ── Jupyter ──────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb
+
+# ── Data files — DO NOT commit raw or processed data to GitHub ───────────────
+# NHANES CSVs can be large and contain participant-level health data.
+# They are freely downloadable from cdc.gov/nchs/nhanes — see README.
+DATASET/
+output/
+
+# ── Intermediate snapshots — reproducible from pipeline, not needed in repo ──
+snapshot_decision_*.csv
+
+# ── Temporary extraction files created during development ────────────────────
+research_plan_raw.txt
+variable_dict_raw.txt
+
+# ── Old / duplicate files ─────────────────────────────────────────────────────
+preprocessing_decision_log_2
+variable_selection_analysis.md
+
+# ── OS and editor artifacts ──────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ── Word documents (binary, not version-controlled well) ─────────────────────
+# Keep in local working directory; share via Google Drive / OneDrive instead.
+*.docx
