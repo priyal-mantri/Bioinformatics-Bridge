@@ -27,6 +27,9 @@ ENV/
 # They are freely downloadable from cdc.gov/nchs/nhanes — see README.
 DATASET/
 output/
+Downloads/
+*.xpt
+*.XPT
 
 # ── Intermediate snapshots — reproducible from pipeline, not needed in repo ──
 snapshot_decision_*.csv
