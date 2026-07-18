@@ -1,6 +1,6 @@
 # Bioinfo Bridge
 ### Mapping Ayurvedic Doshas to Human Biology Using Unsupervised Machine Learning
-*Research 2 · Naya Velvyn · Liana Labs · 2026*
+*Research 2 · 2026*
 
 ---
 
@@ -197,18 +197,6 @@ This project is **Phase 1** of a two-phase study:
 | Phase 2 | Genomic validation against CSIR-IGIB TRISUTRA SNP lists | 1000 Genomes Project | Future work |
 
 The CSIR-IGIB TRISUTRA project (Dr. Mitali Mukerji, New Delhi) previously identified genetic variants (EGLN1, CYP2C19, HLA-B, VWF) linked to Dosha phenotypes using supervised classification. This project provides an independent unsupervised validation of those findings using a Western biomarker dataset.
-
----
-
-## Citation / Reference
-
-If you use this pipeline, please reference:
-
-```
-Velvyn, N. (2026). Bioinfo Bridge: Unsupervised Spectral Clustering of NHANES
-Biomarkers for Ayurvedic Dosha Phenotype Discovery. Liana Labs.
-[GitHub: github.com/your-username/bioinfo-bridge]
-```
 
 ---
 
