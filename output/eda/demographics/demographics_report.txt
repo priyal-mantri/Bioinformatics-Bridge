@@ -1,0 +1,75 @@
+=================================================================
+  PHASE 6 -- DEMOGRAPHIC PROFILING
+=================================================================
+
+  Age distribution:
+    min=20  mean=51.5  median=53  max=80
+    20-39: 1,687  (30.3%)
+    40-59: 1,732  (31.1%)
+    60-80: 2,150  (38.6%)
+
+  Gender distribution:
+    Female: 2,867  (51.5%)
+    Male: 2,702  (48.5%)
+
+  Ethnicity distribution:
+    Non-Hispanic White: 1,935  (34.7%)
+    Non-Hispanic Black: 1,298  (23.3%)
+    Non-Hispanic Asian: 811  (14.6%)
+    Mexican American: 735  (13.2%)
+    Other Hispanic: 517  (9.3%)
+    Other/Multiracial: 273  (4.9%)
+
+  Biomarker means by gender (selected features):
+  Variable                     Male     Female     Diff %
+  ---------------------- ---------- ---------- ----------
+  BMXBMI                     29.382     30.288      -3.0%
+  BMXWAIST                  102.686     98.924      +3.8%
+  Avg_Systolic_BP           128.072    126.264      +1.4%
+  Avg_Diastolic_BP           74.258     70.939      +4.7%
+  LBXTC                     184.196    191.668      -3.9%
+  LBDHDD                     48.252     57.904     -16.7%
+  LBXSTR                    162.625    130.313     +24.8%
+  LBXGLU                    117.072    111.891      +4.6%
+  HOMA_IR                     4.655      4.608      +1.0%
+  DXDTOBMD                    1.156      1.083      +6.7%
+  DXDTOPF                    27.545     38.924     -29.2%
+  LBXSCR                      1.047      0.778     +34.6%
+  LBXSUA                      6.096      4.897     +24.5%
+
+  Biomarker means by age group (selected features):
+  Variable                    20-39      40-59      60-80
+  ---------------------- ---------- ---------- ----------
+  BMXBMI                     29.376     30.634     29.581
+  BMXWAIST                   96.212    102.303    103.147
+  Avg_Systolic_BP           115.512    126.325    136.848
+  Avg_Diastolic_BP           70.603     77.307     70.159
+  LBXTC                     180.180    197.869    186.168
+  LBDHDD                     52.214     53.097     54.198
+  LBXSTR                    132.440    157.807    146.511
+  LBXGLU                    101.037    116.615    123.022
+  HOMA_IR                     3.507      4.579      5.564
+  DXDTOBMD                    1.128      1.108        N/A
+  DXDTOPF                    32.232     34.697        N/A
+  LBXSCR                      0.824      0.870      1.003
+  LBXSUA                      5.213      5.402      5.736
+
+-----------------------------------------------------------------
+  DEMOGRAPHICS REPORT
+-----------------------------------------------------------------
+
+  Observations:
+    - NHANES is a US-based survey; ethnicity distribution reflects
+      the US adult population, not Indian subcontinent demographics.
+    - Sex differences are expected in body composition (BMD, lean mass,
+      body fat %) and lipid profiles (HDL typically higher in females).
+    - Age-related trends are expected in blood pressure, BMD, and
+      metabolic markers -- these are biological, not confounders per se.
+    - The clustering is unsupervised; demographic variables are NOT
+      included in the feature matrix. Post-hoc analysis should check
+      whether clusters are disproportionately age- or sex-stratified.
+
+  Recommendation:
+    No demographic adjustment is recommended before clustering.
+    Post-clustering: compute demographic composition of each cluster
+    to assess whether clusters are confounded by age or sex.

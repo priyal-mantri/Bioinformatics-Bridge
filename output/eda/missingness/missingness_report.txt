@@ -1,0 +1,189 @@
+=================================================================
+  PHASE 2 -- MISSING DATA ANALYSIS
+=================================================================
+
+  Total participants  : 5,569
+  Total variables     : 39
+
+  Variables with > 40% missing (8):
+    DXDTOPF                3,319.0  (59.6%)
+    DXDTOBMD               3,316.0  (59.5%)
+    DXDTOLE                3,222.0  (57.9%)
+    LBXIN                  3,190.0  (57.3%)
+    HOMA_IR                3,190.0  (57.3%)
+    LBDINLC                3,183.0  (57.2%)
+    LBXGLU                 3,134.0  (56.3%)
+    DXAEXSTS               2,322.0  (41.7%)
+
+  Variables with 0% missing (4): ['RIDRETH3', 'SEQN', 'RIAGENDR', 'RIDAGEYR']
+
+-----------------------------------------------------------------
+  COMPLETE CASES ANALYSIS
+-----------------------------------------------------------------
+  Complete cases (all 27 features present) : 967  (17.4%)
+  Complete cases (core only, no DEXA/fasting) : 4,482  (80.5%)
+  Complete cases (excluding DEXA columns)     : 2,168  (38.9%)
+  Complete cases (excluding fasting columns)  : 2,033  (36.5%)
+
+  --> Effective clustering sample (all features present): 967 participants
+
+-----------------------------------------------------------------
+  Generating missingness heatmap ...
+  [SAVED] missingness_heatmap.png
+  Generating missingness correlation matrix ...
+  [SAVED] missingness_correlation.png
+
+-----------------------------------------------------------------
+  MISSINGNESS REPORT
+-----------------------------------------------------------------
+
+  Expected high-missingness variables (DEXA/fasting subsamples):
+    DXDTOPF                59.6%  [expected by study design]
+    DXDTOBMD               59.5%  [expected by study design]
+    DXDTOLE                57.9%  [expected by study design]
+    LBXIN                  57.3%  [expected by study design]
+    HOMA_IR                57.3%  [expected by study design]
+    LBDINLC                57.2%  [expected by study design]
+    LBXGLU                 56.3%  [expected by study design]
+    DXAEXSTS               41.7%  [expected by study design]
+
+  No unexpected high-missingness variables detected.
+
+  Co-missing variable pairs (corr >= 0.7):
+    Avg_Diastolic_BP       <--> Avg_Systolic_BP         corr=1.000
+    HOMA_IR                <--> LBXIN                   corr=1.000
+    LBXTC                  <--> TC_HDL_ratio            corr=1.000
+    LBDHDD                 <--> LBXTC                   corr=1.000
+    LBDHDD                 <--> TC_HDL_ratio            corr=1.000
+    LBXSTR                 <--> LBXSUA                  corr=1.000
+    LBXSAL                 <--> LBXSNASI                corr=1.000
+    LBXSTP                 <--> LBXSTR                  corr=1.000
+    LBXSTP                 <--> LBXSUA                  corr=1.000
+    LBXSCR                 <--> LBXSTB                  corr=1.000
+    LBXSBU                 <--> LBXSTR                  corr=1.000
+    LBXSBU                 <--> LBXSTP                  corr=1.000
+    LBXSBU                 <--> LBXSUA                  corr=1.000
+    LBXSBU                 <--> LBXSCA                  corr=1.000
+    LBXSBU                 <--> LBXSPH                  corr=1.000
+    LBXSCA                 <--> LBXSTR                  corr=1.000
+    LBXSCA                 <--> LBXSTP                  corr=1.000
+    LBXSCA                 <--> LBXSUA                  corr=1.000
+    LBXSCA                 <--> LBXSPH                  corr=1.000
+    LBXSPH                 <--> LBXSTR                  corr=1.000
+    LBXSPH                 <--> LBXSTP                  corr=1.000
+    LBXSPH                 <--> LBXSUA                  corr=1.000
+    LBXSATSI               <--> LBXSTB                  corr=0.999
+    LBXSATSI               <--> LBXSCR                  corr=0.999
+    LBXSAL                 <--> LBXSTB                  corr=0.999
+    LBXSAL                 <--> LBXSCR                  corr=0.999
+    LBXSCR                 <--> LBXSNASI                corr=0.999
+    LBXSNASI               <--> LBXSTB                  corr=0.999
+    LBXSATSI               <--> LBXSNASI                corr=0.998
+    LBXSAL                 <--> LBXSATSI                corr=0.998
+    LBXSTB                 <--> LBXSTR                  corr=0.998
+    LBXSTB                 <--> LBXSTP                  corr=0.998
+    LBXSTB                 <--> LBXSUA                  corr=0.998
+    LBXSCR                 <--> LBXSTR                  corr=0.998
+    LBXSCR                 <--> LBXSTP                  corr=0.998
+    LBXSCR                 <--> LBXSUA                  corr=0.998
+    LBXSCR                 <--> LBXSPH                  corr=0.998
+    LBXSBU                 <--> LBXSTB                  corr=0.998
+    LBXSBU                 <--> LBXSCR                  corr=0.998
+    LBXSCA                 <--> LBXSTB                  corr=0.998
+    LBXSCA                 <--> LBXSCR                  corr=0.998
+    LBXSPH                 <--> LBXSTB                  corr=0.998
+    LBXSTR                 <--> TG_HDL_ratio            corr=0.997
+    LBXSATSI               <--> LBXSTR                  corr=0.997
+    LBXSATSI               <--> LBXSTP                  corr=0.997
+    LBXSATSI               <--> LBXSUA                  corr=0.997
+    LBXSATSI               <--> LBXSBU                  corr=0.997
+    LBXSATSI               <--> LBXSCA                  corr=0.997
+    LBXSATSI               <--> LBXSPH                  corr=0.997
+    LBXSATSI               <--> LBXSKSI                 corr=0.997
+    LBXSAL                 <--> LBXSTR                  corr=0.997
+    LBXSAL                 <--> LBXSTP                  corr=0.997
+    LBXSAL                 <--> LBXSUA                  corr=0.997
+    LBXSAL                 <--> LBXSBU                  corr=0.997
+    LBXSAL                 <--> LBXSCA                  corr=0.997
+    LBXSAL                 <--> LBXSPH                  corr=0.997
+    LBXSAL                 <--> LBXSKSI                 corr=0.997
+    LBXSTP                 <--> TG_HDL_ratio            corr=0.997
+    LBXSCR                 <--> LBXSKSI                 corr=0.997
+    LBXSUA                 <--> TG_HDL_ratio            corr=0.997
+    LBXSBU                 <--> TG_HDL_ratio            corr=0.997
+    LBXSBU                 <--> LBXSNASI                corr=0.997
+    LBXSCA                 <--> TG_HDL_ratio            corr=0.997
+    LBXSCA                 <--> LBXSNASI                corr=0.997
+    LBXSPH                 <--> TG_HDL_ratio            corr=0.997
+    LBXSNASI               <--> LBXSTR                  corr=0.997
+    LBXSNASI               <--> LBXSTP                  corr=0.997
+    LBXSNASI               <--> LBXSUA                  corr=0.997
+    LBXSNASI               <--> LBXSPH                  corr=0.997
+    LBXSKSI                <--> LBXSTB                  corr=0.997
+    LBXSKSI                <--> LBXSNASI                corr=0.997
+    LBXSTB                 <--> TG_HDL_ratio            corr=0.995
+    LBXSCR                 <--> TG_HDL_ratio            corr=0.995
+    LBXSBU                 <--> LBXSKSI                 corr=0.995
+    LBXSCA                 <--> LBXSKSI                 corr=0.995
+    LBXSKSI                <--> LBXSTR                  corr=0.995
+    LBXSKSI                <--> LBXSTP                  corr=0.995
+    LBXSKSI                <--> LBXSUA                  corr=0.995
+    LBXSKSI                <--> LBXSPH                  corr=0.995
+    DXDTOBMD               <--> DXDTOPF                 corr=0.994
+    LBXSATSI               <--> TG_HDL_ratio            corr=0.994
+    LBXSAL                 <--> TG_HDL_ratio            corr=0.994
+    LBXSNASI               <--> TG_HDL_ratio            corr=0.994
+    LBXSKSI                <--> TG_HDL_ratio            corr=0.991
+    LBXGLU                 <--> LBXIN                   corr=0.980
+    HOMA_IR                <--> LBXGLU                  corr=0.980
+    Avg_Systolic_BP        <--> BPXPLS                  corr=0.979
+    Avg_Diastolic_BP       <--> BPXPLS                  corr=0.979
+    LBXTC                  <--> TG_HDL_ratio            corr=0.977
+    LBDHDD                 <--> TG_HDL_ratio            corr=0.977
+    TC_HDL_ratio           <--> TG_HDL_ratio            corr=0.977
+    LBDHDD                 <--> LBXSAL                  corr=0.976
+    LBDHDD                 <--> LBXSNASI                corr=0.976
+    LBXSAL                 <--> LBXTC                   corr=0.976
+    LBXSAL                 <--> TC_HDL_ratio            corr=0.976
+    LBXSNASI               <--> LBXTC                   corr=0.976
+    LBXSNASI               <--> TC_HDL_ratio            corr=0.976
+    LBDHDD                 <--> LBXSTB                  corr=0.975
+    LBDHDD                 <--> LBXSCR                  corr=0.975
+    LBXSTB                 <--> LBXTC                   corr=0.975
+    LBXSTB                 <--> TC_HDL_ratio            corr=0.975
+    LBXSCR                 <--> LBXTC                   corr=0.975
+    LBXSCR                 <--> TC_HDL_ratio            corr=0.975
+    LBDHDD                 <--> LBXSATSI                corr=0.974
+    LBXSATSI               <--> LBXTC                   corr=0.974
+    LBXSATSI               <--> TC_HDL_ratio            corr=0.974
+    LBDHDD                 <--> LBXSTR                  corr=0.973
+    LBDHDD                 <--> LBXSTP                  corr=0.973
+    LBDHDD                 <--> LBXSUA                  corr=0.973
+    LBDHDD                 <--> LBXSBU                  corr=0.973
+    LBDHDD                 <--> LBXSCA                  corr=0.973
+    LBDHDD                 <--> LBXSPH                  corr=0.973
+    LBDHDD                 <--> LBXSKSI                 corr=0.973
+    LBXSTR                 <--> LBXTC                   corr=0.973
+    LBXSTR                 <--> TC_HDL_ratio            corr=0.973
+    LBXSTP                 <--> LBXTC                   corr=0.973
+    LBXSTP                 <--> TC_HDL_ratio            corr=0.973
+    LBXSUA                 <--> LBXTC                   corr=0.973
+    LBXSUA                 <--> TC_HDL_ratio            corr=0.973
+    LBXSBU                 <--> LBXTC                   corr=0.973
+    LBXSBU                 <--> TC_HDL_ratio            corr=0.973
+    LBXSCA                 <--> LBXTC                   corr=0.973
+    LBXSCA                 <--> TC_HDL_ratio            corr=0.973
+    LBXSPH                 <--> LBXTC                   corr=0.973
+    LBXSPH                 <--> TC_HDL_ratio            corr=0.973
+    LBXSKSI                <--> LBXTC                   corr=0.973
+    LBXSKSI                <--> TC_HDL_ratio            corr=0.973
+    DXDTOLE                <--> DXDTOPF                 corr=0.965
+    DXDTOBMD               <--> DXDTOLE                 corr=0.959
+    BMXBMI                 <--> BMXWAIST                corr=0.751
+
+  Effective clustering sample size: 967 participants
+
+  Recommendation:
+    No additional preprocessing recommended based on missingness alone.
+Missingness follows expected NHANES subsampling patterns.
+Imputation strategy should be decided before clustering (future decision).

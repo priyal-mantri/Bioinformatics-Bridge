@@ -1,0 +1,7 @@
+# This file exists so that the output/ directory is tracked by git.
+# The actual CSV output files (merged_raw.csv, preprocessed.csv, etc.)
+# are listed in .gitignore and must never be committed to the repository.
+#
+# To regenerate all output files, run:
+#   python run_pipeline.py
+#   python run_preprocess.py

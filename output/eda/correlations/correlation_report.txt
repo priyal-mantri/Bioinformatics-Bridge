@@ -1,0 +1,37 @@
+=================================================================
+  PHASE 5 -- CORRELATION & MULTICOLLINEARITY
+=================================================================
+
+  Pearson correlation matrix computed.
+  Variables included : 27
+  Method             : pairwise complete observations (min_periods=30)
+
+  Generating correlation heatmap ...
+  [SAVED] correlation_heatmap.png
+
+-----------------------------------------------------------------
+  CORRELATION REPORT
+-----------------------------------------------------------------
+
+  Very high correlations (|r| >= 0.9) -- 2 pairs:
+    BMXBMI                 <--> BMXWAIST                r=+0.9029  [VERY HIGH]
+    LBXSTR                 <--> TG_HDL_ratio            r=+0.9581  [VERY HIGH]
+
+  High correlations (0.75 <= |r| < 0.9) -- 1 pairs:
+    LBXIN                  <--> HOMA_IR                 r=+0.8954  [HIGH]
+
+  Biological interpretation of high-correlation pairs:
+    LBXIN                <--> HOMA_IR             : Expected: HOMA_IR = (Glucose * Insulin) / 405 -- structural correlation.
+    LBXSTR               <--> TG_HDL_ratio        : Expected: TG/HDL ratio is computed from LBXSTR -- structural correlation.
+
+  Note on structurally redundant pairs:
+    The following pairs include a raw variable AND a derived
+    variable computed from it. Including both may double-weight
+    this biological signal in the feature matrix.
+    LBXTC + TC_HDL_ratio
+    LBXSTR + TG_HDL_ratio
+    LBXIN + HOMA_IR
+    LBXGLU + HOMA_IR
+
+  Recommendations:
+    Recommend creation of Decision 008: Feature selection — decide whether to include both raw and derived variables that are structurally correlated (e.g. LBXTC + TC_HDL_ratio, LBXIN + HOMA_IR). Retaining both double-weights those biological signals in PCA/clustering.

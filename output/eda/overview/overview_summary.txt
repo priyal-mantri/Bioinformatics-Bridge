@@ -1,0 +1,75 @@
+=================================================================
+  PHASE 1 -- DATASET OVERVIEW
+=================================================================
+
+  Shape             : 5,569 rows x 39 columns
+  Total cells       : 217,191
+  Memory usage      : 1.66 MB
+
+  Data types:
+    float64      : 39 columns
+
+  Variable classification:
+    Demographic / control : 4  ['SEQN', 'RIAGENDR', 'RIDAGEYR', 'RIDRETH3']
+    Raw repeated BP cols  : 6  (retained for traceability; averaged versions are used)
+    Flag / coding cols    : 2  ['DXAEXSTS', 'LBDINLC']
+    Feature columns       : 27  (for clustering)
+
+  Feature columns (27 total):
+    BMXBMI
+    BMXWAIST
+    BPXPLS
+    DXDTOBMD
+    DXDTOPF
+    DXDTOLE
+    LBXGLU
+    LBXIN
+    LBDHDD
+    LBXTC
+    LBXSTR
+    LBXSATSI
+    LBXSAL
+    LBXSTP
+    LBXSTB
+    LBXSCR
+    LBXSUA
+    LBXSBU
+    LBXSCA
+    LBXSPH
+    LBXSNASI
+    LBXSKSI
+    Avg_Systolic_BP
+    Avg_Diastolic_BP
+    HOMA_IR
+    TC_HDL_ratio
+    TG_HDL_ratio
+
+  Descriptive statistics (feature columns):
+                   count       mean        std        min         max
+BMXBMI            5175.0     29.852      7.396     14.200      86.200
+BMXWAIST          4937.0    100.760     16.998     57.900     169.500
+BPXPLS            5017.0     71.674     11.701     34.000     136.000
+DXDTOBMD          2253.0      1.118      0.106      0.697       1.728
+DXDTOPF           2250.0     33.503      8.554     12.100      56.100
+DXDTOLE           2347.0  51056.372  12652.639  20076.900  105578.400
+LBXGLU            2435.0    114.386     37.857     47.000     451.000
+LBXIN             2379.0     14.723     21.102      1.200     485.100
+LBDHDD            4937.0     53.256     15.680     10.000     189.000
+LBXTC             4937.0    188.070     41.285     76.000     446.000
+LBXSTR            4914.0    145.864    115.053     25.000    2923.000
+LBXSATSI          4915.0     22.219     16.489      3.000     213.000
+LBXSAL            4917.0      4.040      0.339      2.100       5.400
+LBXSTP            4914.0      7.143      0.443      5.300      10.000
+LBXSTB            4916.0      0.461      0.271      0.100       2.800
+LBXSCR            4916.0      0.907      0.478      0.250      12.740
+LBXSUA            4914.0      5.474      1.502      0.800      15.100
+LBXSBU            4914.0     15.171      6.227      2.000      79.000
+LBXSCA            4914.0      9.280      0.372      6.400      11.700
+LBXSPH            4914.0      3.561      0.529      1.900       9.600
+LBXSNASI          4917.0    140.330      2.799    121.000     151.000
+LBXSKSI           4914.0      4.082      0.371      2.800       6.600
+Avg_Systolic_BP   4996.0    127.142     20.175     72.667     238.000
+Avg_Diastolic_BP  4996.0     72.551     12.947      0.000     135.333
+HOMA_IR           2379.0      4.630      9.221      0.268     178.811
+TC_HDL_ratio      4937.0      3.788      1.377      1.284      28.000
+TG_HDL_ratio      4910.0      3.290      3.940      0.303     100.793

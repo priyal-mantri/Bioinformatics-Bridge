@@ -1,0 +1,71 @@
+=================================================================
+  PHASE 3 -- UNIVARIATE DISTRIBUTIONS
+=================================================================
+
+  Variable                N Valid       Mean   Skewness Classification
+  ---------------------- -------- ---------- ---------- ------------------------------
+  BMXBMI                    5,175     29.852      1.270  Moderately skewed (right)
+  BMXWAIST                  4,937    100.760      0.495  Approximately symmetric
+  DXDTOBMD                  2,253      1.118      0.352  Approximately symmetric
+  DXDTOPF                   2,250     33.503     -0.102  Approximately symmetric
+  DXDTOLE                   2,347  51056.372      0.525  Approximately symmetric
+  Avg_Systolic_BP           4,996    127.142      1.017  Moderately skewed (right)
+  Avg_Diastolic_BP          4,996     72.551     -0.535  Approximately symmetric
+  BPXPLS                    5,017     71.674      0.684  Approximately symmetric
+  LBXGLU                    2,435    114.386      3.724  HEAVILY SKEWED (right)
+  LBXIN                     2,379     14.723      9.750  HEAVILY SKEWED (right)
+  HOMA_IR                   2,379      4.630     10.527  HEAVILY SKEWED (right)
+  LBXTC                     4,937    188.070      0.656  Approximately symmetric
+  LBDHDD                    4,937     53.256      1.317  Moderately skewed (right)
+  LBXSTR                    4,914    145.864      6.449  HEAVILY SKEWED (right)
+  TC_HDL_ratio              4,937      3.788      3.171  HEAVILY SKEWED (right)
+  TG_HDL_ratio              4,910      3.290      8.036  HEAVILY SKEWED (right)
+  LBXSATSI                  4,915     22.219      3.871  HEAVILY SKEWED (right)
+  LBXSAL                    4,917      4.040     -0.445  Approximately symmetric
+  LBXSTP                    4,914      7.143      0.090  Approximately symmetric
+  LBXSTB                    4,916      0.461      2.139  HEAVILY SKEWED (right)
+  LBXSCR                    4,916      0.907     12.039  HEAVILY SKEWED (right)
+  LBXSUA                    4,914      5.474      0.582  Approximately symmetric
+  LBXSBU                    4,914     15.171      2.424  HEAVILY SKEWED (right)
+  LBXSCA                    4,914      9.280      0.098  Approximately symmetric
+  LBXSPH                    4,914      3.561      0.709  Approximately symmetric
+  LBXSNASI                  4,917    140.330     -0.263  Approximately symmetric
+  LBXSKSI                   4,914      4.082      0.403  Approximately symmetric
+
+  Generating individual distribution plots ...
+  [SAVED] 27 individual distribution plots -> distributions/individual/
+  Generating summary distribution grid ...
+  [SAVED] distributions_summary_grid.png
+
+-----------------------------------------------------------------
+  DISTRIBUTION REPORT
+-----------------------------------------------------------------
+
+  Heavily skewed (|skew| > 2.0)  -- 10 variables:
+    LBXGLU                  skew=3.724
+    LBXIN                   skew=9.750
+    HOMA_IR                 skew=10.527
+    LBXSTR                  skew=6.449
+    TC_HDL_ratio            skew=3.171
+    TG_HDL_ratio            skew=8.036
+    LBXSATSI                skew=3.871
+    LBXSTB                  skew=2.139
+    LBXSCR                  skew=12.039
+    LBXSBU                  skew=2.424
+
+  Moderately skewed (1.0 < |skew| <= 2.0) -- 3 variables:
+    BMXBMI                  skew=1.270
+    Avg_Systolic_BP         skew=1.017
+    LBDHDD                  skew=1.317
+
+  Observations:
+    - Variables with heavy right skew (HOMA_IR, TG_HDL_ratio, etc.) are
+      biologically expected. These distributions reflect metabolic
+      heterogeneity in the population, not data quality errors.
+    - These variables WILL distort distance-based clustering algorithms
+      and may require log-transformation during the scaling stage.
+    - No transformation is applied here.
+
+  Recommendation:
+    Recommend creation of Decision 007: Log-transformation of heavily
+    skewed variables before clustering. Candidates: ['LBXGLU', 'LBXIN', 'HOMA_IR', 'LBXSTR', 'TC_HDL_ratio', 'TG_HDL_ratio', 'LBXSATSI', 'LBXSTB', 'LBXSCR', 'LBXSBU']

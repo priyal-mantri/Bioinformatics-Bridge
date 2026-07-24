@@ -22,17 +22,17 @@ ENV/
 .ipynb_checkpoints/
 *.ipynb
 
-# ── Data files — DO NOT commit raw or processed data to GitHub ───────────────
-# NHANES CSVs can be large and contain participant-level health data.
-# They are freely downloadable from cdc.gov/nchs/nhanes — see README.
+# ── Data files — raw NHANES source data stays out of the repo ────────────────
+# NHANES CSVs are freely downloadable from cdc.gov/nchs/nhanes — see README.
 DATASET/
-output/
 Downloads/
 *.xpt
 *.XPT
 
-# ── Intermediate snapshots — reproducible from pipeline, not needed in repo ──
-snapshot_decision_*.csv
+# ── output/ is included EXCEPT intermediate preprocessing snapshots ───────────
+# Snapshots are reproducible by running run_preprocess.py; no need to store them.
+output/snapshot_decision_*.csv
+output/merged_raw_working.csv
 
 # ── Temporary extraction files created during development ────────────────────
 research_plan_raw.txt
