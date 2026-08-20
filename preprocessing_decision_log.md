@@ -586,7 +586,7 @@ Excluding mathematically constructed composite variables avoids artificial multi
 **Implementation Details**
 - File: `pipeline/preprocess/cohorts.py`
 - Primary Raw Features (24): `BMXBMI`, `BMXWAIST`, `DXDTOBMD`, `DXDTOPF`, `DXDTOLE`, `Avg_Systolic_BP`, `Avg_Diastolic_BP`, `BPXPLS`, `LBXGLU`, `LBXIN`, `LBXTC`, `LBDHDD`, `LBXSTR`, `LBXSATSI`, `LBXSAL`, `LBXSTP`, `LBXSTB`, `LBXSCR`, `LBXSUA`, `LBXSBU`, `LBXSCA`, `LBXSPH`, `LBXSNASI`, `LBXSKSI`
-- Derived Features (3): `HOMA_IR`, `TC_HDL_ratio`, `TG_HDL_ratio` (excluded from primary matrix, preserved in output file)
+- Derived Features (3): `HOMA_IR`, `TC_HDL_ratio`, `TG_HDL_ratio` (100% excluded from primary clustering matrices, preserved in output dataset files)
 
 **Pipeline Stage**
 Preprocess (after Decision 007)
@@ -598,46 +598,60 @@ Preprocess (after Decision 007)
 
 ## Decision 009
 
-**Missing Data & Dual Cohort Configurations**
+**Missing Data & Dual Cohort Configurations (Primary vs. Secondary)**
 
 ---
 
 **Preprocessing Step**
-Do NOT perform imputation at this stage. Instead, define TWO complementary, reproducible analysis cohorts:
-1. **ANALYSIS A (Broad Cohort)**: 19 broadly available features (excludes DEXA body composition and fasting glucose/insulin panel).
-2. **ANALYSIS B (Fasting & DEXA Cohort)**: All 24 raw features (includes fasting glucose, insulin, and DEXA body composition).
+Do NOT perform imputation at this stage. Instead, define TWO complementary, reproducible analysis cohorts based on research scope:
+
+1. **PRIMARY — ANALYSIS A (Broad Cohort)**:
+   - File: `output/analysis_cohort_a_broad.csv`
+   - Participants: **N = 4,460** complete cases (80.1% of adult cohort)
+   - Features: 19 broadly available raw variables (excludes DEXA body composition and fasting glucose/insulin panel)
+   - **Research Purpose**: Serves as the primary natural-structure discovery analysis. Maximizes available sample size while maintaining broad physiological and biochemical coverage across 5 biological systems. Addresses the primary research question: *"Can unsupervised machine learning discover natural biological constitutions/phenotypic groupings in humans without predefined labels?"*
+
+2. **SECONDARY — ANALYSIS B (Enriched Fasting & DEXA Cohort)**:
+   - File: `output/analysis_cohort_b_fasting.csv`
+   - Participants: **N = 965** complete cases (17.3% of adult cohort)
+   - Features: All 24 raw variables (includes fasting glucose, fasting insulin, and DEXA body composition)
+   - **Research Purpose**: Serves as a secondary enriched-phenotype sensitivity analysis. Evaluates whether enriching the feature representation with fasting metabolic and DEXA body composition measurements materially alters the biological structure discovered by the primary analysis (A-RAW vs. B-RAW).
 
 **Why It Was Needed**
-NHANES protocols only perform DEXA scans and morning fasting draws on specific sub-samples, producing ~57-60% missingness for those variables. Imputing 60% of DEXA or fasting features before initial clustering would introduce heavy model-based artifacts. Creating two explicit cohorts preserves full sample size for broad features while allowing deep multi-system analysis on the complete sub-sample.
+NHANES protocols only perform DEXA scans and morning fasting blood draws on specific sub-samples, producing ~57–60% missingness for those variables. Imputing 60% of DEXA or fasting features before initial clustering would introduce heavy model-based artifacts. Creating two explicit cohorts preserves full sample size for broad features while allowing deep multi-system sensitivity analysis on the complete sub-sample.
 
 **Implementation Details**
 - File: `pipeline/preprocess/cohorts.py`
 - Function: `apply_feature_and_cohort_designations(df, output_dir)`
-- Exports reproducible cohort files: `output/analysis_cohort_a_broad.csv` and `output/analysis_cohort_b_fasting.csv`
-
-**Measured Results from Live Run**
-- **Analysis A (Broad Cohort)**: 19 variables, **4,460 complete cases (80.1%)** out of 5,569 adult participants.
-- **Analysis B (Fasting & DEXA Cohort)**: 24 variables, **965 complete cases (17.3%)** out of 5,569 adult participants.
+- Cohorts exported: `output/analysis_cohort_a_broad.csv` (PRIMARY) and `output/analysis_cohort_b_fasting.csv` (SECONDARY)
 
 **Pipeline Stage**
 Preprocess (after Decision 008)
 
 **Status**
-✅ Implemented — `analysis_cohort_a_broad.csv` and `analysis_cohort_b_fasting.csv` exported
+✅ Implemented — `analysis_cohort_a_broad.csv` (PRIMARY) and `analysis_cohort_b_fasting.csv` (SECONDARY) exported
 
 ---
 
 ## Decision 010
 
-**Skewness Transformation Evaluation**
+**Skewness Transformation Evaluation (Dual Representation Framework)**
 
 ---
 
 **Preprocessing Step**
 Evaluate parallel log-transformed (`log1p`) representations for 10 strongly right-skewed variables (|skew| > 2.0) identified during EDA, alongside original raw representations.
 
-**Why It Was Needed**
-Distance-based clustering algorithms (like Spectral Clustering) can be distorted by extreme right-skewness. Evaluated log-transformation compresses long right tails.
+**Dual Representation Framework (RAW vs. LOG)**:
+RAW vs. LOG is NOT a separate cohort file. The project maintains TWO cohorts (Analysis A and Analysis B), and EACH cohort contains both RAW and LOG feature representations:
+- **PRIMARY COHORT (Analysis A)**: A-RAW vs. A-LOG
+- **SECONDARY COHORT (Analysis B)**: B-RAW vs. B-LOG
+
+Downstream methodological evaluations will compare:
+- `A-RAW` vs. `A-LOG` (Effect of log transformation on primary broad structure)
+- `B-RAW` vs. `B-LOG` (Effect of log transformation on secondary enriched structure)
+- `A-RAW` vs. `B-RAW` (Effect of feature enrichment under raw representation)
+- `A-LOG` vs. `B-LOG` (Effect of feature enrichment under log representation)
 
 **Variables Evaluated & Measured Results**
 
@@ -657,7 +671,7 @@ Distance-based clustering algorithms (like Spectral Clustering) can be distorted
 **Implementation Details**
 - File: `pipeline/preprocess/skewness.py`
 - Function: `evaluate_skewness_transformations(df)`
-- Parallel columns created with `_log1p` suffix in `preprocessed.csv`. Both representations are preserved; winner is not automatically selected.
+- Parallel columns created with `_log1p` suffix in `preprocessed.csv`, `analysis_cohort_a_broad.csv`, and `analysis_cohort_b_fasting.csv`. Both representations are preserved; winner is not automatically selected.
 
 **Pipeline Stage**
 Preprocess (after Decision 009)

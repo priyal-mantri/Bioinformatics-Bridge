@@ -8,12 +8,12 @@ Decision 008 -- Raw vs. Derived Features:
     Excludes the 3 derived features (HOMA_IR, TC_HDL_ratio, TG_HDL_ratio) from the
     primary clustering matrix while retaining them in preprocessed.csv for interpretation.
 
-Decision 009 -- Missing Data & Analysis Cohorts:
+Decision 009 -- Missing Data & Dual Analysis Cohorts:
     Defines two reproducible, non-imputed analysis cohorts:
-      - ANALYSIS A (Broad Cohort): 19 broadly available features (excludes DEXA & Fasting panel).
-        Maximises sample size (N = 4,482 complete cases, 80.5%).
-      - ANALYSIS B (Fasting & DEXA Cohort): All 24 raw features (includes fasting & DEXA).
-        Maximises feature coverage for metabolic/DEXA sub-analysis (N = 967 complete cases, 17.4%).
+      - PRIMARY  -- ANALYSIS A (Broad Cohort): 19 broadly available features (excludes DEXA & Fasting panel).
+        Maximises sample size (N = 4,460 complete cases, 80.1%).
+      - SECONDARY -- ANALYSIS B (Fasting & DEXA Cohort): All 24 raw features (includes fasting & DEXA).
+        Enriched sensitivity analysis cohort (N = 965 complete cases, 17.3%).
 """
 
 import pandas as pd
