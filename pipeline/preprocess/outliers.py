@@ -3,75 +3,57 @@ pipeline/preprocess/outliers.py
 ================================
 Decision 007: Outlier & Invalid Value Handling
 
-Converts demonstrably invalid or physiologically impossible measurement values
-to NaN while retaining the participant's valid measurements for other variables.
-
 Rules:
     - Input DataFrame is never mutated. Returns a new copy.
-    - Extreme but biologically plausible values (e.g. Diastolic BP up to 135 mmHg,
-      Systolic BP up to 238 mmHg, BMI up to 86.2) are RETAINED without alteration.
-    - Only physiologically impossible values (e.g. Diastolic BP < 20 mmHg representing
-      0 mmHg recording artifacts) are converted to NaN.
+    - Biologically extreme values (e.g. Diastolic BP up to 135 mmHg, Systolic BP up to 238 mmHg,
+      BMI up to 86.2) are RETAINED without modification.
+    - Diastolic BP = 0.0 mmHg is explicitly permitted by official NHANES documentation
+      (BPX_J.pdf page 2: "Diastolic BP can be zero") and is RETAINED as a valid observation.
+    - No automatic deletion of participants or invalidation of < 20 mmHg values is performed.
+      Low/zero values are flagged for post-processing EDA inspection rather than deleted.
 """
 
 import numpy as np
 import pandas as pd
 
 
-# ---------------------------------------------------------------------------
-# Constants
-# ---------------------------------------------------------------------------
-
 DIASTOLIC_BP_COL: str = "Avg_Diastolic_BP"
-MIN_PLAUSIBLE_DIASTOLIC_BP: float = 20.0  # mmHg
 
 
 def apply_outlier_invalid_filter(df: pd.DataFrame) -> pd.DataFrame:
     """
     Decision 007: Outlier & Invalid Value Handling.
 
-    Identifies and converts physiologically impossible values to NaN.
+    Validates that extreme observations are retained in accordance with NHANES guidelines.
     Specifically:
-      - Avg_Diastolic_BP values < 20 mmHg (e.g. 0 mmHg examination artifacts)
-        are set to NaN.
-
-    Biologically plausible extremes (e.g. severe hypertension or high BMI) are preserved.
+      - Removes custom < 20 mmHg invalidation rule.
+      - Retains 0.0 mmHg diastolic BP values as valid observations per BPX_J documentation.
+      - Retains plausible extreme measurements (hypertension, high BMI).
 
     Parameters
     ----------
     df : pd.DataFrame
-        Input dataframe containing Avg_Diastolic_BP.
+        Input dataframe.
 
     Returns
     -------
     pd.DataFrame
-        New dataframe with invalid values replaced by NaN.
+        New dataframe with extreme observations preserved.
     """
-    if DIASTOLIC_BP_COL not in df.columns:
-        raise KeyError(f"[Decision 007] Column '{DIASTOLIC_BP_COL}' not found in dataframe.")
-
     result = df.copy()
 
-    # Identify invalid diastolic BP (< 20 mmHg)
-    invalid_bp_mask = (result[DIASTOLIC_BP_COL].notna()) & (result[DIASTOLIC_BP_COL] < MIN_PLAUSIBLE_DIASTOLIC_BP)
-    n_invalid_bp = invalid_bp_mask.sum()
+    n_zero_dia = (result[DIASTOLIC_BP_COL] == 0.0).sum() if DIASTOLIC_BP_COL in result.columns else 0
+    n_null_dia = result[DIASTOLIC_BP_COL].isna().sum() if DIASTOLIC_BP_COL in result.columns else 0
 
-    nulls_before = result[DIASTOLIC_BP_COL].isna().sum()
-    result.loc[invalid_bp_mask, DIASTOLIC_BP_COL] = np.nan
-    nulls_after = result[DIASTOLIC_BP_COL].isna().sum()
-
-    # Report
     sep = "-" * 65
     print(f"\n{sep}")
     print(f"  Decision 007 -- Outlier & Invalid Value Handling")
     print(sep)
-    print(f"  Target variable                   : {DIASTOLIC_BP_COL}")
-    print(f"  Plausible physiological range     : >= {MIN_PLAUSIBLE_DIASTOLIC_BP} mm Hg")
-    print(f"  Physiologically impossible (<20)   : {n_invalid_bp:,} values --> set to NaN")
+    print(f"  Rule applied                      : Retain all NHANES-valid observations.")
+    print(f"  Custom <20 mmHg invalidation rule : REMOVED (0.0 mmHg diastolic BP retained)")
+    print(f"  Diastolic BP == 0.0 mmHg count    : {n_zero_dia:,} participants (retained)")
+    print(f"  Diastolic BP missing count        : {n_null_dia:,} participants")
     print(f"  Rows removed                      : 0 (participants retained)")
-    print(f"  {DIASTOLIC_BP_COL} nulls before     : {nulls_before:,}")
-    print(f"  {DIASTOLIC_BP_COL} nulls after      : {nulls_after:,} (+{nulls_after - nulls_before:,})")
-    print(f"  Plausible extreme values retained : Diastolic BP up to {result[DIASTOLIC_BP_COL].max():.1f} mm Hg")
     print(sep)
 
     return result

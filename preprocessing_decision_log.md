@@ -516,6 +516,34 @@ Preprocess (after Decision 005)
 **Status**
 ✅ Implemented — `output/preprocessed.csv` generated with 5,569 rows × 39 columns
 
+## Decision 002
+
+**Blood Pressure Averaging (Official CDC NHANES Protocol)**
+
+---
+
+**Preprocessing Step**
+Convert repeated systolic and diastolic blood pressure readings (`BPXSY1–3`, `BPXDI1–3`) into a single representative value per participant per direction following official CDC NHANES analytic protocol.
+
+New columns created:
+- `Avg_Systolic_BP`
+- `Avg_Diastolic_BP`
+
+**Official CDC NHANES Protocol**:
+1. **If 3 valid readings are present** (`BPXSY1`, `BPXSY2`, `BPXSY3`): Drop Reading 1 (to eliminate initial white-coat stress reactivity) and take the arithmetic mean of Readings 2 and 3: `mean(BPXSY2, BPXSY3)` and `mean(BPXDI2, BPXDI3)`.
+2. **If 2 valid readings are present**: If Readings 2 & 3 are present, average Readings 2 & 3. If Readings 1 & 2 are present, use Reading 2. If Readings 1 & 3 are present, use Reading 3.
+3. **If 1 valid reading is present**: Use that single available reading.
+4. **If 0 valid readings are present**: Set to `NaN`.
+
+**Why It Was Needed**
+NHANES takes up to three blood pressure readings at a single examination. Including all three raw readings as separate features would introduce artificial multicollinearity into the feature matrix. The first reading is systematically elevated due to white-coat reactivity. Dropping Reading 1 when $\ge 2$ readings exist aligns with CDC NCHS and AHA/ACC guidelines for analyzing NHANES BP data.
+
+**Implementation Details**
+- File: `pipeline/preprocess/bp_averaging.py`
+- Function: `compute_bp_averages(df)`
+- SAS XPT Zero handling: Floating point representations $< 10^{-10}$ (from SAS XPT zero export) are converted to clean float `0.0`.
+- Snapshot saved: `output/snapshot_decision_002_bp_averaged.csv`
+
 ---
 
 ## Decision 007
@@ -525,43 +553,20 @@ Preprocess (after Decision 005)
 ---
 
 **Preprocessing Step**
-Convert physiologically impossible measurement values (specifically `Avg_Diastolic_BP < 20` mmHg representing 0 mmHg recording artifacts) to NaN while retaining extreme but biologically plausible measurements and keeping participants in the dataset.
+Retain all NHANES-valid observations without arbitrary deletion. The previous custom `< 20 mmHg` invalidation rule is REMOVED.
 
 **Why It Was Needed**
-Statistical outlier detection identified extreme values across blood pressure and other biomarkers. However, statistical extreme values must be distinguished from data artifacts. Physiological values near 0 mmHg for diastolic blood pressure represent examination/recording artifacts or underflow, whereas extreme high readings (e.g. Diastolic BP up to 135.3 mmHg, Systolic BP up to 238 mmHg, BMI up to 86.2 kg/m²) represent real clinical pathology (severe hypertension / severe obesity).
+Official NHANES documentation ([BPX_J.pdf](file:///home/naya/Documents/Research%202%20%5BBioinfo%20Bridge%5D/Downloads/Docs/BPX_J.pdf), Page 2) explicitly states: *"Diastolic BP can be zero"* and codebook pages 12–21 list `0 to 136 mm Hg` as the valid range. In auscultatory measurement, Korotkoff Phase V sounds can continue down to 0 mmHg in hyperdynamic circulation or young healthy individuals.
 
-**Biological Reasoning**
-Diastolic blood pressure < 20 mmHg in a living adult participant during an outpatient NHANES examination is physiologically impossible. Setting these values to NaN removes erroneous data without introducing arbitrary cutoffs or deleting participants.
-
-**Statistical Reasoning**
-- **Artifact Removal**: Setting 24 physiologically impossible zero/near-zero Diastolic BP values to NaN removes clear measurement noise.
-- **Plausible Extremes Retained**: Participants with severe hypertension (BP up to 238/135 mmHg) or high BMI are genuine biological extreme phenotypes. Deleting them would artificially restrict phenotypic variation before clustering.
-- **Sample Size Preservation**: Participants are NOT deleted; their non-BP measurements remain valid.
+**Biological & Statistical Reasoning**
+- **NHANES Compatibility**: 0.0 mmHg diastolic BP values (18 adult participants) are valid recorded codes per CDC documentation and are retained as valid observations.
+- **Plausible Extremes Retained**: Participants with severe hypertension (BP up to 238/135 mmHg) or high BMI (up to 86.2 kg/m²) are genuine biological extreme phenotypes and are preserved without modification.
+- **No Participant Removal**: 0 participants were deleted.
 
 **Implementation Details**
 - File: `pipeline/preprocess/outliers.py`
 - Function: `apply_outlier_invalid_filter(df)`
-- Condition: `Avg_Diastolic_BP < 20.0` set to `np.nan`
 - Snapshot saved: `output/snapshot_decision_007_outlier_bp_invalid.csv`
-
-**Measured Results from Live Run**
-- Invalid Diastolic BP values converted to NaN: **24 values**
-- Rows removed: **0 (participants retained)**
-- Plausible extreme values retained: Diastolic BP up to 135.3 mmHg, Systolic BP up to 238.0 mmHg, BMI up to 86.2 kg/m²
-
-**Alternative Methods Considered**
-
-| Alternative | Why Rejected |
-|-------------|-------------|
-| Winsorize all statistical outliers | Clipping real biological extremes distorts natural phenotypic distribution |
-| Delete participants with extreme values | Wastes valid multi-system measurements and introduces selection bias |
-| Keep zero BP values as valid | Distorts blood pressure distribution with non-physiological zero values |
-
-**Pipeline Stage**
-Preprocess (after Decision 006)
-
-**Status**
-✅ Implemented — `output/snapshot_decision_007_outlier_bp_invalid.csv`
 
 ---
 
@@ -574,25 +579,13 @@ Preprocess (after Decision 006)
 **Preprocessing Step**
 Designate the 24 measured raw variables as the PRIMARY clustering feature matrix, while retaining the 3 derived features (`HOMA_IR`, `TC_HDL_ratio`, `TG_HDL_ratio`) in `preprocessed.csv` for post-clustering biological interpretation and sensitivity analysis.
 
-**Why It Was Needed**
-Derived variables like `HOMA_IR` ((Glucose × Insulin)/405), `TC_HDL_ratio` (TC / HDL), and `TG_HDL_ratio` (TG / HDL) are mathematically constructed from raw measurements already present in the dataset. Including both raw components and derived ratios in the primary unsupervised clustering feature matrix double-weights those biological signals in PCA and clustering.
-
-**Biological Reasoning**
-Unsupervised clustering should operate on direct biological measurements to discover natural patterns without artificial weighting. Derived features are retained in the dataset for downstream validation, centroid profiling, and clinical interpretation.
-
-**Statistical Reasoning**
-Excluding mathematically constructed composite variables avoids artificial multicollinearity and prevents double-counting specific metabolic axes during feature variance calculations.
+**Methodological Caveat on Triglycerides (`LBXSTR` vs `LBXTR`)**:
+Official NHANES documentation ([BIOPRO_J.pdf](file:///home/naya/Documents/Research%202%20%5BBioinfo%20Bridge%5D/Downloads/Docs/BIOPRO_J.pdf), Page 11) notes that reference-method `LBXTR` (from `TRIGLY_J.csv`) is generally recommended over `LBXSTR` (from standard profile `BIOPRO_J.csv`) for triglyceride-specific analyses. However, `LBXTR` was measured ONLY on the morning fasting sub-sample (~57% missingness in general population). Using `LBXTR` in Analysis A would collapse Analysis A from $N=4,482$ down to $N \approx 967$. Therefore, `LBXSTR` is retained in BOTH Analysis A and Analysis B to maintain a consistent core feature space across cohorts.
 
 **Implementation Details**
 - File: `pipeline/preprocess/cohorts.py`
 - Primary Raw Features (24): `BMXBMI`, `BMXWAIST`, `DXDTOBMD`, `DXDTOPF`, `DXDTOLE`, `Avg_Systolic_BP`, `Avg_Diastolic_BP`, `BPXPLS`, `LBXGLU`, `LBXIN`, `LBXTC`, `LBDHDD`, `LBXSTR`, `LBXSATSI`, `LBXSAL`, `LBXSTP`, `LBXSTB`, `LBXSCR`, `LBXSUA`, `LBXSBU`, `LBXSCA`, `LBXSPH`, `LBXSNASI`, `LBXSKSI`
-- Derived Features (3): `HOMA_IR`, `TC_HDL_ratio`, `TG_HDL_ratio` (100% excluded from primary clustering matrices, preserved in output dataset files)
-
-**Pipeline Stage**
-Preprocess (after Decision 007)
-
-**Status**
-✅ Implemented — `PRIMARY_RAW_FEATURES` defined in `pipeline/preprocess/cohorts.py`
+- Derived Features (3): `HOMA_IR`, `TC_HDL_ratio`, `TG_HDL_ratio` (100% excluded from primary clustering matrices)
 
 ---
 
@@ -607,29 +600,20 @@ Do NOT perform imputation at this stage. Instead, define TWO complementary, repr
 
 1. **PRIMARY — ANALYSIS A (Broad Cohort)**:
    - File: `output/analysis_cohort_a_broad.csv`
-   - Participants: **N = 4,460** complete cases (80.1% of adult cohort)
+   - Participants: **N = 4,482** complete cases (80.5% of adult cohort)
    - Features: 19 broadly available raw variables (excludes DEXA body composition and fasting glucose/insulin panel)
    - **Research Purpose**: Serves as the primary natural-structure discovery analysis. Maximizes available sample size while maintaining broad physiological and biochemical coverage across 5 biological systems. Addresses the primary research question: *"Can unsupervised machine learning discover natural biological constitutions/phenotypic groupings in humans without predefined labels?"*
 
 2. **SECONDARY — ANALYSIS B (Enriched Fasting & DEXA Cohort)**:
    - File: `output/analysis_cohort_b_fasting.csv`
-   - Participants: **N = 965** complete cases (17.3% of adult cohort)
+   - Participants: **N = 967** complete cases (17.4% of adult cohort)
    - Features: All 24 raw variables (includes fasting glucose, fasting insulin, and DEXA body composition)
    - **Research Purpose**: Serves as a secondary enriched-phenotype sensitivity analysis. Evaluates whether enriching the feature representation with fasting metabolic and DEXA body composition measurements materially alters the biological structure discovered by the primary analysis (A-RAW vs. B-RAW).
-
-**Why It Was Needed**
-NHANES protocols only perform DEXA scans and morning fasting blood draws on specific sub-samples, producing ~57–60% missingness for those variables. Imputing 60% of DEXA or fasting features before initial clustering would introduce heavy model-based artifacts. Creating two explicit cohorts preserves full sample size for broad features while allowing deep multi-system sensitivity analysis on the complete sub-sample.
 
 **Implementation Details**
 - File: `pipeline/preprocess/cohorts.py`
 - Function: `apply_feature_and_cohort_designations(df, output_dir)`
-- Cohorts exported: `output/analysis_cohort_a_broad.csv` (PRIMARY) and `output/analysis_cohort_b_fasting.csv` (SECONDARY)
-
-**Pipeline Stage**
-Preprocess (after Decision 008)
-
-**Status**
-✅ Implemented — `analysis_cohort_a_broad.csv` (PRIMARY) and `analysis_cohort_b_fasting.csv` (SECONDARY) exported
+- Cohorts exported: `output/analysis_cohort_a_broad.csv` (PRIMARY, $N=4,482$) and `output/analysis_cohort_b_fasting.csv` (SECONDARY, $N=967$)
 
 ---
 
@@ -682,4 +666,5 @@ Preprocess (after Decision 009)
 ---
 
 *Last updated: 2026-08-20 · Research 2: The Bioinformatics Bridge · Naya Velvyn · Liana Labs*
+
 
