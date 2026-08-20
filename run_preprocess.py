@@ -7,11 +7,14 @@ Reads output/merged_raw.csv, makes a working copy, then applies all
 preprocessing decisions from the Decision Log in sequence.
 
 Preprocessing chain (in order):
-    Decision 002 -- Blood Pressure Averaging     (bp_averaging.py)
-    Decision 003 -- Participant Age Filter        (filters.py)
-    Decision 004 -- DEXA Scan Validity Filter     (filters.py)
-    Decision 005 -- Insulin LOD Handling          (filters.py)
-    Decision 006 -- Derived Feature Engineering   (derived_features.py)
+    Decision 002 -- Blood Pressure Averaging               (bp_averaging.py)
+    Decision 003 -- Participant Age Filter                 (filters.py)
+    Decision 004 -- DEXA Scan Validity Filter              (filters.py)
+    Decision 005 -- Insulin Below-Detection-Limit Handling (filters.py)
+    Decision 006 -- Derived Feature Engineering            (derived_features.py)
+    Decision 007 -- Outlier & Invalid Value Handling       (outliers.py)
+    Decision 008 & 009 -- Raw vs Derived & Analysis Cohorts(cohorts.py)
+    Decision 010 -- Skewness Transformation Evaluation    (skewness.py)
 
 The original merged_raw.csv is NEVER modified.
 All changes are applied to a working copy and saved as preprocessed.csv.
@@ -32,6 +35,9 @@ from pipeline.preprocess.filters         import (
     apply_insulin_lod_filter,
 )
 from pipeline.preprocess.derived_features import compute_derived_features
+from pipeline.preprocess.outliers         import apply_outlier_invalid_filter
+from pipeline.preprocess.cohorts          import apply_feature_and_cohort_designations
+from pipeline.preprocess.skewness         import evaluate_skewness_transformations
 
 
 # ---------------------------------------------------------------------------
@@ -81,7 +87,7 @@ def main() -> None:
     print("=" * 65)
 
     # ── Step 0: Make a working copy of merged_raw.csv ───────────────────────
-    # The original is never modified.  All decisions operate on this copy.
+    # The original is never modified. All decisions operate on this copy.
     shutil.copy2(MERGED_RAW_FILE, WORKING_COPY_FILE)
     print(f"\n  [COPY] {MERGED_RAW_FILE.name}")
     print(f"      -> {WORKING_COPY_FILE.name}  (working copy -- original preserved)")
@@ -124,6 +130,27 @@ def main() -> None:
     df = compute_derived_features(df)   # adds HOMA_IR, TC_HDL_ratio, TG_HDL_ratio
     _snapshot(df, "006", "derived_features")
 
+    # ── Decision 007: Outlier & Invalid Value Handling ──────────────────────
+    print("\n" + "=" * 65)
+    print("  DECISION 007 -- Outlier & Invalid Value Handling")
+    print("=" * 65)
+    df = apply_outlier_invalid_filter(df)
+    _snapshot(df, "007", "outlier_bp_invalid")
+
+    # ── Decisions 008 & 009: Raw vs Derived & Analysis Cohorts ───────────────
+    print("\n" + "=" * 65)
+    print("  DECISIONS 008 & 009 -- Feature Designation & Analysis Cohorts")
+    print("=" * 65)
+    df = apply_feature_and_cohort_designations(df, OUTPUT_DIR)
+    _snapshot(df, "008_009", "cohorts")
+
+    # ── Decision 010: Skewness Evaluation ───────────────────────────────────
+    print("\n" + "=" * 65)
+    print("  DECISION 010 -- Skewness Transformation Evaluation")
+    print("=" * 65)
+    df = evaluate_skewness_transformations(df)
+    _snapshot(df, "010", "skewness_evaluated")
+
     # ── Final save ───────────────────────────────────────────────────────────
     df.to_csv(PREPROCESSED_FILE, index=False)
 
@@ -135,15 +162,15 @@ def main() -> None:
     print(f"  Final output         : {PREPROCESSED_FILE.name}")
     print(f"  Final shape          : {df.shape[0]:,} rows x {df.shape[1]} columns")
 
-    # Quick missingness overview of the final dataset
+    # Quick missingness overview of the primary raw features in final preprocessed.csv
     print(f"\n  Missing values summary (final preprocessed.csv):")
-    print(f"  {'Variable':<20} {'Missing':>10} {'% Missing':>12}")
-    print(f"  {'-'*20} {'-'*10} {'-'*12}")
+    print(f"  {'Variable':<22} {'Missing':>10} {'% Missing':>12}")
+    print(f"  {'-'*22} {'-'*10} {'-'*12}")
     for col in df.columns:
         n_miss = df[col].isna().sum()
         pct    = (n_miss / len(df)) * 100
         flag   = "  <- HIGH" if pct > 40 else ""
-        print(f"  {col:<20} {n_miss:>10,} {pct:>11.1f}%{flag}")
+        print(f"  {col:<22} {n_miss:>10,} {pct:>11.1f}%{flag}")
     print("=" * 65 + "\n")
 
 

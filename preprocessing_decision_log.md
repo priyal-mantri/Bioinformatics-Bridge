@@ -16,10 +16,14 @@
 |---|------|---------------|--------|
 | [001](#decision-001) | Variable Selection by Biological System | Merge | ✅ Implemented |
 | [002](#decision-002) | Blood Pressure Averaging | Preprocess | ✅ Implemented |
-| [003](#decision-003) | Participant Age Filter | Preprocess | 🔵 Proposed |
-| [004](#decision-004) | DEXA Scan Validity Filter | Preprocess | 🔵 Proposed |
-| [005](#decision-005) | Insulin Below-Detection-Limit Handling | Preprocess | 🔵 Proposed |
-| [006](#decision-006) | Derived Feature Engineering | Preprocess | 🔵 Proposed |
+| [003](#decision-003) | Participant Age Filter | Preprocess | ✅ Implemented |
+| [004](#decision-004) | DEXA Scan Validity Filter | Preprocess | ✅ Implemented |
+| [005](#decision-005) | Insulin Below-Detection-Limit Handling | Preprocess | ✅ Implemented |
+| [006](#decision-006) | Derived Feature Engineering | Preprocess | ✅ Implemented |
+| [007](#decision-007) | Outlier & Invalid Value Handling | Preprocess | ✅ Implemented |
+| [008](#decision-008) | Raw vs. Derived Feature Designation | Preprocess | ✅ Implemented |
+| [009](#decision-009) | Missing Data & Dual Cohort Configurations | Preprocess | ✅ Implemented |
+| [010](#decision-010) | Skewness Transformation Evaluation | Preprocess | ✅ Implemented |
 
 ---
 
@@ -510,8 +514,158 @@ Three new columns added: `HOMA_IR`, `TC_HDL_ratio`, `TG_HDL_ratio`.
 Preprocess (after Decision 005)
 
 **Status**
-🔵 Proposed — not yet implemented
+✅ Implemented — `output/preprocessed.csv` generated with 5,569 rows × 39 columns
 
 ---
 
-*Last updated: 2026-06-25 · Research 2: The Bioinformatics Bridge · Naya Velvyn · Liana Labs*
+## Decision 007
+
+**Outlier & Invalid Value Handling**
+
+---
+
+**Preprocessing Step**
+Convert physiologically impossible measurement values (specifically `Avg_Diastolic_BP < 20` mmHg representing 0 mmHg recording artifacts) to NaN while retaining extreme but biologically plausible measurements and keeping participants in the dataset.
+
+**Why It Was Needed**
+Statistical outlier detection identified extreme values across blood pressure and other biomarkers. However, statistical extreme values must be distinguished from data artifacts. Physiological values near 0 mmHg for diastolic blood pressure represent examination/recording artifacts or underflow, whereas extreme high readings (e.g. Diastolic BP up to 135.3 mmHg, Systolic BP up to 238 mmHg, BMI up to 86.2 kg/m²) represent real clinical pathology (severe hypertension / severe obesity).
+
+**Biological Reasoning**
+Diastolic blood pressure < 20 mmHg in a living adult participant during an outpatient NHANES examination is physiologically impossible. Setting these values to NaN removes erroneous data without introducing arbitrary cutoffs or deleting participants.
+
+**Statistical Reasoning**
+- **Artifact Removal**: Setting 24 physiologically impossible zero/near-zero Diastolic BP values to NaN removes clear measurement noise.
+- **Plausible Extremes Retained**: Participants with severe hypertension (BP up to 238/135 mmHg) or high BMI are genuine biological extreme phenotypes. Deleting them would artificially restrict phenotypic variation before clustering.
+- **Sample Size Preservation**: Participants are NOT deleted; their non-BP measurements remain valid.
+
+**Implementation Details**
+- File: `pipeline/preprocess/outliers.py`
+- Function: `apply_outlier_invalid_filter(df)`
+- Condition: `Avg_Diastolic_BP < 20.0` set to `np.nan`
+- Snapshot saved: `output/snapshot_decision_007_outlier_bp_invalid.csv`
+
+**Measured Results from Live Run**
+- Invalid Diastolic BP values converted to NaN: **24 values**
+- Rows removed: **0 (participants retained)**
+- Plausible extreme values retained: Diastolic BP up to 135.3 mmHg, Systolic BP up to 238.0 mmHg, BMI up to 86.2 kg/m²
+
+**Alternative Methods Considered**
+
+| Alternative | Why Rejected |
+|-------------|-------------|
+| Winsorize all statistical outliers | Clipping real biological extremes distorts natural phenotypic distribution |
+| Delete participants with extreme values | Wastes valid multi-system measurements and introduces selection bias |
+| Keep zero BP values as valid | Distorts blood pressure distribution with non-physiological zero values |
+
+**Pipeline Stage**
+Preprocess (after Decision 006)
+
+**Status**
+✅ Implemented — `output/snapshot_decision_007_outlier_bp_invalid.csv`
+
+---
+
+## Decision 008
+
+**Raw vs. Derived Feature Designation**
+
+---
+
+**Preprocessing Step**
+Designate the 24 measured raw variables as the PRIMARY clustering feature matrix, while retaining the 3 derived features (`HOMA_IR`, `TC_HDL_ratio`, `TG_HDL_ratio`) in `preprocessed.csv` for post-clustering biological interpretation and sensitivity analysis.
+
+**Why It Was Needed**
+Derived variables like `HOMA_IR` ((Glucose × Insulin)/405), `TC_HDL_ratio` (TC / HDL), and `TG_HDL_ratio` (TG / HDL) are mathematically constructed from raw measurements already present in the dataset. Including both raw components and derived ratios in the primary unsupervised clustering feature matrix double-weights those biological signals in PCA and clustering.
+
+**Biological Reasoning**
+Unsupervised clustering should operate on direct biological measurements to discover natural patterns without artificial weighting. Derived features are retained in the dataset for downstream validation, centroid profiling, and clinical interpretation.
+
+**Statistical Reasoning**
+Excluding mathematically constructed composite variables avoids artificial multicollinearity and prevents double-counting specific metabolic axes during feature variance calculations.
+
+**Implementation Details**
+- File: `pipeline/preprocess/cohorts.py`
+- Primary Raw Features (24): `BMXBMI`, `BMXWAIST`, `DXDTOBMD`, `DXDTOPF`, `DXDTOLE`, `Avg_Systolic_BP`, `Avg_Diastolic_BP`, `BPXPLS`, `LBXGLU`, `LBXIN`, `LBXTC`, `LBDHDD`, `LBXSTR`, `LBXSATSI`, `LBXSAL`, `LBXSTP`, `LBXSTB`, `LBXSCR`, `LBXSUA`, `LBXSBU`, `LBXSCA`, `LBXSPH`, `LBXSNASI`, `LBXSKSI`
+- Derived Features (3): `HOMA_IR`, `TC_HDL_ratio`, `TG_HDL_ratio` (excluded from primary matrix, preserved in output file)
+
+**Pipeline Stage**
+Preprocess (after Decision 007)
+
+**Status**
+✅ Implemented — `PRIMARY_RAW_FEATURES` defined in `pipeline/preprocess/cohorts.py`
+
+---
+
+## Decision 009
+
+**Missing Data & Dual Cohort Configurations**
+
+---
+
+**Preprocessing Step**
+Do NOT perform imputation at this stage. Instead, define TWO complementary, reproducible analysis cohorts:
+1. **ANALYSIS A (Broad Cohort)**: 19 broadly available features (excludes DEXA body composition and fasting glucose/insulin panel).
+2. **ANALYSIS B (Fasting & DEXA Cohort)**: All 24 raw features (includes fasting glucose, insulin, and DEXA body composition).
+
+**Why It Was Needed**
+NHANES protocols only perform DEXA scans and morning fasting draws on specific sub-samples, producing ~57-60% missingness for those variables. Imputing 60% of DEXA or fasting features before initial clustering would introduce heavy model-based artifacts. Creating two explicit cohorts preserves full sample size for broad features while allowing deep multi-system analysis on the complete sub-sample.
+
+**Implementation Details**
+- File: `pipeline/preprocess/cohorts.py`
+- Function: `apply_feature_and_cohort_designations(df, output_dir)`
+- Exports reproducible cohort files: `output/analysis_cohort_a_broad.csv` and `output/analysis_cohort_b_fasting.csv`
+
+**Measured Results from Live Run**
+- **Analysis A (Broad Cohort)**: 19 variables, **4,460 complete cases (80.1%)** out of 5,569 adult participants.
+- **Analysis B (Fasting & DEXA Cohort)**: 24 variables, **965 complete cases (17.3%)** out of 5,569 adult participants.
+
+**Pipeline Stage**
+Preprocess (after Decision 008)
+
+**Status**
+✅ Implemented — `analysis_cohort_a_broad.csv` and `analysis_cohort_b_fasting.csv` exported
+
+---
+
+## Decision 010
+
+**Skewness Transformation Evaluation**
+
+---
+
+**Preprocessing Step**
+Evaluate parallel log-transformed (`log1p`) representations for 10 strongly right-skewed variables (|skew| > 2.0) identified during EDA, alongside original raw representations.
+
+**Why It Was Needed**
+Distance-based clustering algorithms (like Spectral Clustering) can be distorted by extreme right-skewness. Evaluated log-transformation compresses long right tails.
+
+**Variables Evaluated & Measured Results**
+
+| Variable | Original Skew | Log1p Skew | Delta Skew |
+|----------|---------------|------------|------------|
+| LBXGLU | 3.723 | 2.177 | -1.546 |
+| LBXIN | 9.750 | 0.758 | -8.992 |
+| HOMA_IR | 10.527 | 1.344 | -9.182 |
+| LBXSTR | 6.449 | 0.551 | -5.898 |
+| TC_HDL_ratio | 3.171 | 0.559 | -2.612 |
+| TG_HDL_ratio | 8.036 | 1.068 | -6.968 |
+| LBXSATSI | 3.871 | 0.775 | -3.096 |
+| LBXSTB | 2.139 | 1.226 | -0.914 |
+| LBXSCR | 12.038 | 3.346 | -8.692 |
+| LBXSBU | 2.424 | 0.272 | -2.152 |
+
+**Implementation Details**
+- File: `pipeline/preprocess/skewness.py`
+- Function: `evaluate_skewness_transformations(df)`
+- Parallel columns created with `_log1p` suffix in `preprocessed.csv`. Both representations are preserved; winner is not automatically selected.
+
+**Pipeline Stage**
+Preprocess (after Decision 009)
+
+**Status**
+✅ Implemented — `output/snapshot_decision_010_skewness_evaluated.csv`
+
+---
+
+*Last updated: 2026-08-20 · Research 2: The Bioinformatics Bridge · Naya Velvyn · Liana Labs*
+
