@@ -1,0 +1,1154 @@
+{
+  "pipeline_stage": "FEATURE_MATRIX_PREPARATION",
+  "cohort_a_primary": {
+    "file_raw": "output/feature_matrices/A_RAW.csv",
+    "file_log": "output/feature_matrices/A_LOG.csv",
+    "participants": 4482,
+    "features": 19,
+    "feature_list": [
+      "BMXBMI",
+      "BMXWAIST",
+      "Avg_Systolic_BP",
+      "Avg_Diastolic_BP",
+      "BPXPLS",
+      "LBXTC",
+      "LBDHDD",
+      "LBXSTR",
+      "LBXSATSI",
+      "LBXSAL",
+      "LBXSTP",
+      "LBXSTB",
+      "LBXSCR",
+      "LBXSUA",
+      "LBXSBU",
+      "LBXSCA",
+      "LBXSPH",
+      "LBXSNASI",
+      "LBXSKSI"
+    ],
+    "log_transformed_features": [
+      "LBXSTR",
+      "LBXSATSI",
+      "LBXSTB",
+      "LBXSCR",
+      "LBXSBU"
+    ],
+    "raw_features_preserved": [
+      "BMXBMI",
+      "BMXWAIST",
+      "Avg_Systolic_BP",
+      "Avg_Diastolic_BP",
+      "BPXPLS",
+      "LBXTC",
+      "LBDHDD",
+      "LBXSAL",
+      "LBXSTP",
+      "LBXSUA",
+      "LBXSCA",
+      "LBXSPH",
+      "LBXSNASI",
+      "LBXSKSI"
+    ],
+    "missing_values": 0
+  },
+  "cohort_b_secondary": {
+    "file_raw": "output/feature_matrices/B_RAW.csv",
+    "file_log": "output/feature_matrices/B_LOG.csv",
+    "participants": 967,
+    "features": 24,
+    "feature_list": [
+      "BMXBMI",
+      "BMXWAIST",
+      "DXDTOBMD",
+      "DXDTOPF",
+      "DXDTOLE",
+      "Avg_Systolic_BP",
+      "Avg_Diastolic_BP",
+      "BPXPLS",
+      "LBXGLU",
+      "LBXIN",
+      "LBXTC",
+      "LBDHDD",
+      "LBXSTR",
+      "LBXSATSI",
+      "LBXSAL",
+      "LBXSTP",
+      "LBXSTB",
+      "LBXSCR",
+      "LBXSUA",
+      "LBXSBU",
+      "LBXSCA",
+      "LBXSPH",
+      "LBXSNASI",
+      "LBXSKSI"
+    ],
+    "added_features_vs_a": [
+      "DXDTOBMD",
+      "DXDTOPF",
+      "DXDTOLE",
+      "LBXGLU",
+      "LBXIN"
+    ],
+    "log_transformed_features": [
+      "LBXGLU",
+      "LBXIN",
+      "LBXSTR",
+      "LBXSATSI",
+      "LBXSTB",
+      "LBXSCR",
+      "LBXSBU"
+    ],
+    "raw_features_preserved": [
+      "BMXBMI",
+      "BMXWAIST",
+      "DXDTOBMD",
+      "DXDTOPF",
+      "DXDTOLE",
+      "Avg_Systolic_BP",
+      "Avg_Diastolic_BP",
+      "BPXPLS",
+      "LBXTC",
+      "LBDHDD",
+      "LBXSAL",
+      "LBXSTP",
+      "LBXSUA",
+      "LBXSCA",
+      "LBXSPH",
+      "LBXSNASI",
+      "LBXSKSI"
+    ],
+    "missing_values": 0
+  },
+  "exclusions_confirmed": {
+    "derived_features_excluded": [
+      "HOMA_IR",
+      "TC_HDL_ratio",
+      "TG_HDL_ratio"
+    ],
+    "identifiers_demographics_excluded": [
+      "SEQN",
+      "RIDAGEYR",
+      "RIAGENDR",
+      "RIDRETH3"
+    ],
+    "scaling_performed": false,
+    "standardization_performed": false,
+    "imputation_performed": false,
+    "pca_performed": false,
+    "clustering_performed": false
+  },
+  "validations": {
+    "A_RAW": {
+      "matrix_name": "A_RAW",
+      "rows": 4482,
+      "cols": 19,
+      "missing_values": 0,
+      "duplicate_rows": 0,
+      "duplicate_cols": 0,
+      "infinite_values": 0,
+      "features": [
+        "BMXBMI",
+        "BMXWAIST",
+        "Avg_Systolic_BP",
+        "Avg_Diastolic_BP",
+        "BPXPLS",
+        "LBXTC",
+        "LBDHDD",
+        "LBXSTR",
+        "LBXSATSI",
+        "LBXSAL",
+        "LBXSTP",
+        "LBXSTB",
+        "LBXSCR",
+        "LBXSUA",
+        "LBXSBU",
+        "LBXSCA",
+        "LBXSPH",
+        "LBXSNASI",
+        "LBXSKSI"
+      ],
+      "column_stats": {
+        "BMXBMI": {
+          "dtype": "float64",
+          "min": 14.8,
+          "max": 67.7,
+          "mean": 29.75885765283356,
+          "std": 7.108538973996684
+        },
+        "BMXWAIST": {
+          "dtype": "float64",
+          "min": 62.3,
+          "max": 169.5,
+          "mean": 100.88123605533244,
+          "std": 16.934123723888767
+        },
+        "Avg_Systolic_BP": {
+          "dtype": "float64",
+          "min": 72.0,
+          "max": 238.0,
+          "mean": 126.51070950468541,
+          "std": 19.633588362756402
+        },
+        "Avg_Diastolic_BP": {
+          "dtype": "float64",
+          "min": 0.0,
+          "max": 126.0,
+          "mean": 72.64078536367693,
+          "std": 12.820614123086347
+        },
+        "BPXPLS": {
+          "dtype": "float64",
+          "min": 34.0,
+          "max": 132.0,
+          "mean": 71.4417670682731,
+          "std": 11.497157224146177
+        },
+        "LBXTC": {
+          "dtype": "float64",
+          "min": 76.0,
+          "max": 446.0,
+          "mean": 188.45604640785365,
+          "std": 41.463346098199615
+        },
+        "LBDHDD": {
+          "dtype": "float64",
+          "min": 10.0,
+          "max": 178.0,
+          "mean": 53.186523873270865,
+          "std": 15.591413716056683
+        },
+        "LBXSTR": {
+          "dtype": "float64",
+          "min": 25.0,
+          "max": 1640.0,
+          "mean": 144.80008924587239,
+          "std": 106.74744880497168
+        },
+        "LBXSATSI": {
+          "dtype": "float64",
+          "min": 3.0,
+          "max": 213.0,
+          "mean": 22.41387773315484,
+          "std": 16.594439428676658
+        },
+        "LBXSAL": {
+          "dtype": "float64",
+          "min": 2.1,
+          "max": 5.4,
+          "mean": 4.052074966532798,
+          "std": 0.33309786093762966
+        },
+        "LBXSTP": {
+          "dtype": "float64",
+          "min": 5.3,
+          "max": 10.0,
+          "mean": 7.144779116465863,
+          "std": 0.4371508123053643
+        },
+        "LBXSTB": {
+          "dtype": "float64",
+          "min": 0.1,
+          "max": 2.5,
+          "mean": 0.46079875055778674,
+          "std": 0.2680828397023429
+        },
+        "LBXSCR": {
+          "dtype": "float64",
+          "min": 0.25,
+          "max": 12.74,
+          "mean": 0.9064881749219099,
+          "std": 0.4723202694441063
+        },
+        "LBXSUA": {
+          "dtype": "float64",
+          "min": 0.8,
+          "max": 15.1,
+          "mean": 5.462182061579652,
+          "std": 1.4951606723563395
+        },
+        "LBXSBU": {
+          "dtype": "float64",
+          "min": 2.0,
+          "max": 79.0,
+          "mean": 15.119812583668006,
+          "std": 6.172059853827163
+        },
+        "LBXSCA": {
+          "dtype": "float64",
+          "min": 6.4,
+          "max": 11.1,
+          "mean": 9.281459170013386,
+          "std": 0.368155913161088
+        },
+        "LBXSPH": {
+          "dtype": "float64",
+          "min": 1.9,
+          "max": 9.6,
+          "mean": 3.5609549308344493,
+          "std": 0.5298892931532434
+        },
+        "LBXSNASI": {
+          "dtype": "float64",
+          "min": 121.0,
+          "max": 151.0,
+          "mean": 140.2884872824632,
+          "std": 2.77087483753236
+        },
+        "LBXSKSI": {
+          "dtype": "float64",
+          "min": 2.8,
+          "max": 6.6,
+          "mean": 4.076929941990183,
+          "std": 0.36637714875650595
+        }
+      }
+    },
+    "A_LOG": {
+      "matrix_name": "A_LOG",
+      "rows": 4482,
+      "cols": 19,
+      "missing_values": 0,
+      "duplicate_rows": 0,
+      "duplicate_cols": 0,
+      "infinite_values": 0,
+      "features": [
+        "BMXBMI",
+        "BMXWAIST",
+        "Avg_Systolic_BP",
+        "Avg_Diastolic_BP",
+        "BPXPLS",
+        "LBXTC",
+        "LBDHDD",
+        "LBXSTR",
+        "LBXSATSI",
+        "LBXSAL",
+        "LBXSTP",
+        "LBXSTB",
+        "LBXSCR",
+        "LBXSUA",
+        "LBXSBU",
+        "LBXSCA",
+        "LBXSPH",
+        "LBXSNASI",
+        "LBXSKSI"
+      ],
+      "column_stats": {
+        "BMXBMI": {
+          "dtype": "float64",
+          "min": 14.8,
+          "max": 67.7,
+          "mean": 29.75885765283356,
+          "std": 7.108538973996684
+        },
+        "BMXWAIST": {
+          "dtype": "float64",
+          "min": 62.3,
+          "max": 169.5,
+          "mean": 100.88123605533244,
+          "std": 16.934123723888767
+        },
+        "Avg_Systolic_BP": {
+          "dtype": "float64",
+          "min": 72.0,
+          "max": 238.0,
+          "mean": 126.51070950468541,
+          "std": 19.633588362756402
+        },
+        "Avg_Diastolic_BP": {
+          "dtype": "float64",
+          "min": 0.0,
+          "max": 126.0,
+          "mean": 72.64078536367693,
+          "std": 12.820614123086347
+        },
+        "BPXPLS": {
+          "dtype": "float64",
+          "min": 34.0,
+          "max": 132.0,
+          "mean": 71.4417670682731,
+          "std": 11.497157224146177
+        },
+        "LBXTC": {
+          "dtype": "float64",
+          "min": 76.0,
+          "max": 446.0,
+          "mean": 188.45604640785365,
+          "std": 41.463346098199615
+        },
+        "LBDHDD": {
+          "dtype": "float64",
+          "min": 10.0,
+          "max": 178.0,
+          "mean": 53.186523873270865,
+          "std": 15.591413716056683
+        },
+        "LBXSTR": {
+          "dtype": "float64",
+          "min": 3.258096538021482,
+          "max": 7.403061091090091,
+          "mean": 4.813191891879534,
+          "std": 0.5518087759555615
+        },
+        "LBXSATSI": {
+          "dtype": "float64",
+          "min": 1.3862943611198906,
+          "max": 5.365976015021851,
+          "mean": 3.0029596020310225,
+          "std": 0.5094980936218318
+        },
+        "LBXSAL": {
+          "dtype": "float64",
+          "min": 2.1,
+          "max": 5.4,
+          "mean": 4.052074966532798,
+          "std": 0.33309786093762966
+        },
+        "LBXSTP": {
+          "dtype": "float64",
+          "min": 5.3,
+          "max": 10.0,
+          "mean": 7.144779116465863,
+          "std": 0.4371508123053643
+        },
+        "LBXSTB": {
+          "dtype": "float64",
+          "min": 0.09531017980432487,
+          "max": 1.252762968495368,
+          "mean": 0.3646241119372468,
+          "std": 0.16386446903469157
+        },
+        "LBXSCR": {
+          "dtype": "float64",
+          "min": 0.22314355131420976,
+          "max": 2.620311286794203,
+          "mean": 0.6300801434091109,
+          "std": 0.155292302294053
+        },
+        "LBXSUA": {
+          "dtype": "float64",
+          "min": 0.8,
+          "max": 15.1,
+          "mean": 5.462182061579652,
+          "std": 1.4951606723563395
+        },
+        "LBXSBU": {
+          "dtype": "float64",
+          "min": 1.0986122886681096,
+          "max": 4.382026634673881,
+          "mean": 2.720690229935414,
+          "std": 0.3371463589960229
+        },
+        "LBXSCA": {
+          "dtype": "float64",
+          "min": 6.4,
+          "max": 11.1,
+          "mean": 9.281459170013386,
+          "std": 0.368155913161088
+        },
+        "LBXSPH": {
+          "dtype": "float64",
+          "min": 1.9,
+          "max": 9.6,
+          "mean": 3.5609549308344493,
+          "std": 0.5298892931532434
+        },
+        "LBXSNASI": {
+          "dtype": "float64",
+          "min": 121.0,
+          "max": 151.0,
+          "mean": 140.2884872824632,
+          "std": 2.77087483753236
+        },
+        "LBXSKSI": {
+          "dtype": "float64",
+          "min": 2.8,
+          "max": 6.6,
+          "mean": 4.076929941990183,
+          "std": 0.36637714875650595
+        }
+      }
+    },
+    "B_RAW": {
+      "matrix_name": "B_RAW",
+      "rows": 967,
+      "cols": 24,
+      "missing_values": 0,
+      "duplicate_rows": 0,
+      "duplicate_cols": 0,
+      "infinite_values": 0,
+      "features": [
+        "BMXBMI",
+        "BMXWAIST",
+        "DXDTOBMD",
+        "DXDTOPF",
+        "DXDTOLE",
+        "Avg_Systolic_BP",
+        "Avg_Diastolic_BP",
+        "BPXPLS",
+        "LBXGLU",
+        "LBXIN",
+        "LBXTC",
+        "LBDHDD",
+        "LBXSTR",
+        "LBXSATSI",
+        "LBXSAL",
+        "LBXSTP",
+        "LBXSTB",
+        "LBXSCR",
+        "LBXSUA",
+        "LBXSBU",
+        "LBXSCA",
+        "LBXSPH",
+        "LBXSNASI",
+        "LBXSKSI"
+      ],
+      "column_stats": {
+        "BMXBMI": {
+          "dtype": "float64",
+          "min": 15.5,
+          "max": 60.3,
+          "mean": 29.017580144777664,
+          "std": 6.628356889094913
+        },
+        "BMXWAIST": {
+          "dtype": "float64",
+          "min": 63.2,
+          "max": 154.9,
+          "mean": 96.89493278179938,
+          "std": 15.743244802308542
+        },
+        "DXDTOBMD": {
+          "dtype": "float64",
+          "min": 0.697,
+          "max": 1.728,
+          "mean": 1.1165222337125131,
+          "std": 0.10477973185217475
+        },
+        "DXDTOPF": {
+          "dtype": "float64",
+          "min": 13.1,
+          "max": 52.5,
+          "mean": 33.515615305067215,
+          "std": 8.569700476784153
+        },
+        "DXDTOLE": {
+          "dtype": "float64",
+          "min": 26274.1,
+          "max": 102077.6,
+          "mean": 51134.64850051706,
+          "std": 12033.113697729255
+        },
+        "Avg_Systolic_BP": {
+          "dtype": "float64",
+          "min": 80.0,
+          "max": 220.0,
+          "mean": 119.28852119958636,
+          "std": 16.137879727417726
+        },
+        "Avg_Diastolic_BP": {
+          "dtype": "float64",
+          "min": 0.0,
+          "max": 125.0,
+          "mean": 73.5253360910031,
+          "std": 11.662220208532716
+        },
+        "BPXPLS": {
+          "dtype": "float64",
+          "min": 44.0,
+          "max": 120.0,
+          "mean": 70.77145811789038,
+          "std": 11.149115974018999
+        },
+        "LBXGLU": {
+          "dtype": "float64",
+          "min": 47.0,
+          "max": 451.0,
+          "mean": 109.94312306101344,
+          "std": 37.79247397018513
+        },
+        "LBXIN": {
+          "dtype": "float64",
+          "min": 1.24,
+          "max": 199.9,
+          "mean": 12.755718717683559,
+          "std": 13.523073483282408
+        },
+        "LBXTC": {
+          "dtype": "float64",
+          "min": 95.0,
+          "max": 446.0,
+          "mean": 188.9482936918304,
+          "std": 37.82573388006937
+        },
+        "LBDHDD": {
+          "dtype": "float64",
+          "min": 11.0,
+          "max": 129.0,
+          "mean": 52.53671147880041,
+          "std": 14.82689790177819
+        },
+        "LBXSTR": {
+          "dtype": "float64",
+          "min": 25.0,
+          "max": 1531.0,
+          "mean": 130.32781799379524,
+          "std": 107.54977220208536
+        },
+        "LBXSATSI": {
+          "dtype": "float64",
+          "min": 5.0,
+          "max": 181.0,
+          "mean": 23.05377456049638,
+          "std": 16.761918404997456
+        },
+        "LBXSAL": {
+          "dtype": "float64",
+          "min": 2.4,
+          "max": 5.0,
+          "mean": 4.061116856256463,
+          "std": 0.3281133625289034
+        },
+        "LBXSTP": {
+          "dtype": "float64",
+          "min": 5.6,
+          "max": 8.8,
+          "mean": 7.176732161323681,
+          "std": 0.40891523623387427
+        },
+        "LBXSTB": {
+          "dtype": "float64",
+          "min": 0.1,
+          "max": 2.2,
+          "mean": 0.475904860392968,
+          "std": 0.25925634860717095
+        },
+        "LBXSCR": {
+          "dtype": "float64",
+          "min": 0.3,
+          "max": 1.77,
+          "mean": 0.8295346432264737,
+          "std": 0.19473475773214702
+        },
+        "LBXSUA": {
+          "dtype": "float64",
+          "min": 2.2,
+          "max": 10.9,
+          "mean": 5.317373319544985,
+          "std": 1.4559395478911559
+        },
+        "LBXSBU": {
+          "dtype": "float64",
+          "min": 4.0,
+          "max": 39.0,
+          "mean": 13.348500517063082,
+          "std": 3.987240950748636
+        },
+        "LBXSCA": {
+          "dtype": "float64",
+          "min": 8.0,
+          "max": 10.8,
+          "mean": 9.216752843846947,
+          "std": 0.33506064456747237
+        },
+        "LBXSPH": {
+          "dtype": "float64",
+          "min": 1.9,
+          "max": 9.6,
+          "mean": 3.500827300930714,
+          "std": 0.5398406119339527
+        },
+        "LBXSNASI": {
+          "dtype": "float64",
+          "min": 133.0,
+          "max": 148.0,
+          "mean": 140.05894519131334,
+          "std": 2.46163946700625
+        },
+        "LBXSKSI": {
+          "dtype": "float64",
+          "min": 2.9,
+          "max": 5.4,
+          "mean": 4.059152016546019,
+          "std": 0.3406492775321797
+        }
+      }
+    },
+    "B_LOG": {
+      "matrix_name": "B_LOG",
+      "rows": 967,
+      "cols": 24,
+      "missing_values": 0,
+      "duplicate_rows": 0,
+      "duplicate_cols": 0,
+      "infinite_values": 0,
+      "features": [
+        "BMXBMI",
+        "BMXWAIST",
+        "DXDTOBMD",
+        "DXDTOPF",
+        "DXDTOLE",
+        "Avg_Systolic_BP",
+        "Avg_Diastolic_BP",
+        "BPXPLS",
+        "LBXGLU",
+        "LBXIN",
+        "LBXTC",
+        "LBDHDD",
+        "LBXSTR",
+        "LBXSATSI",
+        "LBXSAL",
+        "LBXSTP",
+        "LBXSTB",
+        "LBXSCR",
+        "LBXSUA",
+        "LBXSBU",
+        "LBXSCA",
+        "LBXSPH",
+        "LBXSNASI",
+        "LBXSKSI"
+      ],
+      "column_stats": {
+        "BMXBMI": {
+          "dtype": "float64",
+          "min": 15.5,
+          "max": 60.3,
+          "mean": 29.017580144777664,
+          "std": 6.628356889094913
+        },
+        "BMXWAIST": {
+          "dtype": "float64",
+          "min": 63.2,
+          "max": 154.9,
+          "mean": 96.89493278179938,
+          "std": 15.743244802308542
+        },
+        "DXDTOBMD": {
+          "dtype": "float64",
+          "min": 0.697,
+          "max": 1.728,
+          "mean": 1.1165222337125131,
+          "std": 0.10477973185217475
+        },
+        "DXDTOPF": {
+          "dtype": "float64",
+          "min": 13.1,
+          "max": 52.5,
+          "mean": 33.515615305067215,
+          "std": 8.569700476784153
+        },
+        "DXDTOLE": {
+          "dtype": "float64",
+          "min": 26274.1,
+          "max": 102077.6,
+          "mean": 51134.64850051706,
+          "std": 12033.113697729255
+        },
+        "Avg_Systolic_BP": {
+          "dtype": "float64",
+          "min": 80.0,
+          "max": 220.0,
+          "mean": 119.28852119958636,
+          "std": 16.137879727417726
+        },
+        "Avg_Diastolic_BP": {
+          "dtype": "float64",
+          "min": 0.0,
+          "max": 125.0,
+          "mean": 73.5253360910031,
+          "std": 11.662220208532716
+        },
+        "BPXPLS": {
+          "dtype": "float64",
+          "min": 44.0,
+          "max": 120.0,
+          "mean": 70.77145811789038,
+          "std": 11.149115974018999
+        },
+        "LBXGLU": {
+          "dtype": "float64",
+          "min": 3.8712010109078907,
+          "max": 6.113682179832232,
+          "mean": 4.675235926689714,
+          "std": 0.2306548836477408
+        },
+        "LBXIN": {
+          "dtype": "float64",
+          "min": 0.8064758658669485,
+          "max": 5.302807271820889,
+          "mean": 2.3705376209004974,
+          "std": 0.6586810851880223
+        },
+        "LBXTC": {
+          "dtype": "float64",
+          "min": 95.0,
+          "max": 446.0,
+          "mean": 188.9482936918304,
+          "std": 37.82573388006937
+        },
+        "LBDHDD": {
+          "dtype": "float64",
+          "min": 11.0,
+          "max": 129.0,
+          "mean": 52.53671147880041,
+          "std": 14.82689790177819
+        },
+        "LBXSTR": {
+          "dtype": "float64",
+          "min": 3.258096538021482,
+          "max": 7.3343293503005365,
+          "mean": 4.696959744004197,
+          "std": 0.5573674259506376
+        },
+        "LBXSATSI": {
+          "dtype": "float64",
+          "min": 1.791759469228055,
+          "max": 5.204006687076795,
+          "mean": 3.0227881537224084,
+          "std": 0.5273239176859696
+        },
+        "LBXSAL": {
+          "dtype": "float64",
+          "min": 2.4,
+          "max": 5.0,
+          "mean": 4.061116856256463,
+          "std": 0.3281133625289034
+        },
+        "LBXSTP": {
+          "dtype": "float64",
+          "min": 5.6,
+          "max": 8.8,
+          "mean": 7.176732161323681,
+          "std": 0.40891523623387427
+        },
+        "LBXSTB": {
+          "dtype": "float64",
+          "min": 0.09531017980432487,
+          "max": 1.1631508098056809,
+          "mean": 0.37587804318462703,
+          "std": 0.15889159044004478
+        },
+        "LBXSCR": {
+          "dtype": "float64",
+          "min": 0.26236426446749106,
+          "max": 1.0188473201992472,
+          "mean": 0.5985099035326538,
+          "std": 0.10506482175526298
+        },
+        "LBXSUA": {
+          "dtype": "float64",
+          "min": 2.2,
+          "max": 10.9,
+          "mean": 5.317373319544985,
+          "std": 1.4559395478911559
+        },
+        "LBXSBU": {
+          "dtype": "float64",
+          "min": 1.6094379124341003,
+          "max": 3.6888794541139363,
+          "mean": 2.625747405579938,
+          "std": 0.27744632537415165
+        },
+        "LBXSCA": {
+          "dtype": "float64",
+          "min": 8.0,
+          "max": 10.8,
+          "mean": 9.216752843846947,
+          "std": 0.33506064456747237
+        },
+        "LBXSPH": {
+          "dtype": "float64",
+          "min": 1.9,
+          "max": 9.6,
+          "mean": 3.500827300930714,
+          "std": 0.5398406119339527
+        },
+        "LBXSNASI": {
+          "dtype": "float64",
+          "min": 133.0,
+          "max": 148.0,
+          "mean": 140.05894519131334,
+          "std": 2.46163946700625
+        },
+        "LBXSKSI": {
+          "dtype": "float64",
+          "min": 2.9,
+          "max": 5.4,
+          "mean": 4.059152016546019,
+          "std": 0.3406492775321797
+        }
+      }
+    },
+    "alignment_a": {
+      "comparison": "A_RAW vs A_LOG",
+      "participant_count": 4482,
+      "participant_seqn_order_aligned": true,
+      "mathematical_checks": {
+        "BMXBMI": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "BMXWAIST": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "Avg_Systolic_BP": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "Avg_Diastolic_BP": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "BPXPLS": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "LBXTC": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "LBDHDD": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "LBXSTR": {
+          "transformed": true,
+          "transformation": "log1p",
+          "max_diff_vs_np_log1p": 0.0,
+          "status": "VALIDATED_LOG1P"
+        },
+        "LBXSATSI": {
+          "transformed": true,
+          "transformation": "log1p",
+          "max_diff_vs_np_log1p": 0.0,
+          "status": "VALIDATED_LOG1P"
+        },
+        "LBXSAL": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "LBXSTP": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "LBXSTB": {
+          "transformed": true,
+          "transformation": "log1p",
+          "max_diff_vs_np_log1p": 0.0,
+          "status": "VALIDATED_LOG1P"
+        },
+        "LBXSCR": {
+          "transformed": true,
+          "transformation": "log1p",
+          "max_diff_vs_np_log1p": 0.0,
+          "status": "VALIDATED_LOG1P"
+        },
+        "LBXSUA": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "LBXSBU": {
+          "transformed": true,
+          "transformation": "log1p",
+          "max_diff_vs_np_log1p": 0.0,
+          "status": "VALIDATED_LOG1P"
+        },
+        "LBXSCA": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "LBXSPH": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "LBXSNASI": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "LBXSKSI": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        }
+      }
+    },
+    "alignment_b": {
+      "comparison": "B_RAW vs B_LOG",
+      "participant_count": 967,
+      "participant_seqn_order_aligned": true,
+      "mathematical_checks": {
+        "BMXBMI": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "BMXWAIST": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "DXDTOBMD": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "DXDTOPF": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "DXDTOLE": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "Avg_Systolic_BP": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "Avg_Diastolic_BP": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "BPXPLS": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "LBXGLU": {
+          "transformed": true,
+          "transformation": "log1p",
+          "max_diff_vs_np_log1p": 0.0,
+          "status": "VALIDATED_LOG1P"
+        },
+        "LBXIN": {
+          "transformed": true,
+          "transformation": "log1p",
+          "max_diff_vs_np_log1p": 0.0,
+          "status": "VALIDATED_LOG1P"
+        },
+        "LBXTC": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "LBDHDD": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "LBXSTR": {
+          "transformed": true,
+          "transformation": "log1p",
+          "max_diff_vs_np_log1p": 0.0,
+          "status": "VALIDATED_LOG1P"
+        },
+        "LBXSATSI": {
+          "transformed": true,
+          "transformation": "log1p",
+          "max_diff_vs_np_log1p": 0.0,
+          "status": "VALIDATED_LOG1P"
+        },
+        "LBXSAL": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "LBXSTP": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "LBXSTB": {
+          "transformed": true,
+          "transformation": "log1p",
+          "max_diff_vs_np_log1p": 0.0,
+          "status": "VALIDATED_LOG1P"
+        },
+        "LBXSCR": {
+          "transformed": true,
+          "transformation": "log1p",
+          "max_diff_vs_np_log1p": 0.0,
+          "status": "VALIDATED_LOG1P"
+        },
+        "LBXSUA": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "LBXSBU": {
+          "transformed": true,
+          "transformation": "log1p",
+          "max_diff_vs_np_log1p": 0.0,
+          "status": "VALIDATED_LOG1P"
+        },
+        "LBXSCA": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "LBXSPH": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "LBXSNASI": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        },
+        "LBXSKSI": {
+          "transformed": false,
+          "transformation": "none",
+          "max_diff_vs_raw": 0.0,
+          "status": "VALIDATED_IDENTICAL_TO_RAW"
+        }
+      }
+    }
+  }
+}
