@@ -1,202 +1,181 @@
 # Bioinfo Bridge
-### Mapping Ayurvedic Doshas to Human Biology Using Unsupervised Machine Learning
+
+### Mapping Ayurvedic Dosha Phenotypes to Human Biology Using Unsupervised Machine Learning
 *Research 2 · 2026*
 
 ---
 
 ## Overview
 
-This repository contains the full data pipeline for an exploratory bioinformatics study that applies **unsupervised spectral clustering** to NHANES 2017–2018 health survey data.
+This repository contains the end-to-end bioinformatics pipeline for an exploratory population health study applying **unsupervised machine learning** to the **NHANES 2017–2018** health survey dataset.
 
-The research question:
+### Core Research Questions
 
-> *Do human biomarkers measured across major biological systems naturally cluster into groups that align with the three Ayurvedic body types — Vata, Pitta, and Kapha — without being told to look for them?*
+- **Primary Research Question**:
+  > *Can unsupervised machine learning discover natural biological constitutions / phenotypic groupings in humans using population-scale health and biomarker data, without being given predefined constitutional labels?*
 
-The pipeline is intentionally built so that **variable selection is independent of the expected outcome**. Features are chosen because they represent major biological systems (body composition, cardiovascular, metabolic, lipid, hepatic, renal, electrolyte) — not because they resemble Dosha descriptions. The clustering algorithm then finds whatever natural groupings exist. Only after clusters emerge do we ask whether they resemble Dosha profiles.
+- **Secondary Research Question**:
+  > *If natural biological groupings are discovered, how do their biological profiles compare with characteristics described in Ayurvedic constitutional (Prakriti / Tridosha) literature?*
+
+### Methodological Principles
+
+1. **Independent Variable Selection**: Biomarkers were selected solely because they represent major physiological systems (body composition, cardiovascular, glucose metabolism, lipid profile, hepatic, renal, electrolyte balance) — never because they match expected Ayurvedic descriptions.
+2. **Dual Cohort Strategy**:
+   - **Primary Analysis A** (Broad Cohort, $N = 4,482$, 19 features): Maximizes sample size and statistical power across non-fasting serum biomarkers.
+   - **Secondary Analysis B** (Fasting Cohort, $N = 967$, 24 features): Incorporates fasting glucose, fasting insulin, triglycerides, and DEXA body composition metrics. *(Note: Derived features such as HOMA-IR and lipid ratios were calculated during preprocessing for exploratory audit but explicitly excluded from candidate feature matrices to prevent collinearity with constituent biomarkers).*
+3. **Data-Driven Skewness Criteria**: Candidate log-transformations (`log1p`) are evaluated against empirical cohort skewness thresholds ($|S| > 1.0$) rather than arbitrary hardcoding.
+4. **Strict Audit Trail & Stage-Gating**: Every stage (Preprocessing, Matrix Preparation, Scaling, PCA) is independently locked, validated, and recorded in version control.
 
 ---
 
 ## Repository Structure
 
 ```
-bioinfo-bridge/
+Bioinformatics-Bridge/
 │
-├── pipeline/                        # Python package — all core logic
+├── pipeline/                            # Core Python package
 │   ├── __init__.py
-│   ├── config.py                    # Single source of truth: variables, paths, merge order
-│   ├── merge.py                     # Merge orchestration (Phase 1)
-│   ├── utils.py                     # Shared helper functions
-│   └── preprocess/                  # Preprocessing sub-package (Phase 2)
-│       ├── __init__.py
-│       ├── bp_averaging.py          # Decision 002: Blood pressure averaging
-│       ├── filters.py               # Decisions 003–005: Age, DEXA validity, insulin LOD
-│       └── derived_features.py      # Decision 006: HOMA-IR, TC/HDL, TG/HDL ratios
+│   ├── config.py                        # Single source of truth: variables, paths, merge schemas
+│   ├── merge.py                         # Stage 1: Merge orchestration
+│   ├── utils.py                         # Shared helper functions & data IO
+│   ├── preprocess/                      # Stage 2: Preprocessing sub-package
+│   │   ├── __init__.py
+│   │   ├── bp_averaging.py              # BP averaging across up to 3 readings
+│   │   ├── filters.py                   # Age (20–80), DEXA validity, insulin LOD filtering
+│   │   └── derived_features.py          # HOMA-IR, TC/HDL, TG/HDL ratio calculations (audit only)
+│   ├── feature_matrices.py              # Stage 3: Candidate feature matrix construction
+│   ├── scaling.py                       # Stage 4: Z-score standardization pipeline
+│   └── pca.py                           # Stage 5: Exploratory PCA analysis & validation suite
 │
-├── docs/                            # Research documentation
-│   ├── preprocessing_decision_log.md  # Living log of every preprocessing decision
-│   └── variable_selection_rationale.md
+├── output/                              # Pipeline outputs & data artifacts
+│   ├── merged_raw.csv                   # Stage 1 merged raw dataset (9,254 rows × 34 cols)
+│   ├── preprocessed.csv                 # Stage 2 preprocessed cohort (5,569 rows × 39 cols)
+│   ├── analysis_cohort_a_broad.csv      # Primary Cohort A (4,482 rows × 26 cols)
+│   ├── analysis_cohort_b_fasting.csv    # Secondary Cohort B (967 rows × 31 cols)
+│   ├── feature_matrices/                # Stage 3 candidate matrices
+│   │   ├── A_RAW.csv                    (4,482 × 19)
+│   │   ├── A_LOG.csv                    (4,482 × 19)
+│   │   ├── B_RAW.csv                    (967 × 24)
+│   │   └── B_LOG.csv                    (967 × 24)
+│   ├── scaled_matrices/                 # Stage 4 Z-score standardized matrices
+│   │   ├── A_RAW_scaled.csv             (4,482 × 19)
+│   │   ├── A_LOG_scaled.csv             (4,482 × 19)
+│   │   ├── B_RAW_scaled.csv             (967 × 24)
+│   │   ├── B_LOG_scaled.csv             (967 × 24)
+│   │   └── scaled_matrices_metadata.json
+│   └── pca/                             # Stage 5 PCA exploratory outputs & diagnostics
+│       ├── A_RAW_pca_scores.csv / loadings.csv / variance.csv
+│       ├── A_LOG_pca_scores.csv / loadings.csv / variance.csv
+│       ├── B_RAW_pca_scores.csv / loadings.csv / variance.csv
+│       ├── B_LOG_pca_scores.csv / loadings.csv / variance.csv
+│       ├── pca_exploration_metadata.json
+│       └── plots/                       # High-res scree, cum-variance & PC1-vs-PC2 plots
 │
-├── run_pipeline.py                  # Entry point: merge all NHANES CSVs → merged_raw.csv
-├── run_preprocess.py                # Entry point: apply all preprocessing → preprocessed.csv
-├── test.py                          # Quick data inspection script
-├── requirements.txt                 # Python dependencies
-└── .gitignore
+├── preprocessing_decision_log.md        # Detailed rationale for every preprocessing step
+├── variable_selection_analysis.md       # Empirical skewness audit & transformation rationale
+├── run_pipeline.py                      # Stage 1 entry point
+├── run_preprocess.py                    # Stage 2 entry point
+├── run_feature_matrices.py              # Stage 3 entry point
+├── run_scaling.py                       # Stage 4 entry point
+├── run_pca.py                           # Stage 5 entry point
+├── requirements.txt                     # Python dependencies
+└── README.md
 ```
-
-> **Data files are not committed to this repository.**
-> NHANES data is freely available from the CDC — see [Data Setup](#data-setup) below.
 
 ---
 
 ## Biological Systems Covered
 
-Variables were selected to give comprehensive coverage of **7 major biological systems**:
+The feature selection covers **7 major physiological systems** using 24 primary NHANES biomarkers:
 
-| System | Variables |
-|--------|-----------|
-| Body Composition | BMI, Waist circumference, Bone mineral density, % Body fat, Lean mass |
-| Cardiovascular | Systolic BP (avg), Diastolic BP (avg), Resting heart rate |
-| Glucose Metabolism | Fasting glucose, Fasting insulin, HOMA-IR |
-| Lipid Metabolism | Total cholesterol, HDL, Triglycerides, TC/HDL ratio, TG/HDL ratio |
-| Hepatic Function | ALT, Albumin, Total protein, Bilirubin |
-| Renal Function | Creatinine, Uric acid, BUN |
-| Electrolyte/Mineral | Calcium, Phosphorus, Sodium, Potassium |
-
----
-
-## Pipeline Stages
-
-### Stage 1 — Merge (`run_pipeline.py`)
-
-Reads 9 NHANES CSV files, selects only the variables listed in `config.py`, validates SEQN uniqueness, and merges everything on SEQN using a left join anchored to the demographics file.
-
-```
-Input  : DATASET/*.csv  (9 files)
-Output : output/merged_raw.csv  (9,254 rows × 34 columns)
-```
-
-### Stage 2 — Preprocess (`run_preprocess.py`)
-
-Applies 5 preprocessing decisions in sequence on a working copy of `merged_raw.csv`. The original is never modified. An intermediate snapshot CSV is saved after each decision.
-
-```
-Input  : output/merged_raw.csv
-Output : output/preprocessed.csv  (5,569 rows × 39 columns)
-
-Decision 002 — Blood pressure averaging         → +2 columns (Avg_Systolic_BP, Avg_Diastolic_BP)
-Decision 003 — Age filter (20–80 years)         → −3,685 rows
-Decision 004 — DEXA scan validity filter        → invalid DEXA values → NaN (no rows dropped)
-Decision 005 — Insulin LOD handling             → 7 below-LOD values → NaN
-Decision 006 — Derived features                 → +3 columns (HOMA_IR, TC_HDL_ratio, TG_HDL_ratio)
-```
+| Biological System | Primary Biomarkers | Included in Cohort A (19) | Included in Cohort B (24) |
+| :--- | :--- | :---: | :---: |
+| **Body Composition** | BMI (`BMXBMI`), Waist (`BMXWAIST`), Total Fat (`DXDTOPF`), Total Lean (`DXDTOLE`), Bone Density (`DXDTOBMD`) | BMI, Waist | All 5 |
+| **Cardiovascular** | Avg Systolic BP, Avg Diastolic BP, Resting Pulse (`BPXPLS`) | BP (Sys, Dia) | All 3 |
+| **Glucose Metabolism** | Fasting Glucose (`LBXGLU`), Fasting Insulin (`LBXIN`) *(HOMA-IR derived in preprocessing but excluded from feature matrices to avoid collinearity)* | — | Glucose, Insulin |
+| **Lipid Metabolism** | Total Cholesterol (`LBXTC`), HDL (`LBDHDD`), Triglycerides (`LBXSTR`) *(Ratios derived in preprocessing but excluded from feature matrices to avoid collinearity)* | TC, HDL | All 3 |
+| **Hepatic Function** | ALT (`LBXSATSI`), Albumin (`LBXSAL`), Total Protein (`LBXSTP`), Total Bilirubin (`LBXSTB`) | Albumin, Protein, Bilirubin | All 4 |
+| **Renal Function** | Serum Creatinine (`LBXSCR`), Uric Acid (`LBXSUA`), BUN (`LBXSBU`) | All 3 | All 3 |
+| **Electrolytes/Minerals** | Sodium (`LBXSNASI`), Potassium (`LBXSKSI`), Calcium (`LBXSCA`), Phosphorus (`LBXSPH`) | All 4 | All 4 |
 
 ---
 
-## Data Setup
+## Pipeline Execution & Workflow Stages
 
-This project uses **NHANES 2017–2018** data, converted from SAS XPT format to CSV.
+### Stage 1 — Dataset Merging (`run_pipeline.py`)
+Merges 9 NHANES 2017–2018 SAS/CSV files on `SEQN` using left-joins anchored on Demographics (`DEMO_J`).
+- **Input**: Raw NHANES CSV files in `DATASET/`
+- **Output**: `output/merged_raw.csv` ($9,254$ rows × $34$ columns)
 
-### Files needed (place in `DATASET/` folder)
+### Stage 2 — Preprocessing & Cohort Filtering (`run_preprocess.py`)
+Applies blood pressure averaging, age filtering ($20 \le \text{Age} \le 80$), DEXA validity filtering, insulin limit-of-detection (LOD) handling, and ratio derivations.
+- **Input**: `output/merged_raw.csv`
+- **Output**: `output/preprocessed.csv` ($5,569$ rows × $39$ columns)
 
-| File | NHANES Component | Download URL |
-|------|-----------------|-------------|
-| `DEMO_J.csv` | Demographics | [DEMO_J.XPT](https://wwwn.cdc.gov/Nchs/Nhanes/2017-2018/DEMO_J.XPT) |
-| `BMX_J.csv` | Body Measures | [BMX_J.XPT](https://wwwn.cdc.gov/Nchs/Nhanes/2017-2018/BMX_J.XPT) |
-| `BPX_J.csv` | Blood Pressure | [BPX_J.XPT](https://wwwn.cdc.gov/Nchs/Nhanes/2017-2018/BPX_J.XPT) |
-| `DXX_J.csv` | DEXA Body Scan | [DXX_J.XPT](https://wwwn.cdc.gov/Nchs/Nhanes/2017-2018/DXX_J.XPT) |
-| `GLU_J.csv` | Fasting Glucose | [GLU_J.XPT](https://wwwn.cdc.gov/Nchs/Nhanes/2017-2018/GLU_J.XPT) |
-| `INS_J.csv` | Fasting Insulin | [INS_J.XPT](https://wwwn.cdc.gov/Nchs/Nhanes/2017-2018/INS_J.XPT) |
-| `HDL_J.csv` | HDL Cholesterol | [HDL_J.XPT](https://wwwn.cdc.gov/Nchs/Nhanes/2017-2018/HDL_J.XPT) |
-| `TCHOL_J.csv` | Total Cholesterol | [TCHOL_J.XPT](https://wwwn.cdc.gov/Nchs/Nhanes/2017-2018/TCHOL_J.XPT) |
-| `BIOPRO_J.csv` | Biochemistry Panel | [BIOPRO_J.XPT](https://wwwn.cdc.gov/Nchs/Nhanes/2017-2018/BIOPRO_J.XPT) |
+### Stage 3 — Candidate Feature Matrix Construction (`run_feature_matrices.py`)
+Constructs four candidate feature matrices with complete case analysis and empirical skewness checks:
+- **Output**:
+  - `output/feature_matrices/A_RAW.csv` ($N=4,482$, $p=19$)
+  - `output/feature_matrices/A_LOG.csv` ($N=4,482$, $p=19$)
+  - `output/feature_matrices/B_RAW.csv` ($N=967$, $p=24$)
+  - `output/feature_matrices/B_LOG.csv` ($N=967$, $p=24$)
 
-### Converting XPT to CSV
+### Stage 4 — Z-Score Scaling & Standardization (`run_scaling.py`)
+Independently standardizes each feature matrix to zero mean ($\mu = 0$) and unit variance ($\sigma = 1$).
+- **Input**: Candidate feature matrices in `output/feature_matrices/`
+- **Output**: Scaled feature matrices in `output/scaled_matrices/`
 
-```python
-import pandas as pd
-
-xpt_file = "DEMO_J.XPT"
-df = pd.read_sas(xpt_file, format="xport", encoding="utf-8")
-df.to_csv(xpt_file.replace(".XPT", ".csv"), index=False)
-```
+### Stage 5 — Exploratory PCA & Methodological Audit (`run_pca.py`)
+Fits complete, independent Principal Component Analysis solutions for all 4 candidate representations ($19$ PCs for A; $24$ PCs for B).
+- **Outputs**: Transformed score matrices, loading matrices, variance tables, scree plots, cumulative variance curves, and `output/pca/pca_exploration_metadata.json`.
+- **Recorded Methodological Decision**:
+  > *PCA results demonstrate that variance is broadly distributed across many components (PC1 explains only ~14.5%–18.4% of total variance). Therefore, reducing the data to a small 2D/3D PCA representation would retain only a limited fraction of the total variance. PCA will **NOT** be used as the primary input space for downstream clustering; clustering will proceed on the full standardized feature representations, while the complete PCA outputs are preserved as an exploratory audit trail.*
 
 ---
 
-## Installation & Usage
+## Installation & Running the Pipeline
 
-### Requirements
+### 1. Requirements
 
+Ensure Python 3.10+ is installed:
 ```bash
 pip install -r requirements.txt
 ```
 
-### Run the merge pipeline
+### 2. Data Setup
+
+Download the 9 NHANES 2017–2018 XPT datasets from CDC NHANES and convert them to CSV in `DATASET/`:
+- `DEMO_J.csv`, `BMX_J.csv`, `BPX_J.csv`, `DXX_J.csv`, `GLU_J.csv`, `INS_J.csv`, `HDL_J.csv`, `TCHOL_J.csv`, `BIOPRO_J.csv`
+
+### 3. Execution Commands
+
+Run each stage sequentially:
 
 ```bash
+# Stage 1: Merge raw datasets
 python run_pipeline.py
-```
 
-Optional — explore all available columns in every CSV before editing config:
-
-```bash
-python run_pipeline.py --explore
-```
-
-### Run preprocessing
-
-```bash
+# Stage 2: Execute preprocessing & cohort filters
 python run_preprocess.py
-```
 
-### Inspect data
+# Stage 3: Construct candidate feature matrices
+python run_feature_matrices.py
 
-```bash
-python test.py
+# Stage 4: Standardize feature matrices using Z-score scaling
+python run_scaling.py
+
+# Stage 5: Run exploratory PCA & compute variance metrics
+python run_pca.py
 ```
 
 ---
 
-## Modifying Variables
+## Documentation Links
 
-All variable selections live in one file: **`pipeline/config.py`**
-
-To add a variable to an existing dataset:
-```python
-# In SELECTED_VARIABLES, find the right key and add your variable:
-"biochemistry": [
-    "LBXSTR",
-    "LBXSATSI",
-    "LBXSAL",
-    "LBXNEWVAR",   # ← add here
-    ...
-],
-```
-
-To add a completely new NHANES dataset, add entries to `FILE_MAP`, `SELECTED_VARIABLES`, and `MERGE_ORDER` — all in `config.py`. The runtime assertion will catch any mismatch.
-
----
-
-## Documentation
-
-| Document | Location |
-|----------|----------|
-| Preprocessing Decision Log | `docs/preprocessing_decision_log.md` |
-| Variable Selection Rationale | `docs/variable_selection_rationale.md` |
-
-The **Preprocessing Decision Log** is a living document that records every preprocessing decision: biological reasoning, statistical reasoning, alternatives considered, and measured effects on the dataset. It follows strict rules: entries are never deleted; changes create new entries referencing the original.
-
----
-
-## Research Context
-
-This project is **Phase 1** of a two-phase study:
-
-| Phase | Focus | Data | Status |
-|-------|-------|------|--------|
-| Phase 1 | Phenotypic clustering on biomarkers | NHANES 2017–2018 | 🔄 In progress |
-| Phase 2 | Genomic validation against CSIR-IGIB TRISUTRA SNP lists | 1000 Genomes Project | Future work |
-
-The CSIR-IGIB TRISUTRA project (Dr. Mitali Mukerji, New Delhi) previously identified genetic variants (EGLN1, CYP2C19, HLA-B, VWF) linked to Dosha phenotypes using supervised classification. This project provides an independent unsupervised validation of those findings using a Western biomarker dataset.
+- **Preprocessing Rationale**: [`preprocessing_decision_log.md`](preprocessing_decision_log.md)
+- **Variable Selection & Transformation Audit**: [`variable_selection_analysis.md`](variable_selection_analysis.md)
+- **Scaling Metadata**: [`output/scaled_matrices/scaled_matrices_metadata.json`](output/scaled_matrices/scaled_matrices_metadata.json)
+- **PCA Metadata & Recorded Decisions**: [`output/pca/pca_exploration_metadata.json`](output/pca/pca_exploration_metadata.json)
 
 ---
 
