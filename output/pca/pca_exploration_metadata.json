@@ -1,0 +1,964 @@
+{
+  "pipeline_stage": "EXPLORATORY_PCA_ANALYSIS",
+  "description": "Complete independent PCA exploration on all four candidate scaled feature matrices.",
+  "findings_summary": {
+    "A_RAW": {
+      "top_3_pcs_var_pct": 35.94784372923707,
+      "kaiser_pcs": 7,
+      "pcs_for_80pct_var": 11
+    },
+    "A_LOG": {
+      "top_3_pcs_var_pct": 37.134029801614155,
+      "kaiser_pcs": 7,
+      "pcs_for_80pct_var": 11
+    },
+    "B_RAW": {
+      "top_3_pcs_var_pct": 38.954654372064454,
+      "kaiser_pcs": 9,
+      "pcs_for_80pct_var": 13
+    },
+    "B_LOG": {
+      "top_3_pcs_var_pct": 40.88818515525514,
+      "kaiser_pcs": 8,
+      "pcs_for_80pct_var": 12
+    }
+  },
+  "methodological_decisions": {
+    "pca_used_for_main_clustering": false,
+    "pca_role": "EXPLORATORY_TRANSFORMATION_AND_AUDIT_TRAIL",
+    "decision_rationale": "PCA results show variance is broadly distributed across features without a clean elbow; PCA space will NOT be used as primary input space for downstream clustering. PCA outputs are retained in full for research audit trail and Results/Discussion.",
+    "final_pc_retention_number_selected": null,
+    "pca_outputs_retained_in_full": true
+  },
+  "exclusions_and_boundaries_confirmed": {
+    "source_scaled_matrices_modified": false,
+    "source_cohorts_modified": false,
+    "clustering_performed": false,
+    "distance_matrices_calculated": false,
+    "final_component_truncation_applied": false,
+    "final_raw_vs_log_selected": false,
+    "tridosha_mapping_performed": false
+  },
+  "analyses": {
+    "A_RAW": {
+      "matrix_name": "A_RAW",
+      "source_scaled_file": "output/scaled_matrices/A_RAW_scaled.csv",
+      "rows": 4482,
+      "features": 19,
+      "pcs_produced": 19,
+      "scores_file": "output/pca/A_RAW_pca_scores.csv",
+      "loadings_file": "output/pca/A_RAW_pca_loadings.csv",
+      "variance_file": "output/pca/A_RAW_pca_variance.csv",
+      "exploratory_retention_diagnostics": {
+        "kaiser_rule_eigenvalue_gte_1": {
+          "retained_pcs": 7,
+          "cumulative_variance_pct": 61.71047429898419,
+          "status": "EXPLORATORY_DIAGNOSTIC_ONLY"
+        },
+        "variance_threshold_70pct": {
+          "retained_pcs": 9,
+          "cumulative_variance_pct": 71.70478307391741,
+          "status": "EXPLORATORY_DIAGNOSTIC_ONLY"
+        },
+        "variance_threshold_80pct": {
+          "retained_pcs": 11,
+          "cumulative_variance_pct": 80.30693957337346,
+          "status": "EXPLORATORY_DIAGNOSTIC_ONLY"
+        },
+        "variance_threshold_90pct": {
+          "retained_pcs": 14,
+          "cumulative_variance_pct": 90.52445232530103,
+          "status": "EXPLORATORY_DIAGNOSTIC_ONLY"
+        },
+        "variance_threshold_95pct": {
+          "retained_pcs": 16,
+          "cumulative_variance_pct": 95.65686931094983,
+          "status": "EXPLORATORY_DIAGNOSTIC_ONLY"
+        }
+      },
+      "variance_summary": [
+        {
+          "PC": "PC1",
+          "Eigenvalue": 2.762117563787701,
+          "Explained_Variance_Ratio": 0.14534217341098463,
+          "Explained_Variance_Pct": 14.534217341098463,
+          "Cumulative_Variance_Ratio": 0.14534217341098463,
+          "Cumulative_Variance_Pct": 14.534217341098463
+        },
+        {
+          "PC": "PC2",
+          "Eigenvalue": 2.1640986075871522,
+          "Explained_Variance_Ratio": 0.11387451396930391,
+          "Explained_Variance_Pct": 11.387451396930391,
+          "Cumulative_Variance_Ratio": 0.2592166873802885,
+          "Cumulative_Variance_Pct": 25.921668738028853
+        },
+        {
+          "PC": "PC3",
+          "Eigenvalue": 1.9053983706791187,
+          "Explained_Variance_Ratio": 0.10026174991208213,
+          "Explained_Variance_Pct": 10.026174991208213,
+          "Cumulative_Variance_Ratio": 0.35947843729237067,
+          "Cumulative_Variance_Pct": 35.947843729237064
+        },
+        {
+          "PC": "PC4",
+          "Eigenvalue": 1.3848744790715528,
+          "Explained_Variance_Ratio": 0.07287186806547358,
+          "Explained_Variance_Pct": 7.287186806547358,
+          "Cumulative_Variance_Ratio": 0.43235030535784424,
+          "Cumulative_Variance_Pct": 43.235030535784425
+        },
+        {
+          "PC": "PC5",
+          "Eigenvalue": 1.3482991966529376,
+          "Explained_Variance_Ratio": 0.07094728270041317,
+          "Explained_Variance_Pct": 7.094728270041317,
+          "Cumulative_Variance_Ratio": 0.5032975880582574,
+          "Cumulative_Variance_Pct": 50.32975880582574
+        },
+        {
+          "PC": "PC6",
+          "Eigenvalue": 1.1141898894478082,
+          "Explained_Variance_Ratio": 0.058628489332952914,
+          "Explained_Variance_Pct": 5.862848933295291,
+          "Cumulative_Variance_Ratio": 0.5619260773912104,
+          "Cumulative_Variance_Pct": 56.19260773912104
+        },
+        {
+          "PC": "PC7",
+          "Eigenvalue": 1.0486286108119347,
+          "Explained_Variance_Ratio": 0.05517866559863145,
+          "Explained_Variance_Pct": 5.517866559863145,
+          "Cumulative_Variance_Ratio": 0.6171047429898419,
+          "Cumulative_Variance_Pct": 61.71047429898419
+        },
+        {
+          "PC": "PC8",
+          "Eigenvalue": 0.9999779557092288,
+          "Explained_Variance_Ratio": 0.05261867610245699,
+          "Explained_Variance_Pct": 5.261867610245699,
+          "Cumulative_Variance_Ratio": 0.6697234190922988,
+          "Cumulative_Variance_Pct": 66.97234190922988
+        },
+        {
+          "PC": "PC9",
+          "Eigenvalue": 0.8993644827102489,
+          "Explained_Variance_Ratio": 0.04732441164687529,
+          "Explained_Variance_Pct": 4.732441164687529,
+          "Cumulative_Variance_Ratio": 0.7170478307391741,
+          "Cumulative_Variance_Pct": 71.70478307391741
+        },
+        {
+          "PC": "PC10",
+          "Eigenvalue": 0.8672230171430109,
+          "Explained_Variance_Ratio": 0.0456331329976962,
+          "Explained_Variance_Pct": 4.563313299769621,
+          "Cumulative_Variance_Ratio": 0.7626809637368703,
+          "Cumulative_Variance_Pct": 76.26809637368703
+        },
+        {
+          "PC": "PC11",
+          "Eigenvalue": 0.7675514599395166,
+          "Explained_Variance_Ratio": 0.04038843199686415,
+          "Explained_Variance_Pct": 4.038843199686415,
+          "Cumulative_Variance_Ratio": 0.8030693957337345,
+          "Cumulative_Variance_Pct": 80.30693957337346
+        },
+        {
+          "PC": "PC12",
+          "Eigenvalue": 0.7349929969526998,
+          "Explained_Variance_Ratio": 0.03867521101182546,
+          "Explained_Variance_Pct": 3.867521101182546,
+          "Cumulative_Variance_Ratio": 0.84174460674556,
+          "Cumulative_Variance_Pct": 84.174460674556
+        },
+        {
+          "PC": "PC13",
+          "Eigenvalue": 0.6376102058547585,
+          "Explained_Variance_Ratio": 0.03355094450826886,
+          "Explained_Variance_Pct": 3.355094450826886,
+          "Cumulative_Variance_Ratio": 0.8752955512538289,
+          "Cumulative_Variance_Pct": 87.52955512538288
+        },
+        {
+          "PC": "PC14",
+          "Eigenvalue": 0.569157455368513,
+          "Explained_Variance_Ratio": 0.029948971999181458,
+          "Explained_Variance_Pct": 2.994897199918146,
+          "Cumulative_Variance_Ratio": 0.9052445232530103,
+          "Cumulative_Variance_Pct": 90.52445232530103
+        },
+        {
+          "PC": "PC15",
+          "Eigenvalue": 0.5487096996508904,
+          "Explained_Variance_Ratio": 0.028873014445332537,
+          "Explained_Variance_Pct": 2.8873014445332537,
+          "Cumulative_Variance_Ratio": 0.9341175376983428,
+          "Cumulative_Variance_Pct": 93.41175376983428
+        },
+        {
+          "PC": "PC16",
+          "Eigenvalue": 0.42666714851666776,
+          "Explained_Variance_Ratio": 0.02245115541115549,
+          "Explained_Variance_Pct": 2.245115541115549,
+          "Cumulative_Variance_Ratio": 0.9565686931094983,
+          "Cumulative_Variance_Pct": 95.65686931094983
+        },
+        {
+          "PC": "PC17",
+          "Eigenvalue": 0.39172840177567153,
+          "Explained_Variance_Ratio": 0.02061268428517316,
+          "Explained_Variance_Pct": 2.061268428517316,
+          "Cumulative_Variance_Ratio": 0.9771813773946715,
+          "Cumulative_Variance_Pct": 97.71813773946715
+        },
+        {
+          "PC": "PC18",
+          "Eigenvalue": 0.3488593600600404,
+          "Explained_Variance_Ratio": 0.018356922337643366,
+          "Explained_Variance_Pct": 1.8356922337643367,
+          "Cumulative_Variance_Ratio": 0.9955382997323149,
+          "Cumulative_Variance_Pct": 99.55382997323149
+        },
+        {
+          "PC": "PC19",
+          "Eigenvalue": 0.08479122325274208,
+          "Explained_Variance_Ratio": 0.00446170026768519,
+          "Explained_Variance_Pct": 0.44617002676851897,
+          "Cumulative_Variance_Ratio": 1.0,
+          "Cumulative_Variance_Pct": 100.0
+        }
+      ],
+      "validation": {
+        "analysis_name": "A_RAW",
+        "input_rows": 4482,
+        "input_cols": 19,
+        "pcs_produced": 19,
+        "scores_shape": [
+          4482,
+          19
+        ],
+        "loadings_shape": [
+          19,
+          19
+        ],
+        "null_scores": 0,
+        "infinite_scores": 0,
+        "total_explained_variance_pct": 100.0,
+        "seqn_participant_order_aligned": true,
+        "status": "VALIDATED"
+      }
+    },
+    "A_LOG": {
+      "matrix_name": "A_LOG",
+      "source_scaled_file": "output/scaled_matrices/A_LOG_scaled.csv",
+      "rows": 4482,
+      "features": 19,
+      "pcs_produced": 19,
+      "scores_file": "output/pca/A_LOG_pca_scores.csv",
+      "loadings_file": "output/pca/A_LOG_pca_loadings.csv",
+      "variance_file": "output/pca/A_LOG_pca_variance.csv",
+      "exploratory_retention_diagnostics": {
+        "kaiser_rule_eigenvalue_gte_1": {
+          "retained_pcs": 7,
+          "cumulative_variance_pct": 62.6595718684278,
+          "status": "EXPLORATORY_DIAGNOSTIC_ONLY"
+        },
+        "variance_threshold_70pct": {
+          "retained_pcs": 9,
+          "cumulative_variance_pct": 72.46499127725404,
+          "status": "EXPLORATORY_DIAGNOSTIC_ONLY"
+        },
+        "variance_threshold_80pct": {
+          "retained_pcs": 11,
+          "cumulative_variance_pct": 80.98090137108346,
+          "status": "EXPLORATORY_DIAGNOSTIC_ONLY"
+        },
+        "variance_threshold_90pct": {
+          "retained_pcs": 14,
+          "cumulative_variance_pct": 90.990552828271,
+          "status": "EXPLORATORY_DIAGNOSTIC_ONLY"
+        },
+        "variance_threshold_95pct": {
+          "retained_pcs": 16,
+          "cumulative_variance_pct": 96.01462304594689,
+          "status": "EXPLORATORY_DIAGNOSTIC_ONLY"
+        }
+      },
+      "variance_summary": [
+        {
+          "PC": "PC1",
+          "Eigenvalue": 2.9211173058315545,
+          "Explained_Variance_Ratio": 0.15370871377241327,
+          "Explained_Variance_Pct": 15.370871377241327,
+          "Cumulative_Variance_Ratio": 0.15370871377241327,
+          "Cumulative_Variance_Pct": 15.370871377241327
+        },
+        {
+          "PC": "PC2",
+          "Eigenvalue": 2.211415068193178,
+          "Explained_Variance_Ratio": 0.11636429836977866,
+          "Explained_Variance_Pct": 11.636429836977866,
+          "Cumulative_Variance_Ratio": 0.2700730121421919,
+          "Cumulative_Variance_Pct": 27.007301214219193
+        },
+        {
+          "PC": "PC3",
+          "Eigenvalue": 1.9245078175527381,
+          "Explained_Variance_Ratio": 0.10126728587394963,
+          "Explained_Variance_Pct": 10.126728587394963,
+          "Cumulative_Variance_Ratio": 0.37134029801614155,
+          "Cumulative_Variance_Pct": 37.134029801614155
+        },
+        {
+          "PC": "PC4",
+          "Eigenvalue": 1.3814819770636093,
+          "Explained_Variance_Ratio": 0.0726933551659506,
+          "Explained_Variance_Pct": 7.26933551659506,
+          "Cumulative_Variance_Ratio": 0.44403365318209215,
+          "Cumulative_Variance_Pct": 44.40336531820922
+        },
+        {
+          "PC": "PC5",
+          "Eigenvalue": 1.3386502608223796,
+          "Explained_Variance_Ratio": 0.07043955727876501,
+          "Explained_Variance_Pct": 7.043955727876501,
+          "Cumulative_Variance_Ratio": 0.5144732104608571,
+          "Cumulative_Variance_Pct": 51.44732104608571
+        },
+        {
+          "PC": "PC6",
+          "Eigenvalue": 1.0911016951152959,
+          "Explained_Variance_Ratio": 0.057413592332037286,
+          "Explained_Variance_Pct": 5.741359233203728,
+          "Cumulative_Variance_Ratio": 0.5718868027928944,
+          "Cumulative_Variance_Pct": 57.188680279289436
+        },
+        {
+          "PC": "PC7",
+          "Eigenvalue": 1.0397013745767587,
+          "Explained_Variance_Ratio": 0.054708915891383623,
+          "Explained_Variance_Pct": 5.470891589138362,
+          "Cumulative_Variance_Ratio": 0.626595718684278,
+          "Cumulative_Variance_Pct": 62.6595718684278
+        },
+        {
+          "PC": "PC8",
+          "Eigenvalue": 0.9790577771637187,
+          "Explained_Variance_Ratio": 0.051517859736849324,
+          "Explained_Variance_Pct": 5.151785973684932,
+          "Cumulative_Variance_Ratio": 0.6781135784211273,
+          "Cumulative_Variance_Pct": 67.81135784211273
+        },
+        {
+          "PC": "PC9",
+          "Eigenvalue": 0.8843876725502451,
+          "Explained_Variance_Ratio": 0.04653633435141314,
+          "Explained_Variance_Pct": 4.653633435141314,
+          "Cumulative_Variance_Ratio": 0.7246499127725404,
+          "Cumulative_Variance_Pct": 72.46499127725404
+        },
+        {
+          "PC": "PC10",
+          "Eigenvalue": 0.8500714344807342,
+          "Explained_Variance_Ratio": 0.044730619529676156,
+          "Explained_Variance_Pct": 4.473061952967615,
+          "Cumulative_Variance_Ratio": 0.7693805323022166,
+          "Cumulative_Variance_Pct": 76.93805323022166
+        },
+        {
+          "PC": "PC11",
+          "Eigenvalue": 0.7683125685773482,
+          "Explained_Variance_Ratio": 0.04042848140861799,
+          "Explained_Variance_Pct": 4.042848140861799,
+          "Cumulative_Variance_Ratio": 0.8098090137108346,
+          "Cumulative_Variance_Pct": 80.98090137108346
+        },
+        {
+          "PC": "PC12",
+          "Eigenvalue": 0.7053048273105533,
+          "Explained_Variance_Ratio": 0.03711302439205457,
+          "Explained_Variance_Pct": 3.711302439205457,
+          "Cumulative_Variance_Ratio": 0.8469220381028891,
+          "Cumulative_Variance_Pct": 84.69220381028892
+        },
+        {
+          "PC": "PC13",
+          "Eigenvalue": 0.6487314034195817,
+          "Explained_Variance_Ratio": 0.03413614010102562,
+          "Explained_Variance_Pct": 3.4136140101025623,
+          "Cumulative_Variance_Ratio": 0.8810581782039147,
+          "Cumulative_Variance_Pct": 88.10581782039148
+        },
+        {
+          "PC": "PC14",
+          "Eigenvalue": 0.5482219678665615,
+          "Explained_Variance_Ratio": 0.028847350078795384,
+          "Explained_Variance_Pct": 2.8847350078795384,
+          "Cumulative_Variance_Ratio": 0.9099055282827101,
+          "Cumulative_Variance_Pct": 90.990552828271
+        },
+        {
+          "PC": "PC15",
+          "Eigenvalue": 0.5284839233352497,
+          "Explained_Variance_Ratio": 0.02780873741122677,
+          "Explained_Variance_Pct": 2.780873741122677,
+          "Cumulative_Variance_Ratio": 0.9377142656939369,
+          "Cumulative_Variance_Pct": 93.7714265693937
+        },
+        {
+          "PC": "PC16",
+          "Eigenvalue": 0.4263024448790849,
+          "Explained_Variance_Ratio": 0.02243196476553202,
+          "Explained_Variance_Pct": 2.243196476553202,
+          "Cumulative_Variance_Ratio": 0.9601462304594689,
+          "Cumulative_Variance_Pct": 96.01462304594689
+        },
+        {
+          "PC": "PC17",
+          "Eigenvalue": 0.39746795502911203,
+          "Explained_Variance_Ratio": 0.02091469863648098,
+          "Explained_Variance_Pct": 2.091469863648098,
+          "Cumulative_Variance_Ratio": 0.9810609290959499,
+          "Cumulative_Variance_Pct": 98.10609290959499
+        },
+        {
+          "PC": "PC18",
+          "Eigenvalue": 0.27722570420242665,
+          "Explained_Variance_Ratio": 0.01458757110936226,
+          "Explained_Variance_Pct": 1.4587571109362258,
+          "Cumulative_Variance_Ratio": 0.9956485002053121,
+          "Cumulative_Variance_Pct": 99.56485002053121
+        },
+        {
+          "PC": "PC19",
+          "Eigenvalue": 0.08269694700201435,
+          "Explained_Variance_Ratio": 0.0043514997946878225,
+          "Explained_Variance_Pct": 0.43514997946878226,
+          "Cumulative_Variance_Ratio": 1.0,
+          "Cumulative_Variance_Pct": 100.0
+        }
+      ],
+      "validation": {
+        "analysis_name": "A_LOG",
+        "input_rows": 4482,
+        "input_cols": 19,
+        "pcs_produced": 19,
+        "scores_shape": [
+          4482,
+          19
+        ],
+        "loadings_shape": [
+          19,
+          19
+        ],
+        "null_scores": 0,
+        "infinite_scores": 0,
+        "total_explained_variance_pct": 100.0,
+        "seqn_participant_order_aligned": true,
+        "status": "VALIDATED"
+      }
+    },
+    "B_RAW": {
+      "matrix_name": "B_RAW",
+      "source_scaled_file": "output/scaled_matrices/B_RAW_scaled.csv",
+      "rows": 967,
+      "features": 24,
+      "pcs_produced": 24,
+      "scores_file": "output/pca/B_RAW_pca_scores.csv",
+      "loadings_file": "output/pca/B_RAW_pca_loadings.csv",
+      "variance_file": "output/pca/B_RAW_pca_variance.csv",
+      "exploratory_retention_diagnostics": {
+        "kaiser_rule_eigenvalue_gte_1": {
+          "retained_pcs": 9,
+          "cumulative_variance_pct": 69.14242165222028,
+          "status": "EXPLORATORY_DIAGNOSTIC_ONLY"
+        },
+        "variance_threshold_70pct": {
+          "retained_pcs": 10,
+          "cumulative_variance_pct": 72.79740271525344,
+          "status": "EXPLORATORY_DIAGNOSTIC_ONLY"
+        },
+        "variance_threshold_80pct": {
+          "retained_pcs": 13,
+          "cumulative_variance_pct": 82.78390741963764,
+          "status": "EXPLORATORY_DIAGNOSTIC_ONLY"
+        },
+        "variance_threshold_90pct": {
+          "retained_pcs": 16,
+          "cumulative_variance_pct": 90.36114939940076,
+          "status": "EXPLORATORY_DIAGNOSTIC_ONLY"
+        },
+        "variance_threshold_95pct": {
+          "retained_pcs": 19,
+          "cumulative_variance_pct": 95.7456891225488,
+          "status": "EXPLORATORY_DIAGNOSTIC_ONLY"
+        }
+      },
+      "variance_summary": [
+        {
+          "PC": "PC1",
+          "Eigenvalue": 4.061183449346309,
+          "Explained_Variance_Ratio": 0.16904098638695847,
+          "Explained_Variance_Pct": 16.904098638695846,
+          "Cumulative_Variance_Ratio": 0.16904098638695847,
+          "Cumulative_Variance_Pct": 16.904098638695846
+        },
+        {
+          "PC": "PC2",
+          "Eigenvalue": 3.304761773963859,
+          "Explained_Variance_Ratio": 0.13755600972290094,
+          "Explained_Variance_Pct": 13.755600972290093,
+          "Cumulative_Variance_Ratio": 0.3065969961098594,
+          "Cumulative_Variance_Pct": 30.659699610985943
+        },
+        {
+          "PC": "PC3",
+          "Eigenvalue": 1.9928500009845784,
+          "Explained_Variance_Ratio": 0.08294954761078513,
+          "Explained_Variance_Pct": 8.294954761078513,
+          "Cumulative_Variance_Ratio": 0.38954654372064457,
+          "Cumulative_Variance_Pct": 38.954654372064454
+        },
+        {
+          "PC": "PC4",
+          "Eigenvalue": 1.4792314628128649,
+          "Explained_Variance_Ratio": 0.061570906285644024,
+          "Explained_Variance_Pct": 6.1570906285644025,
+          "Cumulative_Variance_Ratio": 0.4511174500062886,
+          "Cumulative_Variance_Pct": 45.11174500062886
+        },
+        {
+          "PC": "PC5",
+          "Eigenvalue": 1.3537234683998491,
+          "Explained_Variance_Ratio": 0.056346814480965755,
+          "Explained_Variance_Pct": 5.6346814480965755,
+          "Cumulative_Variance_Ratio": 0.5074642644872543,
+          "Cumulative_Variance_Pct": 50.74642644872544
+        },
+        {
+          "PC": "PC6",
+          "Eigenvalue": 1.222166200507276,
+          "Explained_Variance_Ratio": 0.050870930269304886,
+          "Explained_Variance_Pct": 5.087093026930488,
+          "Cumulative_Variance_Ratio": 0.5583351947565592,
+          "Cumulative_Variance_Pct": 55.833519475655926
+        },
+        {
+          "PC": "PC7",
+          "Eigenvalue": 1.1449339524047804,
+          "Explained_Variance_Ratio": 0.04765624776038509,
+          "Explained_Variance_Pct": 4.765624776038509,
+          "Cumulative_Variance_Ratio": 0.6059914425169444,
+          "Cumulative_Variance_Pct": 60.59914425169444
+        },
+        {
+          "PC": "PC8",
+          "Eigenvalue": 1.0421591612581447,
+          "Explained_Variance_Ratio": 0.043378393216794514,
+          "Explained_Variance_Pct": 4.337839321679452,
+          "Cumulative_Variance_Ratio": 0.6493698357337389,
+          "Cumulative_Variance_Pct": 64.93698357337388
+        },
+        {
+          "PC": "PC9",
+          "Eigenvalue": 1.010349968259495,
+          "Explained_Variance_Ratio": 0.042054380788463956,
+          "Explained_Variance_Pct": 4.205438078846395,
+          "Cumulative_Variance_Ratio": 0.6914242165222028,
+          "Cumulative_Variance_Pct": 69.14242165222028
+        },
+        {
+          "PC": "PC10",
+          "Eigenvalue": 0.8781035249572872,
+          "Explained_Variance_Ratio": 0.03654981063033173,
+          "Explained_Variance_Pct": 3.654981063033173,
+          "Cumulative_Variance_Ratio": 0.7279740271525345,
+          "Cumulative_Variance_Pct": 72.79740271525344
+        },
+        {
+          "PC": "PC11",
+          "Eigenvalue": 0.8502280014522983,
+          "Explained_Variance_Ratio": 0.035389531601297805,
+          "Explained_Variance_Pct": 3.5389531601297803,
+          "Cumulative_Variance_Ratio": 0.7633635587538322,
+          "Cumulative_Variance_Pct": 76.33635587538322
+        },
+        {
+          "PC": "PC12",
+          "Eigenvalue": 0.7976289927015766,
+          "Explained_Variance_Ratio": 0.03320017265381431,
+          "Explained_Variance_Pct": 3.3200172653814306,
+          "Cumulative_Variance_Ratio": 0.7965637314076466,
+          "Cumulative_Variance_Pct": 79.65637314076466
+        },
+        {
+          "PC": "PC13",
+          "Eigenvalue": 0.7513852540795491,
+          "Explained_Variance_Ratio": 0.03127534278872992,
+          "Explained_Variance_Pct": 3.127534278872992,
+          "Cumulative_Variance_Ratio": 0.8278390741963765,
+          "Cumulative_Variance_Pct": 82.78390741963764
+        },
+        {
+          "PC": "PC14",
+          "Eigenvalue": 0.6881912102115755,
+          "Explained_Variance_Ratio": 0.028644980569819952,
+          "Explained_Variance_Pct": 2.8644980569819953,
+          "Cumulative_Variance_Ratio": 0.8564840547661964,
+          "Cumulative_Variance_Pct": 85.64840547661964
+        },
+        {
+          "PC": "PC15",
+          "Eigenvalue": 0.5790193716964706,
+          "Explained_Variance_Ratio": 0.02410085802562867,
+          "Explained_Variance_Pct": 2.410085802562867,
+          "Cumulative_Variance_Ratio": 0.880584912791825,
+          "Cumulative_Variance_Pct": 88.0584912791825
+        },
+        {
+          "PC": "PC16",
+          "Eigenvalue": 0.5532100378263484,
+          "Explained_Variance_Ratio": 0.02302658120218253,
+          "Explained_Variance_Pct": 2.302658120218253,
+          "Cumulative_Variance_Ratio": 0.9036114939940075,
+          "Cumulative_Variance_Pct": 90.36114939940076
+        },
+        {
+          "PC": "PC17",
+          "Eigenvalue": 0.49177402129946374,
+          "Explained_Variance_Ratio": 0.020469394371565048,
+          "Explained_Variance_Pct": 2.046939437156505,
+          "Cumulative_Variance_Ratio": 0.9240808883655726,
+          "Cumulative_Variance_Pct": 92.40808883655725
+        },
+        {
+          "PC": "PC18",
+          "Eigenvalue": 0.40638468835044617,
+          "Explained_Variance_Ratio": 0.0169151848046592,
+          "Explained_Variance_Pct": 1.69151848046592,
+          "Cumulative_Variance_Ratio": 0.9409960731702318,
+          "Cumulative_Variance_Pct": 94.09960731702319
+        },
+        {
+          "PC": "PC19",
+          "Eigenvalue": 0.3954685977498802,
+          "Explained_Variance_Ratio": 0.016460818055256118,
+          "Explained_Variance_Pct": 1.6460818055256117,
+          "Cumulative_Variance_Ratio": 0.9574568912254879,
+          "Cumulative_Variance_Pct": 95.7456891225488
+        },
+        {
+          "PC": "PC20",
+          "Eigenvalue": 0.3355327005138008,
+          "Explained_Variance_Ratio": 0.01396607155706357,
+          "Explained_Variance_Pct": 1.396607155706357,
+          "Cumulative_Variance_Ratio": 0.9714229627825515,
+          "Cumulative_Variance_Pct": 97.14229627825515
+        },
+        {
+          "PC": "PC21",
+          "Eigenvalue": 0.3314336910049028,
+          "Explained_Variance_Ratio": 0.013795456114733535,
+          "Explained_Variance_Pct": 1.3795456114733535,
+          "Cumulative_Variance_Ratio": 0.985218418897285,
+          "Cumulative_Variance_Pct": 98.5218418897285
+        },
+        {
+          "PC": "PC22",
+          "Eigenvalue": 0.23587531984916132,
+          "Explained_Variance_Ratio": 0.009817974792066945,
+          "Explained_Variance_Pct": 0.9817974792066945,
+          "Cumulative_Variance_Ratio": 0.9950363936893519,
+          "Cumulative_Variance_Pct": 99.5036393689352
+        },
+        {
+          "PC": "PC23",
+          "Eigenvalue": 0.0727324001885366,
+          "Explained_Variance_Ratio": 0.0030273827379406373,
+          "Explained_Variance_Pct": 0.3027382737940637,
+          "Cumulative_Variance_Ratio": 0.9980637764272926,
+          "Cumulative_Variance_Pct": 99.80637764272926
+        },
+        {
+          "PC": "PC24",
+          "Eigenvalue": 0.04651747067845685,
+          "Explained_Variance_Ratio": 0.0019362235727072253,
+          "Explained_Variance_Pct": 0.19362235727072252,
+          "Cumulative_Variance_Ratio": 0.9999999999999998,
+          "Cumulative_Variance_Pct": 99.99999999999997
+        }
+      ],
+      "validation": {
+        "analysis_name": "B_RAW",
+        "input_rows": 967,
+        "input_cols": 24,
+        "pcs_produced": 24,
+        "scores_shape": [
+          967,
+          24
+        ],
+        "loadings_shape": [
+          24,
+          24
+        ],
+        "null_scores": 0,
+        "infinite_scores": 0,
+        "total_explained_variance_pct": 99.99999999999997,
+        "seqn_participant_order_aligned": true,
+        "status": "VALIDATED"
+      }
+    },
+    "B_LOG": {
+      "matrix_name": "B_LOG",
+      "source_scaled_file": "output/scaled_matrices/B_LOG_scaled.csv",
+      "rows": 967,
+      "features": 24,
+      "pcs_produced": 24,
+      "scores_file": "output/pca/B_LOG_pca_scores.csv",
+      "loadings_file": "output/pca/B_LOG_pca_loadings.csv",
+      "variance_file": "output/pca/B_LOG_pca_variance.csv",
+      "exploratory_retention_diagnostics": {
+        "kaiser_rule_eigenvalue_gte_1": {
+          "retained_pcs": 8,
+          "cumulative_variance_pct": 66.7576538295527,
+          "status": "EXPLORATORY_DIAGNOSTIC_ONLY"
+        },
+        "variance_threshold_70pct": {
+          "retained_pcs": 9,
+          "cumulative_variance_pct": 70.84986685076015,
+          "status": "EXPLORATORY_DIAGNOSTIC_ONLY"
+        },
+        "variance_threshold_80pct": {
+          "retained_pcs": 12,
+          "cumulative_variance_pct": 81.12658506316954,
+          "status": "EXPLORATORY_DIAGNOSTIC_ONLY"
+        },
+        "variance_threshold_90pct": {
+          "retained_pcs": 16,
+          "cumulative_variance_pct": 91.25060445682817,
+          "status": "EXPLORATORY_DIAGNOSTIC_ONLY"
+        },
+        "variance_threshold_95pct": {
+          "retained_pcs": 19,
+          "cumulative_variance_pct": 96.09552461397891,
+          "status": "EXPLORATORY_DIAGNOSTIC_ONLY"
+        }
+      },
+      "variance_summary": [
+        {
+          "PC": "PC1",
+          "Eigenvalue": 4.426572412504501,
+          "Explained_Variance_Ratio": 0.18424978242327406,
+          "Explained_Variance_Pct": 18.424978242327406,
+          "Cumulative_Variance_Ratio": 0.18424978242327406,
+          "Cumulative_Variance_Pct": 18.424978242327406
+        },
+        {
+          "PC": "PC2",
+          "Eigenvalue": 3.382271466410663,
+          "Explained_Variance_Ratio": 0.14078224045814794,
+          "Explained_Variance_Pct": 14.078224045814794,
+          "Cumulative_Variance_Ratio": 0.32503202288142197,
+          "Cumulative_Variance_Pct": 32.5032022881422
+        },
+        {
+          "PC": "PC3",
+          "Eigenvalue": 2.014479113664154,
+          "Explained_Variance_Ratio": 0.0838498286711294,
+          "Explained_Variance_Pct": 8.38498286711294,
+          "Cumulative_Variance_Ratio": 0.40888185155255136,
+          "Cumulative_Variance_Pct": 40.88818515525514
+        },
+        {
+          "PC": "PC4",
+          "Eigenvalue": 1.4967433282576936,
+          "Explained_Variance_Ratio": 0.062299812784252444,
+          "Explained_Variance_Pct": 6.229981278425244,
+          "Cumulative_Variance_Ratio": 0.4711816643368038,
+          "Cumulative_Variance_Pct": 47.11816643368038
+        },
+        {
+          "PC": "PC5",
+          "Eigenvalue": 1.3841327087592503,
+          "Explained_Variance_Ratio": 0.05761255587131311,
+          "Explained_Variance_Pct": 5.761255587131311,
+          "Cumulative_Variance_Ratio": 0.528794220208117,
+          "Cumulative_Variance_Pct": 52.879422020811695
+        },
+        {
+          "PC": "PC6",
+          "Eigenvalue": 1.1766458499357215,
+          "Explained_Variance_Ratio": 0.04897621040321898,
+          "Explained_Variance_Pct": 4.897621040321898,
+          "Cumulative_Variance_Ratio": 0.5777704306113359,
+          "Cumulative_Variance_Pct": 57.77704306113359
+        },
+        {
+          "PC": "PC7",
+          "Eigenvalue": 1.145745517439012,
+          "Explained_Variance_Ratio": 0.0476900280009516,
+          "Explained_Variance_Pct": 4.76900280009516,
+          "Cumulative_Variance_Ratio": 0.6254604586122875,
+          "Cumulative_Variance_Pct": 62.54604586122875
+        },
+        {
+          "PC": "PC8",
+          "Eigenvalue": 1.0118322746259032,
+          "Explained_Variance_Ratio": 0.04211607968323947,
+          "Explained_Variance_Pct": 4.211607968323947,
+          "Cumulative_Variance_Ratio": 0.667576538295527,
+          "Cumulative_Variance_Pct": 66.7576538295527
+        },
+        {
+          "PC": "PC9",
+          "Eigenvalue": 0.9831478239770453,
+          "Explained_Variance_Ratio": 0.0409221302120745,
+          "Explained_Variance_Pct": 4.09221302120745,
+          "Cumulative_Variance_Ratio": 0.7084986685076015,
+          "Cumulative_Variance_Pct": 70.84986685076015
+        },
+        {
+          "PC": "PC10",
+          "Eigenvalue": 0.8952762956604947,
+          "Explained_Variance_Ratio": 0.03726460279248695,
+          "Explained_Variance_Pct": 3.726460279248695,
+          "Cumulative_Variance_Ratio": 0.7457632713000885,
+          "Cumulative_Variance_Pct": 74.57632713000885
+        },
+        {
+          "PC": "PC11",
+          "Eigenvalue": 0.8315395361006812,
+          "Explained_Variance_Ratio": 0.034611650804604335,
+          "Explained_Variance_Pct": 3.4611650804604337,
+          "Cumulative_Variance_Ratio": 0.7803749221046928,
+          "Cumulative_Variance_Pct": 78.03749221046928
+        },
+        {
+          "PC": "PC12",
+          "Eigenvalue": 0.742149761133207,
+          "Explained_Variance_Ratio": 0.03089092852700264,
+          "Explained_Variance_Pct": 3.089092852700264,
+          "Cumulative_Variance_Ratio": 0.8112658506316954,
+          "Cumulative_Variance_Pct": 81.12658506316954
+        },
+        {
+          "PC": "PC13",
+          "Eigenvalue": 0.7149274292944988,
+          "Explained_Variance_Ratio": 0.02975783767228909,
+          "Explained_Variance_Pct": 2.975783767228909,
+          "Cumulative_Variance_Ratio": 0.8410236883039846,
+          "Cumulative_Variance_Pct": 84.10236883039846
+        },
+        {
+          "PC": "PC14",
+          "Eigenvalue": 0.6653335800200443,
+          "Explained_Variance_Ratio": 0.027693564214898405,
+          "Explained_Variance_Pct": 2.7693564214898405,
+          "Cumulative_Variance_Ratio": 0.868717252518883,
+          "Cumulative_Variance_Pct": 86.8717252518883
+        },
+        {
+          "PC": "PC15",
+          "Eigenvalue": 0.5470305379219804,
+          "Explained_Variance_Ratio": 0.022769368305439186,
+          "Explained_Variance_Pct": 2.2769368305439186,
+          "Cumulative_Variance_Ratio": 0.8914866208243222,
+          "Cumulative_Variance_Pct": 89.14866208243222
+        },
+        {
+          "PC": "PC16",
+          "Eigenvalue": 0.504988391562954,
+          "Explained_Variance_Ratio": 0.02101942374395955,
+          "Explained_Variance_Pct": 2.101942374395955,
+          "Cumulative_Variance_Ratio": 0.9125060445682818,
+          "Cumulative_Variance_Pct": 91.25060445682817
+        },
+        {
+          "PC": "PC17",
+          "Eigenvalue": 0.4139196722375286,
+          "Explained_Variance_Ratio": 0.017228817794788534,
+          "Explained_Variance_Pct": 1.7228817794788533,
+          "Cumulative_Variance_Ratio": 0.9297348623630703,
+          "Cumulative_Variance_Pct": 92.97348623630704
+        },
+        {
+          "PC": "PC18",
+          "Eigenvalue": 0.4068275776265012,
+          "Explained_Variance_Ratio": 0.01693361944102033,
+          "Explained_Variance_Pct": 1.693361944102033,
+          "Cumulative_Variance_Ratio": 0.9466684818040907,
+          "Cumulative_Variance_Pct": 94.66684818040906
+        },
+        {
+          "PC": "PC19",
+          "Eigenvalue": 0.3432372947234877,
+          "Explained_Variance_Ratio": 0.014286764335698416,
+          "Explained_Variance_Pct": 1.4286764335698416,
+          "Cumulative_Variance_Ratio": 0.9609552461397891,
+          "Cumulative_Variance_Pct": 96.09552461397891
+        },
+        {
+          "PC": "PC20",
+          "Eigenvalue": 0.32297417574262133,
+          "Explained_Variance_Ratio": 0.013443340820724403,
+          "Explained_Variance_Pct": 1.3443340820724403,
+          "Cumulative_Variance_Ratio": 0.9743985869605135,
+          "Cumulative_Variance_Pct": 97.43985869605135
+        },
+        {
+          "PC": "PC21",
+          "Eigenvalue": 0.2626422251170361,
+          "Explained_Variance_Ratio": 0.010932109163351286,
+          "Explained_Variance_Pct": 1.0932109163351287,
+          "Cumulative_Variance_Ratio": 0.9853306961238648,
+          "Cumulative_Variance_Pct": 98.53306961238648
+        },
+        {
+          "PC": "PC22",
+          "Eigenvalue": 0.23424462408318056,
+          "Explained_Variance_Ratio": 0.009750099399532584,
+          "Explained_Variance_Pct": 0.9750099399532584,
+          "Cumulative_Variance_Ratio": 0.9950807955233973,
+          "Cumulative_Variance_Pct": 99.50807955233974
+        },
+        {
+          "PC": "PC23",
+          "Eigenvalue": 0.07179786230357457,
+          "Explained_Variance_Ratio": 0.002988483927320449,
+          "Explained_Variance_Pct": 0.2988483927320449,
+          "Cumulative_Variance_Ratio": 0.9980692794507178,
+          "Cumulative_Variance_Pct": 99.80692794507178
+        },
+        {
+          "PC": "PC24",
+          "Eigenvalue": 0.04638526139518198,
+          "Explained_Variance_Ratio": 0.001930720549282392,
+          "Explained_Variance_Pct": 0.1930720549282392,
+          "Cumulative_Variance_Ratio": 1.0000000000000002,
+          "Cumulative_Variance_Pct": 100.00000000000003
+        }
+      ],
+      "validation": {
+        "analysis_name": "B_LOG",
+        "input_rows": 967,
+        "input_cols": 24,
+        "pcs_produced": 24,
+        "scores_shape": [
+          967,
+          24
+        ],
+        "loadings_shape": [
+          24,
+          24
+        ],
+        "null_scores": 0,
+        "infinite_scores": 0,
+        "total_explained_variance_pct": 100.00000000000003,
+        "seqn_participant_order_aligned": true,
+        "status": "VALIDATED"
+      }
+    }
+  }
+}
