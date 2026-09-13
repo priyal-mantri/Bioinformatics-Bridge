@@ -1,0 +1,36 @@
+{
+  "experiment": "EXPLORATORY_CLUSTERING_SANDBOX_GMM",
+  "status": "EXPERIMENTAL_SANDBOX_ONLY",
+  "description": "Exploratory Gaussian Mixture Model (GMM) clustering sweep across K=2..7 for 4 candidate standardized feature matrices.",
+  "methodological_boundaries": {
+    "optimal_k_selected": false,
+    "winner_declared": false,
+    "subjective_labels_assigned": false,
+    "biological_interpretation_performed": false,
+    "tridosha_mapping_performed": false,
+    "pca_used_as_input": false,
+    "pca_used_for_visualization_only": true,
+    "formal_decision_log_modified": false
+  },
+  "configuration": {
+    "k_range": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "covariance_type": "full",
+    "n_init": 25,
+    "random_state": 42,
+    "sklearn_version": "1.4.1.post1",
+    "total_runs_completed": 24
+  },
+  "matrices_analyzed": [
+    "A_RAW",
+    "A_LOG",
+    "B_RAW",
+    "B_LOG"
+  ]
+}
