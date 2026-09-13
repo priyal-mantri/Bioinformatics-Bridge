@@ -1,0 +1,13 @@
+matrix_name,N,n_features,min_cluster_size,min_samples_setting,min_samples_value,n_clusters_found,n_noise_samples,noise_proportion,n_non_noise_samples,non_noise_proportion,cluster_sizes,min_cluster_size_actual,max_cluster_size_actual,min_cluster_proportion_actual,max_cluster_proportion_actual,mean_membership_prob_non_noise,median_membership_prob_non_noise,mean_membership_prob_all,silhouette_non_noise,calinski_harabasz_non_noise,davies_bouldin_non_noise,sklearn_version,runtime_seconds
+A_LOG,4482,19,25,default (min_cluster_size),25,0,4482,1.0,0,0.0,{},0,0,0.0,0.0,,,0.0,,,,1.4.1.post1,6.426
+A_LOG,4482,19,25,5,5,0,4482,1.0,0,0.0,{},0,0,0.0,0.0,,,0.0,,,,1.4.1.post1,5.059
+A_LOG,4482,19,25,15,15,0,4482,1.0,0,0.0,{},0,0,0.0,0.0,,,0.0,,,,1.4.1.post1,5.127
+A_LOG,4482,19,50,default (min_cluster_size),50,0,4482,1.0,0,0.0,{},0,0,0.0,0.0,,,0.0,,,,1.4.1.post1,4.406
+A_LOG,4482,19,50,5,5,0,4482,1.0,0,0.0,{},0,0,0.0,0.0,,,0.0,,,,1.4.1.post1,3.867
+A_LOG,4482,19,50,15,15,0,4482,1.0,0,0.0,{},0,0,0.0,0.0,,,0.0,,,,1.4.1.post1,5.16
+A_LOG,4482,19,100,default (min_cluster_size),100,0,4482,1.0,0,0.0,{},0,0,0.0,0.0,,,0.0,,,,1.4.1.post1,5.631
+A_LOG,4482,19,100,5,5,0,4482,1.0,0,0.0,{},0,0,0.0,0.0,,,0.0,,,,1.4.1.post1,4.337
+A_LOG,4482,19,100,15,15,0,4482,1.0,0,0.0,{},0,0,0.0,0.0,,,0.0,,,,1.4.1.post1,4.389
+A_LOG,4482,19,200,default (min_cluster_size),200,0,4482,1.0,0,0.0,{},0,0,0.0,0.0,,,0.0,,,,1.4.1.post1,6.74
+A_LOG,4482,19,200,5,5,0,4482,1.0,0,0.0,{},0,0,0.0,0.0,,,0.0,,,,1.4.1.post1,4.116
+A_LOG,4482,19,200,15,15,0,4482,1.0,0,0.0,{},0,0,0.0,0.0,,,0.0,,,,1.4.1.post1,5.289

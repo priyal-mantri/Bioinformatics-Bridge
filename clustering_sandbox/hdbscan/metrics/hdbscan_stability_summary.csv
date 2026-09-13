@@ -1,0 +1,5 @@
+matrix_name,mean_pairwise_ARI,min_pairwise_ARI,max_pairwise_ARI
+A_RAW,0.8333,0.0,1.0
+A_LOG,0.5801,0.0,1.0
+B_RAW,0.3725,0.0,1.0
+B_LOG,0.3229,0.0,1.0

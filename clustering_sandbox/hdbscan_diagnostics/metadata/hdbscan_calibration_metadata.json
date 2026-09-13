@@ -1,0 +1,36 @@
+{
+  "diagnostic": "HDBSCAN_PARAMETER_CALIBRATION_DIAGNOSTIC",
+  "hdbscan_implementation": "sklearn.cluster.HDBSCAN (scikit-learn 1.4.1.post1)",
+  "status": "COMPLETED_READ_ONLY",
+  "description": "Pre-Experiment 5 parameter calibration diagnostic.",
+  "grids_evaluated": {
+    "Cohort_A": {
+      "min_cluster_sizes": [
+        25,
+        50,
+        100,
+        200
+      ],
+      "min_samples_list": [
+        null,
+        5,
+        15
+      ]
+    },
+    "Cohort_B": {
+      "min_cluster_sizes": [
+        10,
+        25,
+        50,
+        100
+      ],
+      "min_samples_list": [
+        null,
+        5,
+        15
+      ]
+    }
+  },
+  "total_configurations_tested": 48,
+  "total_runtime_seconds": 164.15
+}
