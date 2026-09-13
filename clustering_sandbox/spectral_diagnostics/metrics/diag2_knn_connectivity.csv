@@ -1,0 +1,25 @@
+matrix,N,k,n_connected_components,largest_component_size,largest_component_proportion,smallest_component_size,is_fully_connected,symmetrization_rule
+A_RAW,4482,5,1,4482,1.0,4482,True,W = (A + A^T) / 2
+A_RAW,4482,7,1,4482,1.0,4482,True,W = (A + A^T) / 2
+A_RAW,4482,10,1,4482,1.0,4482,True,W = (A + A^T) / 2
+A_RAW,4482,12,1,4482,1.0,4482,True,W = (A + A^T) / 2
+A_RAW,4482,15,1,4482,1.0,4482,True,W = (A + A^T) / 2
+A_RAW,4482,20,1,4482,1.0,4482,True,W = (A + A^T) / 2
+A_LOG,4482,5,1,4482,1.0,4482,True,W = (A + A^T) / 2
+A_LOG,4482,7,1,4482,1.0,4482,True,W = (A + A^T) / 2
+A_LOG,4482,10,1,4482,1.0,4482,True,W = (A + A^T) / 2
+A_LOG,4482,12,1,4482,1.0,4482,True,W = (A + A^T) / 2
+A_LOG,4482,15,1,4482,1.0,4482,True,W = (A + A^T) / 2
+A_LOG,4482,20,1,4482,1.0,4482,True,W = (A + A^T) / 2
+B_RAW,967,5,1,967,1.0,967,True,W = (A + A^T) / 2
+B_RAW,967,7,1,967,1.0,967,True,W = (A + A^T) / 2
+B_RAW,967,10,1,967,1.0,967,True,W = (A + A^T) / 2
+B_RAW,967,12,1,967,1.0,967,True,W = (A + A^T) / 2
+B_RAW,967,15,1,967,1.0,967,True,W = (A + A^T) / 2
+B_RAW,967,20,1,967,1.0,967,True,W = (A + A^T) / 2
+B_LOG,967,5,1,967,1.0,967,True,W = (A + A^T) / 2
+B_LOG,967,7,1,967,1.0,967,True,W = (A + A^T) / 2
+B_LOG,967,10,1,967,1.0,967,True,W = (A + A^T) / 2
+B_LOG,967,12,1,967,1.0,967,True,W = (A + A^T) / 2
+B_LOG,967,15,1,967,1.0,967,True,W = (A + A^T) / 2
+B_LOG,967,20,1,967,1.0,967,True,W = (A + A^T) / 2
