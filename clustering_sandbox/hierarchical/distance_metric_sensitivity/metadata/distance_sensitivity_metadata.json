@@ -1,0 +1,33 @@
+{
+  "experiment_name": "Experiment 5 Sensitivity Extension: Distance-Metric Sensitivity",
+  "project": "Bioinfo Bridge \u2014 Research 2",
+  "timestamp": "2026-09-14T04:03:38.865486+00:00",
+  "git_branch": "experiment/clustering-sandbox",
+  "matrices_evaluated": [
+    "A_RAW",
+    "A_LOG",
+    "B_RAW",
+    "B_LOG"
+  ],
+  "distance_metrics_evaluated": [
+    "euclidean",
+    "manhattan"
+  ],
+  "linkages_evaluated": [
+    "complete",
+    "average"
+  ],
+  "k_range": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "subsampling_iterations": 100,
+  "subsampling_ratio": 0.8,
+  "total_runs": 96,
+  "execution_time_seconds": 994.09,
+  "random_seed": 42
+}
