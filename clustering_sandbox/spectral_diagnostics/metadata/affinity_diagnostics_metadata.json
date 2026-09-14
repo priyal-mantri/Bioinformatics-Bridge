@@ -1,0 +1,176 @@
+{
+  "diagnostic_name": "SPECTRAL_AFFINITY_CALIBRATION_DIAGNOSTIC",
+  "status": "READ_ONLY_DIAGNOSTIC",
+  "description": "Pre-Experiment 4 affinity calibration. No clustering performed. No assignments created. No final affinity method or hyperparameter selected.",
+  "sampling_strategy": "Full exact pairwise distance computation via scipy.spatial.distance.pdist (condensed form). No random sampling used. For N=4,482: ~10.04M pairs, ~80MB condensed float64.",
+  "symmetrization_rule": "W = (A + A^T) / 2",
+  "gamma_note": "gamma_ref = 1 / (2 * median_sq_dist). Under this gamma, pairs at the MEDIAN distance receive affinity exp(-0.5) \u2248 0.6065. This does NOT set the median-affinity to 0.5.",
+  "eigengap_note": "Eigengaps are evidence about graph Laplacian structure, NOT proof of the biologically correct number of clusters.",
+  "k_selection_rule": "Smallest k in [5,7,10,12,15,20] yielding fully connected graph. If no k achieves connectivity, the largest k is used.",
+  "results_summary": {
+    "A_RAW": {
+      "gamma_ref": 0.015998745756775377,
+      "median_sq_dist": 31.252449885845138,
+      "diagnostic_k_for_eigenvalues": 5,
+      "fiedler_value": 0.044228,
+      "connectivity_results": {
+        "k=5": 1,
+        "k=7": 1,
+        "k=10": 1,
+        "k=12": 1,
+        "k=15": 1,
+        "k=20": 1
+      }
+    },
+    "A_LOG": {
+      "gamma_ref": 0.01489884327759746,
+      "median_sq_dist": 33.55965229541151,
+      "diagnostic_k_for_eigenvalues": 5,
+      "fiedler_value": 0.061012,
+      "connectivity_results": {
+        "k=5": 1,
+        "k=7": 1,
+        "k=10": 1,
+        "k=12": 1,
+        "k=15": 1,
+        "k=20": 1
+      }
+    },
+    "B_RAW": {
+      "gamma_ref": 0.01209556132356242,
+      "median_sq_dist": 41.33747799087166,
+      "diagnostic_k_for_eigenvalues": 5,
+      "fiedler_value": 0.065294,
+      "connectivity_results": {
+        "k=5": 1,
+        "k=7": 1,
+        "k=10": 1,
+        "k=12": 1,
+        "k=15": 1,
+        "k=20": 1
+      }
+    },
+    "B_LOG": {
+      "gamma_ref": 0.01148850736620141,
+      "median_sq_dist": 43.52175474691986,
+      "diagnostic_k_for_eigenvalues": 5,
+      "fiedler_value": 0.06992,
+      "connectivity_results": {
+        "k=5": 1,
+        "k=7": 1,
+        "k=10": 1,
+        "k=12": 1,
+        "k=15": 1,
+        "k=20": 1
+      }
+    }
+  },
+  "knn_scale_diagnostic": {
+    "status": "COMPLETED",
+    "k_values_tested": [
+      5,
+      10,
+      15,
+      20
+    ],
+    "symmetrization_rule": "W = (A + A^T) / 2",
+    "summary": {
+      "A_RAW_k5": {
+        "fiedler_lambda2": 0.044228,
+        "gap_3_to_4": 0.009298,
+        "max_sub_fiedler_gap_pos": "5->6",
+        "max_sub_fiedler_gap_mag": 0.015178
+      },
+      "A_RAW_k10": {
+        "fiedler_lambda2": 0.07798,
+        "gap_3_to_4": 0.000876,
+        "max_sub_fiedler_gap_pos": "5->6",
+        "max_sub_fiedler_gap_mag": 0.021558
+      },
+      "A_RAW_k15": {
+        "fiedler_lambda2": 0.096046,
+        "gap_3_to_4": 0.009457,
+        "max_sub_fiedler_gap_pos": "8->9",
+        "max_sub_fiedler_gap_mag": 0.023468
+      },
+      "A_RAW_k20": {
+        "fiedler_lambda2": 0.107626,
+        "gap_3_to_4": 0.016844,
+        "max_sub_fiedler_gap_pos": "8->9",
+        "max_sub_fiedler_gap_mag": 0.028084
+      },
+      "A_LOG_k5": {
+        "fiedler_lambda2": 0.061012,
+        "gap_3_to_4": 0.005352,
+        "max_sub_fiedler_gap_pos": "5->6",
+        "max_sub_fiedler_gap_mag": 0.021924
+      },
+      "A_LOG_k10": {
+        "fiedler_lambda2": 0.087695,
+        "gap_3_to_4": 0.010535,
+        "max_sub_fiedler_gap_pos": "4->5",
+        "max_sub_fiedler_gap_mag": 0.034562
+      },
+      "A_LOG_k15": {
+        "fiedler_lambda2": 0.100925,
+        "gap_3_to_4": 0.024352,
+        "max_sub_fiedler_gap_pos": "4->5",
+        "max_sub_fiedler_gap_mag": 0.038355
+      },
+      "A_LOG_k20": {
+        "fiedler_lambda2": 0.110487,
+        "gap_3_to_4": 0.02896,
+        "max_sub_fiedler_gap_pos": "4->5",
+        "max_sub_fiedler_gap_mag": 0.04279
+      },
+      "B_RAW_k5": {
+        "fiedler_lambda2": 0.065294,
+        "gap_3_to_4": 0.047726,
+        "max_sub_fiedler_gap_pos": "3->4",
+        "max_sub_fiedler_gap_mag": 0.047726
+      },
+      "B_RAW_k10": {
+        "fiedler_lambda2": 0.096591,
+        "gap_3_to_4": 0.079608,
+        "max_sub_fiedler_gap_pos": "3->4",
+        "max_sub_fiedler_gap_mag": 0.079608
+      },
+      "B_RAW_k15": {
+        "fiedler_lambda2": 0.111643,
+        "gap_3_to_4": 0.101043,
+        "max_sub_fiedler_gap_pos": "3->4",
+        "max_sub_fiedler_gap_mag": 0.101043
+      },
+      "B_RAW_k20": {
+        "fiedler_lambda2": 0.12383,
+        "gap_3_to_4": 0.12078,
+        "max_sub_fiedler_gap_pos": "3->4",
+        "max_sub_fiedler_gap_mag": 0.12078
+      },
+      "B_LOG_k5": {
+        "fiedler_lambda2": 0.06992,
+        "gap_3_to_4": 0.059489,
+        "max_sub_fiedler_gap_pos": "3->4",
+        "max_sub_fiedler_gap_mag": 0.059489
+      },
+      "B_LOG_k10": {
+        "fiedler_lambda2": 0.094559,
+        "gap_3_to_4": 0.087918,
+        "max_sub_fiedler_gap_pos": "3->4",
+        "max_sub_fiedler_gap_mag": 0.087918
+      },
+      "B_LOG_k15": {
+        "fiedler_lambda2": 0.110543,
+        "gap_3_to_4": 0.102834,
+        "max_sub_fiedler_gap_pos": "3->4",
+        "max_sub_fiedler_gap_mag": 0.102834
+      },
+      "B_LOG_k20": {
+        "fiedler_lambda2": 0.122356,
+        "gap_3_to_4": 0.118669,
+        "max_sub_fiedler_gap_pos": "3->4",
+        "max_sub_fiedler_gap_mag": 0.118669
+      }
+    }
+  }
+}

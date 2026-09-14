@@ -1,0 +1,339 @@
+{
+  "experiment": "EXPLORATORY_CLUSTERING_SANDBOX_KMEANS_STABILITY",
+  "status": "EXPERIMENTAL_SANDBOX_ONLY",
+  "description": "Exploratory partition stability (ARI), cluster Jaccard stability, and consensus diagnostics across 80% participant subsampling (200 reps).",
+  "formal_pipeline_status": "NOT_MERGED_TO_FORMAL_PIPELINE",
+  "methodological_constraints_confirmed": {
+    "clustering_input_space": "FULL_STANDARDIZED_FEATURE_SPACE",
+    "pca_used_as_clustering_input": false,
+    "optimal_k_selected": false,
+    "subjective_quality_labels_assigned": false,
+    "tridosha_mapping_performed": false,
+    "formal_decision_log_modified": false
+  },
+  "resampling_design": {
+    "subsampling_fraction": 0.8,
+    "number_of_repetitions_per_k": 200,
+    "total_resampled_fits_completed": 7200,
+    "k_range": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "reference_seed": 42,
+    "reference_n_init": 25,
+    "subsample_seed_base": 10000,
+    "sklearn_version": "1.4.1.post1",
+    "total_runtime_seconds": 2506.1205294132233
+  },
+  "matrices_analyzed": [
+    "A_RAW",
+    "A_LOG",
+    "B_RAW",
+    "B_LOG"
+  ],
+  "quantitative_summary_by_matrix": {
+    "A_RAW": [
+      {
+        "K": 2,
+        "mean_ARI": 0.9648726079861888,
+        "median_ARI": 0.9678942076874044,
+        "SD_ARI": 0.01901947151742405,
+        "mean_Jaccard_overall": 0.9822982786160575,
+        "pac_01_09": 0.053790220141826946
+      },
+      {
+        "K": 3,
+        "mean_ARI": 0.828392524580419,
+        "median_ARI": 0.8207450963591951,
+        "SD_ARI": 0.12558378932961853,
+        "mean_Jaccard_overall": 0.8812926953978657,
+        "pac_01_09": 0.19052619997799583
+      },
+      {
+        "K": 4,
+        "mean_ARI": 0.7319637556697802,
+        "median_ARI": 0.7624162010613147,
+        "SD_ARI": 0.15455332403266378,
+        "mean_Jaccard_overall": 0.7464521911491717,
+        "pac_01_09": 0.32102099398885786
+      },
+      {
+        "K": 5,
+        "mean_ARI": 0.5132120237830482,
+        "median_ARI": 0.37457832314059447,
+        "SD_ARI": 0.19368012604836468,
+        "mean_Jaccard_overall": 0.5710398748489763,
+        "pac_01_09": 0.3753213110490993
+      },
+      {
+        "K": 6,
+        "mean_ARI": 0.7559401775315852,
+        "median_ARI": 0.814423380785507,
+        "SD_ARI": 0.1618606302406035,
+        "mean_Jaccard_overall": 0.7951611062003383,
+        "pac_01_09": 0.244786509436793
+      },
+      {
+        "K": 7,
+        "mean_ARI": 0.6757225580191786,
+        "median_ARI": 0.679912327522083,
+        "SD_ARI": 0.16342595560818585,
+        "mean_Jaccard_overall": 0.745618061442343,
+        "pac_01_09": 0.26804092777627747
+      },
+      {
+        "K": 8,
+        "mean_ARI": 0.6758330799840273,
+        "median_ARI": 0.6924577301031372,
+        "SD_ARI": 0.15292799677033855,
+        "mean_Jaccard_overall": 0.7266137269504938,
+        "pac_01_09": 0.2489272961862754
+      },
+      {
+        "K": 9,
+        "mean_ARI": 0.6754304947388108,
+        "median_ARI": 0.6963734926435887,
+        "SD_ARI": 0.11633212112155131,
+        "mean_Jaccard_overall": 0.7392256451572122,
+        "pac_01_09": 0.22639301467278783
+      },
+      {
+        "K": 10,
+        "mean_ARI": 0.6857010107186451,
+        "median_ARI": 0.6852319531252136,
+        "SD_ARI": 0.1406582067004454,
+        "mean_Jaccard_overall": 0.771542470518629,
+        "pac_01_09": 0.18520518898590732
+      }
+    ],
+    "A_LOG": [
+      {
+        "K": 2,
+        "mean_ARI": 0.9505853042626805,
+        "median_ARI": 0.9547643951777509,
+        "SD_ARI": 0.02924544104897339,
+        "mean_Jaccard_overall": 0.9752862853074646,
+        "pac_01_09": 0.07663456056650764
+      },
+      {
+        "K": 3,
+        "mean_ARI": 0.83251414741108,
+        "median_ARI": 0.8623028317441214,
+        "SD_ARI": 0.09511222438153465,
+        "mean_Jaccard_overall": 0.8813687270411524,
+        "pac_01_09": 0.23375441333853433
+      },
+      {
+        "K": 4,
+        "mean_ARI": 0.9200912947670409,
+        "median_ARI": 0.9346925969850803,
+        "SD_ARI": 0.052939858468193685,
+        "mean_Jaccard_overall": 0.9371409598710619,
+        "pac_01_09": 0.08930696832398155
+      },
+      {
+        "K": 5,
+        "mean_ARI": 0.869198140377674,
+        "median_ARI": 0.9083077564933999,
+        "SD_ARI": 0.09700244616600308,
+        "mean_Jaccard_overall": 0.8946472208417537,
+        "pac_01_09": 0.15184885128174352
+      },
+      {
+        "K": 6,
+        "mean_ARI": 0.6616518102174928,
+        "median_ARI": 0.547054844976955,
+        "SD_ARI": 0.18646494347178533,
+        "mean_Jaccard_overall": 0.7152325085001872,
+        "pac_01_09": 0.27197167461817745
+      },
+      {
+        "K": 7,
+        "mean_ARI": 0.7235690603768742,
+        "median_ARI": 0.7125815191601303,
+        "SD_ARI": 0.10962130459119541,
+        "mean_Jaccard_overall": 0.7734476546032981,
+        "pac_01_09": 0.17547333993458758
+      },
+      {
+        "K": 8,
+        "mean_ARI": 0.8373290073539339,
+        "median_ARI": 0.8486510543106425,
+        "SD_ARI": 0.05517636507523196,
+        "mean_Jaccard_overall": 0.8581884820569118,
+        "pac_01_09": 0.1044898530720837
+      },
+      {
+        "K": 9,
+        "mean_ARI": 0.724484024452849,
+        "median_ARI": 0.733103058801554,
+        "SD_ARI": 0.09994048160839629,
+        "mean_Jaccard_overall": 0.7531846946576204,
+        "pac_01_09": 0.1659415288904892
+      },
+      {
+        "K": 10,
+        "mean_ARI": 0.5939673552430239,
+        "median_ARI": 0.5890763816780468,
+        "SD_ARI": 0.10392339861126285,
+        "mean_Jaccard_overall": 0.6079326591993381,
+        "pac_01_09": 0.19824766705674077
+      }
+    ],
+    "B_RAW": [
+      {
+        "K": 2,
+        "mean_ARI": 0.7554731234970926,
+        "median_ARI": 0.9513563613998854,
+        "SD_ARI": 0.3372632976357531,
+        "mean_Jaccard_overall": 0.8630519885690825,
+        "pac_01_09": 0.5114963570069005
+      },
+      {
+        "K": 3,
+        "mean_ARI": 0.876965095634247,
+        "median_ARI": 0.936034090830073,
+        "SD_ARI": 0.11968714585110489,
+        "mean_Jaccard_overall": 0.9125953952983601,
+        "pac_01_09": 0.18750655695936932
+      },
+      {
+        "K": 4,
+        "mean_ARI": 0.7965391781993904,
+        "median_ARI": 0.8015636711830725,
+        "SD_ARI": 0.10299980977138368,
+        "mean_Jaccard_overall": 0.8213158258835483,
+        "pac_01_09": 0.24267922177188847
+      },
+      {
+        "K": 5,
+        "mean_ARI": 0.7203984442043224,
+        "median_ARI": 0.7823374433566104,
+        "SD_ARI": 0.16683921863544626,
+        "mean_Jaccard_overall": 0.7713160377711293,
+        "pac_01_09": 0.2798756479346381
+      },
+      {
+        "K": 6,
+        "mean_ARI": 0.5727317386528431,
+        "median_ARI": 0.5583485236310776,
+        "SD_ARI": 0.1121164826538074,
+        "mean_Jaccard_overall": 0.6543408779746653,
+        "pac_01_09": 0.3395166798341116
+      },
+      {
+        "K": 7,
+        "mean_ARI": 0.5184347735183923,
+        "median_ARI": 0.4821906530158174,
+        "SD_ARI": 0.12091587587959023,
+        "mean_Jaccard_overall": 0.6062050814802379,
+        "pac_01_09": 0.3172198064064437
+      },
+      {
+        "K": 8,
+        "mean_ARI": 0.5146617413313939,
+        "median_ARI": 0.48855870692969794,
+        "SD_ARI": 0.10646425936252797,
+        "mean_Jaccard_overall": 0.5905630771064253,
+        "pac_01_09": 0.2950471137603011
+      },
+      {
+        "K": 9,
+        "mean_ARI": 0.5069578117836798,
+        "median_ARI": 0.4928265570919277,
+        "SD_ARI": 0.09554775147019151,
+        "mean_Jaccard_overall": 0.5660673772814628,
+        "pac_01_09": 0.2896088519486748
+      },
+      {
+        "K": 10,
+        "mean_ARI": 0.4991883366512251,
+        "median_ARI": 0.4864059869317919,
+        "SD_ARI": 0.10182358423272733,
+        "mean_Jaccard_overall": 0.54527102423478,
+        "pac_01_09": 0.27330477175358253
+      }
+    ],
+    "B_LOG": [
+      {
+        "K": 2,
+        "mean_ARI": 0.8424433485520049,
+        "median_ARI": 0.903973962865765,
+        "SD_ARI": 0.1229338266828514,
+        "mean_Jaccard_overall": 0.9205871946650587,
+        "pac_01_09": 0.22538597742050825
+      },
+      {
+        "K": 3,
+        "mean_ARI": 0.7833111408444496,
+        "median_ARI": 0.9134498920651877,
+        "SD_ARI": 0.23722673078926565,
+        "mean_Jaccard_overall": 0.8406503142220416,
+        "pac_01_09": 0.3219600865839794
+      },
+      {
+        "K": 4,
+        "mean_ARI": 0.7936558109896724,
+        "median_ARI": 0.7902229223734085,
+        "SD_ARI": 0.08563547497211532,
+        "mean_Jaccard_overall": 0.8395783279244128,
+        "pac_01_09": 0.22627665337075886
+      },
+      {
+        "K": 5,
+        "mean_ARI": 0.6937428728690445,
+        "median_ARI": 0.6753981028652143,
+        "SD_ARI": 0.16820399597690744,
+        "mean_Jaccard_overall": 0.7128122002526633,
+        "pac_01_09": 0.2881443751458589
+      },
+      {
+        "K": 6,
+        "mean_ARI": 0.6544796259677065,
+        "median_ARI": 0.6583083231688621,
+        "SD_ARI": 0.12975590106924043,
+        "mean_Jaccard_overall": 0.7065039195695565,
+        "pac_01_09": 0.30663446530538835
+      },
+      {
+        "K": 7,
+        "mean_ARI": 0.5866398061063266,
+        "median_ARI": 0.5559384979786749,
+        "SD_ARI": 0.13933225520161294,
+        "mean_Jaccard_overall": 0.6507013043572675,
+        "pac_01_09": 0.29232584180653065
+      },
+      {
+        "K": 8,
+        "mean_ARI": 0.5922555514674676,
+        "median_ARI": 0.5896531593514556,
+        "SD_ARI": 0.12151877377855008,
+        "mean_Jaccard_overall": 0.6643160616743441,
+        "pac_01_09": 0.2552557374732637
+      },
+      {
+        "K": 9,
+        "mean_ARI": 0.5113764454633564,
+        "median_ARI": 0.5007760321332821,
+        "SD_ARI": 0.07783861688801084,
+        "mean_Jaccard_overall": 0.5880670291513762,
+        "pac_01_09": 0.24545616097254963
+      },
+      {
+        "K": 10,
+        "mean_ARI": 0.5133435420544428,
+        "median_ARI": 0.5088634745820315,
+        "SD_ARI": 0.08030145144346369,
+        "mean_Jaccard_overall": 0.5731677935700115,
+        "pac_01_09": 0.23483442205621963
+      }
+    ]
+  }
+}

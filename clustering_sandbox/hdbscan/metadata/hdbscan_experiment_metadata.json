@@ -1,0 +1,72 @@
+{
+  "experiment": "EXPERIMENT_5_HDBSCAN_FINE_SCALE_DENSITY_SANDBOX",
+  "hdbscan_implementation": "sklearn.cluster.HDBSCAN (scikit-learn 1.4.1.post1)",
+  "metric": "euclidean",
+  "cluster_selection_method": "eom",
+  "grid_cohort_a": {
+    "min_cluster_sizes": [
+      10,
+      15,
+      25,
+      50
+    ],
+    "min_samples_list": [
+      5,
+      10,
+      null
+    ]
+  },
+  "grid_cohort_b": {
+    "min_cluster_sizes": [
+      5,
+      10,
+      15,
+      25
+    ],
+    "min_samples_list": [
+      3,
+      5,
+      10
+    ]
+  },
+  "total_fits_executed": 48,
+  "matrices_summary": {
+    "A_RAW": {
+      "N": 4482,
+      "p": 19,
+      "total_configs": 12,
+      "configs_with_clusters": 1,
+      "max_clusters_found": 2,
+      "min_noise_fraction": 0.9721,
+      "max_noise_fraction": 1.0
+    },
+    "A_LOG": {
+      "N": 4482,
+      "p": 19,
+      "total_configs": 12,
+      "configs_with_clusters": 3,
+      "max_clusters_found": 2,
+      "min_noise_fraction": 0.9897,
+      "max_noise_fraction": 1.0
+    },
+    "B_RAW": {
+      "N": 967,
+      "p": 24,
+      "total_configs": 12,
+      "configs_with_clusters": 6,
+      "max_clusters_found": 3,
+      "min_noise_fraction": 0.8852,
+      "max_noise_fraction": 1.0
+    },
+    "B_LOG": {
+      "N": 967,
+      "p": 24,
+      "total_configs": 12,
+      "configs_with_clusters": 7,
+      "max_clusters_found": 2,
+      "min_noise_fraction": 0.484,
+      "max_noise_fraction": 1.0
+    }
+  },
+  "total_runtime_seconds": 178.03
+}

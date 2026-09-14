@@ -1,0 +1,19 @@
+{
+  "diagnostic": "HDBSCAN_ULTRAFINE_SCALE_SENSITIVITY_DIAGNOSTIC",
+  "hdbscan_implementation": "sklearn.cluster.HDBSCAN (scikit-learn 1.4.1.post1)",
+  "metric": "euclidean",
+  "cluster_selection_method": "eom",
+  "min_cluster_sizes_tested": [
+    3,
+    5,
+    7,
+    10
+  ],
+  "min_samples_tested": [
+    2,
+    3,
+    5
+  ],
+  "total_configurations_tested": 48,
+  "total_runtime_seconds": 202.68
+}

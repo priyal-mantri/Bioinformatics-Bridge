@@ -1,0 +1,145 @@
+cohort,matrix,scale,model,linkage,K,silhouette,CH,DB,stability_ari_mean,stability_ari_sd,stability_source,min_cluster_prop,max_cluster_prop,max_min_ratio,small_cluster_flag,degeneracy_note
+A,A_RAW,Raw,K-Means,NA,2,0.09854,455.37,2.9567,0.9649,0.019,"kmeans_stability (B=200, 80% subsample, ARI)",0.4569,0.5431,1.19,False,
+A,A_RAW,Raw,K-Means,NA,3,0.08445,371.09,2.8211,0.8284,0.1256,"kmeans_stability (B=200, 80% subsample, ARI)",0.2842,0.4121,1.45,False,
+A,A_RAW,Raw,K-Means,NA,4,0.08198,324.28,2.5721,0.732,0.1546,"kmeans_stability (B=200, 80% subsample, ARI)",0.1073,0.3891,3.63,False,
+A,A_RAW,Raw,K-Means,NA,5,0.06351,294.04,2.6407,0.5132,0.1937,"kmeans_stability (B=200, 80% subsample, ARI)",0.0453,0.299,6.6,False,
+A,A_RAW,Raw,K-Means,NA,6,0.06647,280.87,2.3906,0.7559,0.1619,"kmeans_stability (B=200, 80% subsample, ARI)",0.0031,0.2724,87.21,True,
+A,A_RAW,Raw,K-Means,NA,7,0.06528,262.48,2.3882,0.6757,0.1634,"kmeans_stability (B=200, 80% subsample, ARI)",0.0031,0.2251,72.07,True,
+A,A_RAW,Raw,GMM,full_cov,2,0.20709,159.35,4.2693,,,NA (not generated),0.1568,0.8432,5.38,False,BIC=209897; mean_max_posterior=0.976
+A,A_RAW,Raw,GMM,full_cov,3,0.03805,143.8,4.3655,,,NA (not generated),0.0803,0.6321,7.87,False,BIC=207497; mean_max_posterior=0.929
+A,A_RAW,Raw,GMM,full_cov,4,0.02411,166.72,3.8489,,,NA (not generated),0.0564,0.3969,7.03,False,BIC=206731; mean_max_posterior=0.889
+A,A_RAW,Raw,GMM,full_cov,5,0.01644,159.53,3.7218,,,NA (not generated),0.0359,0.3173,8.83,False,BIC=206750; mean_max_posterior=0.868
+A,A_RAW,Raw,GMM,full_cov,6,0.01829,169.55,3.2896,,,NA (not generated),0.0031,0.3041,97.36,True,BIC=206919; mean_max_posterior=0.856
+A,A_RAW,Raw,GMM,full_cov,7,0.01477,151.48,3.3279,,,NA (not generated),0.0031,0.2784,89.14,True,BIC=207168; mean_max_posterior=0.858
+A,A_RAW,Raw,Spectral,kNN_k10_NJW,2,0.09346,419.77,3.076,,,NA (not generated),0.4458,0.5542,1.24,False,eigengap_prev=0.07798; eigengap_next=0.01281
+A,A_RAW,Raw,Spectral,kNN_k10_NJW,3,0.02121,272.81,4.2651,,,NA (not generated),0.3242,0.344,1.06,False,eigengap_prev=0.01281; eigengap_next=0.00088
+A,A_RAW,Raw,Spectral,kNN_k10_NJW,4,0.02989,260.39,3.7562,,,NA (not generated),0.1368,0.3141,2.3,False,eigengap_prev=0.00088; eigengap_next=0.00838
+A,A_RAW,Raw,Spectral,kNN_k10_NJW,5,0.03791,251.66,3.422,,,NA (not generated),0.0759,0.3008,3.96,False,eigengap_prev=0.00838; eigengap_next=0.02156
+A,A_RAW,Raw,Spectral,kNN_k10_NJW,6,0.04249,243.37,2.8638,,,NA (not generated),0.0792,0.2637,3.33,False,eigengap_prev=0.02156; eigengap_next=0.01777
+A,A_RAW,Raw,Spectral,kNN_k10_NJW,7,0.04061,224.2,2.8513,,,NA (not generated),0.0723,0.2015,2.79,False,eigengap_prev=0.01777; eigengap_next=0.01318
+A,A_RAW,Raw,Hierarchical,Ward,2,0.05931,277.5,3.7808,0.2013,0.0701,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.4987,0.5013,1.01,False,
+A,A_RAW,Raw,Hierarchical,Ward,3,0.06028,229.06,2.7942,0.1901,0.0669,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.0029,0.4987,171.92,True,
+A,A_RAW,Raw,Hierarchical,Ward,4,0.06093,210.53,2.7202,0.1938,0.0736,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.0029,0.4987,171.92,True,
+A,A_RAW,Raw,Hierarchical,Ward,5,0.05181,197.65,2.8544,0.1919,0.0496,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.0029,0.4987,171.92,True,
+A,A_RAW,Raw,Hierarchical,Ward,6,0.01428,186.52,2.9484,0.1715,0.0299,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.0029,0.2912,100.38,True,
+A,A_RAW,Raw,Hierarchical,Ward,7,0.01962,176.75,2.7034,0.169,0.0279,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.0029,0.2912,100.38,True,
+A,A_RAW,Raw,Hierarchical,Complete,2,0.7609,121.61,0.3942,,,excluded — degenerate outlier-peeling,0.0009,0.9991,1119.5,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+A,A_RAW,Raw,Hierarchical,Complete,3,0.45395,110.33,1.2228,,,excluded — degenerate outlier-peeling,0.0009,0.9917,1111.25,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+A,A_RAW,Raw,Hierarchical,Complete,4,0.42941,96.39,1.1475,,,excluded — degenerate outlier-peeling,0.0009,0.9886,1107.75,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+A,A_RAW,Raw,Hierarchical,Complete,5,0.4152,77.24,1.1543,,,excluded — degenerate outlier-peeling,0.0009,0.9886,1107.75,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+A,A_RAW,Raw,Hierarchical,Complete,6,0.41532,63.82,1.0351,,,excluded — degenerate outlier-peeling,0.0002,0.9884,4430.0,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+A,A_RAW,Raw,Hierarchical,Complete,7,0.37998,65.2,1.0374,,,excluded — degenerate outlier-peeling,0.0002,0.9839,4410.0,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+A,A_RAW,Raw,Hierarchical,Average,2,0.7609,121.61,0.3942,,,excluded — degenerate outlier-peeling,0.0009,0.9991,1119.5,True,DEGENERATE: outlier-peeling — high ARI is artifact
+A,A_RAW,Raw,Hierarchical,Average,3,0.57828,101.89,0.9885,,,excluded — degenerate outlier-peeling,0.0009,0.9964,1116.5,True,DEGENERATE: outlier-peeling — high ARI is artifact
+A,A_RAW,Raw,Hierarchical,Average,4,0.56231,71.17,0.856,,,excluded — degenerate outlier-peeling,0.0002,0.9962,4465.0,True,DEGENERATE: outlier-peeling — high ARI is artifact
+A,A_RAW,Raw,Hierarchical,Average,5,0.5256,61.09,0.87,,,excluded — degenerate outlier-peeling,0.0002,0.9951,4460.0,True,DEGENERATE: outlier-peeling — high ARI is artifact
+A,A_RAW,Raw,Hierarchical,Average,6,0.5231,51.14,0.9994,,,excluded — degenerate outlier-peeling,0.0002,0.9951,4460.0,True,DEGENERATE: outlier-peeling — high ARI is artifact
+A,A_RAW,Raw,Hierarchical,Average,7,0.52288,43.47,0.8911,,,excluded — degenerate outlier-peeling,0.0002,0.9951,4460.0,True,DEGENERATE: outlier-peeling — high ARI is artifact
+A,A_LOG,Log1p,K-Means,NA,2,0.0946,491.24,2.9049,0.9506,0.0292,"kmeans_stability (B=200, 80% subsample, ARI)",0.496,0.504,1.02,False,
+A,A_LOG,Log1p,K-Means,NA,3,0.08359,395.74,2.8216,0.8325,0.0951,"kmeans_stability (B=200, 80% subsample, ARI)",0.2959,0.3811,1.29,False,
+A,A_LOG,Log1p,K-Means,NA,4,0.08377,347.82,2.6144,0.9201,0.0529,"kmeans_stability (B=200, 80% subsample, ARI)",0.176,0.3373,1.92,False,
+A,A_LOG,Log1p,K-Means,NA,5,0.06462,307.05,2.6881,0.8692,0.097,"kmeans_stability (B=200, 80% subsample, ARI)",0.1383,0.247,1.79,False,
+A,A_LOG,Log1p,K-Means,NA,6,0.06366,276.25,2.6213,0.6617,0.1865,"kmeans_stability (B=200, 80% subsample, ARI)",0.1256,0.2088,1.66,False,
+A,A_LOG,Log1p,K-Means,NA,7,0.06268,255.23,2.5596,0.7236,0.1096,"kmeans_stability (B=200, 80% subsample, ARI)",0.06,0.1792,2.99,False,
+A,A_LOG,Log1p,GMM,full_cov,2,0.1325,119.35,5.2966,,,NA (not generated),0.2111,0.7889,3.74,False,BIC=217233; mean_max_posterior=0.945
+A,A_LOG,Log1p,GMM,full_cov,3,0.04062,164.97,4.7223,,,NA (not generated),0.1055,0.4581,4.34,False,BIC=216680; mean_max_posterior=0.867
+A,A_LOG,Log1p,GMM,full_cov,4,0.03002,161.86,4.7374,,,NA (not generated),0.075,0.3536,4.72,False,BIC=216908; mean_max_posterior=0.839
+A,A_LOG,Log1p,GMM,full_cov,5,0.03237,173.15,4.3515,,,NA (not generated),0.0627,0.2646,4.22,False,BIC=217417; mean_max_posterior=0.831
+A,A_LOG,Log1p,GMM,full_cov,6,0.02492,154.59,3.9669,,,NA (not generated),0.048,0.2662,5.55,False,BIC=218274; mean_max_posterior=0.827
+A,A_LOG,Log1p,GMM,full_cov,7,0.02295,141.71,3.9025,,,NA (not generated),0.0433,0.2383,5.51,False,BIC=219418; mean_max_posterior=0.813
+A,A_LOG,Log1p,Spectral,kNN_k10_NJW,2,0.08739,465.66,2.9354,,,NA (not generated),0.4288,0.5712,1.33,False,eigengap_prev=0.08769; eigengap_next=0.02471
+A,A_LOG,Log1p,Spectral,kNN_k10_NJW,3,0.07416,368.04,2.8762,,,NA (not generated),0.2258,0.4357,1.93,False,eigengap_prev=0.02471; eigengap_next=0.01053
+A,A_LOG,Log1p,Spectral,kNN_k10_NJW,4,0.07855,326.04,2.6868,,,NA (not generated),0.1325,0.34,2.57,False,eigengap_prev=0.01053; eigengap_next=0.03456
+A,A_LOG,Log1p,Spectral,kNN_k10_NJW,5,0.05697,282.58,2.7398,,,NA (not generated),0.1225,0.3124,2.55,False,eigengap_prev=0.03456; eigengap_next=0.00788
+A,A_LOG,Log1p,Spectral,kNN_k10_NJW,6,0.04458,244.17,3.0297,,,NA (not generated),0.1071,0.2131,1.99,False,eigengap_prev=0.00788; eigengap_next=0.00944
+A,A_LOG,Log1p,Spectral,kNN_k10_NJW,7,0.04624,227.35,2.8112,,,NA (not generated),0.0879,0.1796,2.04,False,eigengap_prev=0.00944; eigengap_next=0.00970
+A,A_LOG,Log1p,Hierarchical,Ward,2,0.05516,307.72,3.5655,0.2424,0.0831,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.4063,0.5937,1.46,False,
+A,A_LOG,Log1p,Hierarchical,Ward,3,0.04999,260.21,3.3524,0.2056,0.0609,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.1838,0.4099,2.23,False,
+A,A_LOG,Log1p,Hierarchical,Ward,4,0.0524,232.9,3.0945,0.2218,0.0616,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.0823,0.4063,4.93,False,
+A,A_LOG,Log1p,Hierarchical,Ward,5,0.02569,202.79,3.4838,0.1932,0.039,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.0823,0.3275,3.98,False,
+A,A_LOG,Log1p,Hierarchical,Ward,6,0.0185,182.81,3.3725,0.1908,0.0354,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.0797,0.3275,4.11,False,
+A,A_LOG,Log1p,Hierarchical,Ward,7,0.01643,169.3,3.5405,0.1875,0.0223,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.0797,0.2559,3.21,False,
+A,A_LOG,Log1p,Hierarchical,Complete,2,0.42028,86.79,1.4898,,,excluded — degenerate outlier-peeling,0.0071,0.9929,139.06,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+A,A_LOG,Log1p,Hierarchical,Complete,3,0.39052,49.25,1.5026,,,excluded — degenerate outlier-peeling,0.0007,0.9929,1483.33,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+A,A_LOG,Log1p,Hierarchical,Complete,4,0.13481,56.2,2.7919,,,excluded — degenerate outlier-peeling,0.0007,0.936,1398.33,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+A,A_LOG,Log1p,Hierarchical,Complete,5,0.10651,62.14,2.8266,,,excluded — degenerate outlier-peeling,0.0007,0.9014,1346.67,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+A,A_LOG,Log1p,Hierarchical,Complete,6,0.1064,51.16,2.3685,,,excluded — degenerate outlier-peeling,0.0002,0.9014,4040.0,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+A,A_LOG,Log1p,Hierarchical,Complete,7,0.09899,46.89,2.7074,,,excluded — degenerate outlier-peeling,0.0002,0.8806,3947.0,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+A,A_LOG,Log1p,Hierarchical,Average,2,0.56314,8.96,0.322,,,excluded — degenerate outlier-peeling,0.0002,0.9998,4481.0,True,DEGENERATE: outlier-peeling — high ARI is artifact
+A,A_LOG,Log1p,Hierarchical,Average,3,0.53042,45.68,0.8016,,,excluded — degenerate outlier-peeling,0.0002,0.9967,4467.0,True,DEGENERATE: outlier-peeling — high ARI is artifact
+A,A_LOG,Log1p,Hierarchical,Average,4,0.5136,32.4,1.0213,,,excluded — degenerate outlier-peeling,0.0002,0.9967,4467.0,True,DEGENERATE: outlier-peeling — high ARI is artifact
+A,A_LOG,Log1p,Hierarchical,Average,5,0.43718,25.62,0.94,,,excluded — degenerate outlier-peeling,0.0002,0.9964,4466.0,True,DEGENERATE: outlier-peeling — high ARI is artifact
+A,A_LOG,Log1p,Hierarchical,Average,6,0.43626,21.32,0.8472,,,excluded — degenerate outlier-peeling,0.0002,0.9964,4466.0,True,DEGENERATE: outlier-peeling — high ARI is artifact
+A,A_LOG,Log1p,Hierarchical,Average,7,0.43357,18.4,0.7763,,,excluded — degenerate outlier-peeling,0.0002,0.9964,4466.0,True,DEGENERATE: outlier-peeling — high ARI is artifact
+B,B_RAW,Raw,K-Means,NA,2,0.11347,118.05,2.7404,0.7555,0.3373,"kmeans_stability (B=200, 80% subsample, ARI)",0.4271,0.5729,1.34,False,
+B,B_RAW,Raw,K-Means,NA,3,0.09704,107.58,2.4215,0.877,0.1197,"kmeans_stability (B=200, 80% subsample, ARI)",0.2699,0.3775,1.4,False,
+B,B_RAW,Raw,K-Means,NA,4,0.0858,90.4,2.5224,0.7965,0.103,"kmeans_stability (B=200, 80% subsample, ARI)",0.152,0.3071,2.02,False,
+B,B_RAW,Raw,K-Means,NA,5,0.08267,79.61,2.4877,0.7204,0.1668,"kmeans_stability (B=200, 80% subsample, ARI)",0.0383,0.2823,7.38,False,
+B,B_RAW,Raw,K-Means,NA,6,0.06837,71.01,2.5968,0.5727,0.1121,"kmeans_stability (B=200, 80% subsample, ARI)",0.0372,0.242,6.5,False,
+B,B_RAW,Raw,K-Means,NA,7,0.07123,64.76,2.5942,0.5184,0.1209,"kmeans_stability (B=200, 80% subsample, ARI)",0.0383,0.2037,5.32,False,
+B,B_RAW,Raw,GMM,full_cov,2,0.158,61.6,3.4584,,,NA (not generated),0.2223,0.7777,3.5,False,BIC=55842; mean_max_posterior=0.984
+B,B_RAW,Raw,GMM,full_cov,3,0.04729,61.75,3.6215,,,NA (not generated),0.1531,0.454,2.97,False,BIC=56657; mean_max_posterior=0.963
+B,B_RAW,Raw,GMM,full_cov,4,0.04352,59.93,3.1287,,,NA (not generated),0.1179,0.3588,3.04,False,BIC=57969; mean_max_posterior=0.971
+B,B_RAW,Raw,GMM,full_cov,5,0.04327,54.26,3.098,,,NA (not generated),0.0776,0.2813,3.63,False,BIC=59334; mean_max_posterior=0.971
+B,B_RAW,Raw,GMM,full_cov,6,0.03413,45.85,3.0732,,,NA (not generated),0.03,0.2906,9.69,False,BIC=60888; mean_max_posterior=0.969
+B,B_RAW,Raw,GMM,full_cov,7,0.03258,47.31,3.1818,,,NA (not generated),0.0103,0.2296,22.2,False,BIC=60893; mean_max_posterior=0.978
+B,B_RAW,Raw,Spectral,kNN_k10_NJW,2,0.10397,106.39,2.8649,,,NA (not generated),0.4891,0.5109,1.04,False,eigengap_prev=0.09659; eigengap_next=0.00953
+B,B_RAW,Raw,Spectral,kNN_k10_NJW,3,0.08936,100.81,2.4709,,,NA (not generated),0.2947,0.4064,1.38,False,eigengap_prev=0.00953; eigengap_next=0.07961
+B,B_RAW,Raw,Spectral,kNN_k10_NJW,4,0.07744,85.46,2.6698,,,NA (not generated),0.181,0.304,1.68,False,eigengap_prev=0.07961; eigengap_next=0.01375
+B,B_RAW,Raw,Spectral,kNN_k10_NJW,5,0.04591,69.63,2.9559,,,NA (not generated),0.1789,0.2658,1.49,False,eigengap_prev=0.01375; eigengap_next=0.03585
+B,B_RAW,Raw,Spectral,kNN_k10_NJW,6,0.06029,65.32,2.7311,,,NA (not generated),0.0414,0.2544,6.15,False,eigengap_prev=0.03585; eigengap_next=0.01079
+B,B_RAW,Raw,Spectral,kNN_k10_NJW,7,0.04724,59.38,2.6226,,,NA (not generated),0.0403,0.2358,5.85,False,eigengap_prev=0.01079; eigengap_next=0.01641
+B,B_RAW,Raw,Hierarchical,Ward,2,0.08182,81.15,3.283,0.1401,0.1281,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.4116,0.5884,1.43,False,
+B,B_RAW,Raw,Hierarchical,Ward,3,0.0486,73.52,2.8075,0.2782,0.0661,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.2927,0.4116,1.41,False,
+B,B_RAW,Raw,Hierarchical,Ward,4,0.05127,67.47,2.9282,0.3357,0.0566,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.1624,0.2958,1.82,False,
+B,B_RAW,Raw,Hierarchical,Ward,5,0.05664,62.93,2.7214,0.3481,0.0567,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.0331,0.2958,8.94,False,
+B,B_RAW,Raw,Hierarchical,Ward,6,0.04167,56.24,2.823,0.334,0.0466,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.0331,0.2927,8.84,False,
+B,B_RAW,Raw,Hierarchical,Ward,7,0.03384,51.19,2.7744,0.3313,0.0474,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.0331,0.2927,8.84,False,
+B,B_RAW,Raw,Hierarchical,Complete,2,0.61319,11.65,0.281,,,excluded — degenerate outlier-peeling,0.001,0.999,966.0,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+B,B_RAW,Raw,Hierarchical,Complete,3,0.43793,16.38,0.7605,,,excluded — degenerate outlier-peeling,0.001,0.9938,961.0,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+B,B_RAW,Raw,Hierarchical,Complete,4,0.32307,16.24,1.5214,,,excluded — degenerate outlier-peeling,0.001,0.9793,947.0,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+B,B_RAW,Raw,Hierarchical,Complete,5,0.29897,13.78,1.3022,,,excluded — degenerate outlier-peeling,0.001,0.9793,947.0,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+B,B_RAW,Raw,Hierarchical,Complete,6,0.29543,14.21,1.4688,,,excluded — degenerate outlier-peeling,0.001,0.9669,935.0,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+B,B_RAW,Raw,Hierarchical,Complete,7,0.0635,22.56,2.0122,,,excluded — degenerate outlier-peeling,0.001,0.5295,512.0,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+B,B_RAW,Raw,Hierarchical,Average,2,0.61319,11.65,0.281,,,excluded — degenerate outlier-peeling,0.001,0.999,966.0,True,DEGENERATE: outlier-peeling — high ARI is artifact
+B,B_RAW,Raw,Hierarchical,Average,3,0.53203,9.73,0.3238,,,excluded — degenerate outlier-peeling,0.001,0.9979,965.0,True,DEGENERATE: outlier-peeling — high ARI is artifact
+B,B_RAW,Raw,Hierarchical,Average,4,0.47494,13.38,0.6108,,,excluded — degenerate outlier-peeling,0.001,0.9938,961.0,True,DEGENERATE: outlier-peeling — high ARI is artifact
+B,B_RAW,Raw,Hierarchical,Average,5,0.40505,11.21,0.5787,,,excluded — degenerate outlier-peeling,0.001,0.9928,960.0,True,DEGENERATE: outlier-peeling — high ARI is artifact
+B,B_RAW,Raw,Hierarchical,Average,6,0.3556,9.83,0.5605,,,excluded — degenerate outlier-peeling,0.001,0.9917,959.0,True,DEGENERATE: outlier-peeling — high ARI is artifact
+B,B_RAW,Raw,Hierarchical,Average,7,0.3357,8.87,0.5496,,,excluded — degenerate outlier-peeling,0.001,0.9907,958.0,True,DEGENERATE: outlier-peeling — high ARI is artifact
+B,B_LOG,Log1p,K-Means,NA,2,0.1125,132.81,2.6242,0.8424,0.1229,"kmeans_stability (B=200, 80% subsample, ARI)",0.4778,0.5222,1.09,False,
+B,B_LOG,Log1p,K-Means,NA,3,0.1005,114.92,2.3955,0.7833,0.2372,"kmeans_stability (B=200, 80% subsample, ARI)",0.2978,0.3661,1.23,False,
+B,B_LOG,Log1p,K-Means,NA,4,0.08729,97.26,2.5012,0.7937,0.0856,"kmeans_stability (B=200, 80% subsample, ARI)",0.2027,0.2834,1.4,False,
+B,B_LOG,Log1p,K-Means,NA,5,0.08553,83.6,2.4322,0.6937,0.1682,"kmeans_stability (B=200, 80% subsample, ARI)",0.0445,0.2565,5.77,False,
+B,B_LOG,Log1p,K-Means,NA,6,0.07408,74.67,2.5438,0.6545,0.1298,"kmeans_stability (B=200, 80% subsample, ARI)",0.0424,0.2389,5.63,False,
+B,B_LOG,Log1p,K-Means,NA,7,0.06893,68.01,2.4655,0.5866,0.1393,"kmeans_stability (B=200, 80% subsample, ARI)",0.0414,0.2192,5.3,False,
+B,B_LOG,Log1p,GMM,full_cov,2,0.11162,60.63,3.6326,,,NA (not generated),0.272,0.728,2.68,False,BIC=57802; mean_max_posterior=0.963
+B,B_LOG,Log1p,GMM,full_cov,3,0.07913,77.46,2.9674,,,NA (not generated),0.1923,0.4137,2.15,False,BIC=59067; mean_max_posterior=0.975
+B,B_LOG,Log1p,GMM,full_cov,4,0.06907,72.89,2.9903,,,NA (not generated),0.1417,0.3557,2.51,False,BIC=60575; mean_max_posterior=0.970
+B,B_LOG,Log1p,GMM,full_cov,5,0.06009,59.38,3.256,,,NA (not generated),0.0869,0.3619,4.17,False,BIC=61953; mean_max_posterior=0.973
+B,B_LOG,Log1p,GMM,full_cov,6,0.05817,56.64,3.0404,,,NA (not generated),0.0558,0.302,5.41,False,BIC=63586; mean_max_posterior=0.978
+B,B_LOG,Log1p,GMM,full_cov,7,0.04811,52.85,3.0039,,,NA (not generated),0.0424,0.2709,6.39,False,BIC=65255; mean_max_posterior=0.979
+B,B_LOG,Log1p,Spectral,kNN_k10_NJW,2,0.10448,114.2,2.8089,,,NA (not generated),0.4943,0.5057,1.02,False,eigengap_prev=0.09456; eigengap_next=0.01198
+B,B_LOG,Log1p,Spectral,kNN_k10_NJW,3,0.09448,108.0,2.4353,,,NA (not generated),0.2637,0.4105,1.56,False,eigengap_prev=0.01198; eigengap_next=0.08792
+B,B_LOG,Log1p,Spectral,kNN_k10_NJW,4,0.07783,91.52,2.5702,,,NA (not generated),0.1975,0.2751,1.39,False,eigengap_prev=0.08792; eigengap_next=0.02077
+B,B_LOG,Log1p,Spectral,kNN_k10_NJW,5,0.06476,78.2,2.6824,,,NA (not generated),0.1313,0.2513,1.91,False,eigengap_prev=0.02077; eigengap_next=0.01228
+B,B_LOG,Log1p,Spectral,kNN_k10_NJW,6,0.07239,71.42,2.62,,,NA (not generated),0.0476,0.2265,4.76,False,eigengap_prev=0.01228; eigengap_next=0.02620
+B,B_LOG,Log1p,Spectral,kNN_k10_NJW,7,0.06087,64.49,2.5764,,,NA (not generated),0.0465,0.2244,4.82,False,eigengap_prev=0.02620; eigengap_next=0.02616
+B,B_LOG,Log1p,Hierarchical,Ward,2,0.0957,97.02,2.9818,0.1945,0.1498,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.3744,0.6256,1.67,False,
+B,B_LOG,Log1p,Hierarchical,Ward,3,0.06455,87.64,2.7783,0.318,0.0936,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.2834,0.3744,1.32,False,
+B,B_LOG,Log1p,Hierarchical,Ward,4,0.06565,76.22,2.7146,0.3294,0.0626,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.1158,0.3423,2.96,False,
+B,B_LOG,Log1p,Hierarchical,Ward,5,0.05318,66.95,2.94,0.3678,0.0541,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.1158,0.2834,2.45,False,
+B,B_LOG,Log1p,Hierarchical,Ward,6,0.05707,60.86,2.748,0.3676,0.0539,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.0372,0.2834,7.61,False,
+B,B_LOG,Log1p,Hierarchical,Ward,7,0.0462,54.87,2.9525,0.3503,0.0471,"hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",0.0372,0.2585,6.94,False,
+B,B_LOG,Log1p,Hierarchical,Complete,2,0.52928,7.69,0.3506,,,excluded — degenerate outlier-peeling,0.001,0.999,966.0,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+B,B_LOG,Log1p,Hierarchical,Complete,3,0.05976,36.37,2.5558,,,excluded — degenerate outlier-peeling,0.001,0.5905,571.0,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+B,B_LOG,Log1p,Hierarchical,Complete,4,0.06356,35.18,2.2765,,,excluded — degenerate outlier-peeling,0.001,0.5677,549.0,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+B,B_LOG,Log1p,Hierarchical,Complete,5,0.05769,33.91,2.54,,,excluded — degenerate outlier-peeling,0.001,0.484,468.0,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+B,B_LOG,Log1p,Hierarchical,Complete,6,0.05765,28.2,2.1963,,,excluded — degenerate outlier-peeling,0.001,0.484,468.0,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+B,B_LOG,Log1p,Hierarchical,Complete,7,0.04297,34.04,2.2513,,,excluded — degenerate outlier-peeling,0.001,0.484,468.0,True,DEGENERATE: outlier-peeling — high silhouette is artifact
+B,B_LOG,Log1p,Hierarchical,Average,2,0.52928,7.69,0.3506,,,excluded — degenerate outlier-peeling,0.001,0.999,966.0,True,DEGENERATE: outlier-peeling — high ARI is artifact
+B,B_LOG,Log1p,Hierarchical,Average,3,0.40506,6.12,0.4212,,,excluded — degenerate outlier-peeling,0.001,0.9979,965.0,True,DEGENERATE: outlier-peeling — high ARI is artifact
+B,B_LOG,Log1p,Hierarchical,Average,4,0.354,5.41,0.4467,,,excluded — degenerate outlier-peeling,0.001,0.9969,964.0,True,DEGENERATE: outlier-peeling — high ARI is artifact
+B,B_LOG,Log1p,Hierarchical,Average,5,0.31588,4.95,0.4654,,,excluded — degenerate outlier-peeling,0.001,0.9959,963.0,True,DEGENERATE: outlier-peeling — high ARI is artifact
+B,B_LOG,Log1p,Hierarchical,Average,6,0.24562,4.61,0.4835,,,excluded — degenerate outlier-peeling,0.001,0.9948,962.0,True,DEGENERATE: outlier-peeling — high ARI is artifact
+B,B_LOG,Log1p,Hierarchical,Average,7,0.22633,4.61,0.6784,,,excluded — degenerate outlier-peeling,0.001,0.9928,960.0,True,DEGENERATE: outlier-peeling — high ARI is artifact

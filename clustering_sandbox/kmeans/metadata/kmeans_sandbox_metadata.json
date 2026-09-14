@@ -1,0 +1,81 @@
+{
+  "experiment": "EXPLORATORY_CLUSTERING_SANDBOX_KMEANS",
+  "status": "EXPERIMENTAL_SANDBOX_ONLY",
+  "description": "Exploratory K-Means clustering sweep across K=2..10 for candidate standardized feature matrices.",
+  "formal_pipeline_status": "NOT_MERGED_TO_FORMAL_PIPELINE",
+  "methodological_constraints_confirmed": {
+    "clustering_input_space": "FULL_STANDARDIZED_FEATURE_SPACE",
+    "pca_used_as_clustering_input": false,
+    "matrices_modified": false,
+    "cohorts_combined": false,
+    "raw_and_log_combined": false,
+    "tridosha_mapping_performed": false,
+    "final_k_selected": false,
+    "formal_decision_log_modified": false
+  },
+  "configuration": {
+    "k_range": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "random_seed": 42,
+    "n_init": 25,
+    "sklearn_version": "1.4.1.post1"
+  },
+  "total_runs_completed": 36,
+  "matrices": [
+    "A_RAW",
+    "A_LOG",
+    "B_RAW",
+    "B_LOG"
+  ],
+  "results_summary": {
+    "A_RAW": {
+      "n_samples": 4482,
+      "n_features": 19,
+      "best_silhouette_k": 2,
+      "best_silhouette_val": 0.09854150739766827,
+      "best_ch_k": 2,
+      "best_ch_val": 455.3719767117202,
+      "best_db_k": 10,
+      "best_db_val": 2.178889445998729
+    },
+    "A_LOG": {
+      "n_samples": 4482,
+      "n_features": 19,
+      "best_silhouette_k": 2,
+      "best_silhouette_val": 0.09460428951905003,
+      "best_ch_k": 2,
+      "best_ch_val": 491.23856137922115,
+      "best_db_k": 10,
+      "best_db_val": 2.473353696371185
+    },
+    "B_RAW": {
+      "n_samples": 967,
+      "n_features": 24,
+      "best_silhouette_k": 2,
+      "best_silhouette_val": 0.11346620780020218,
+      "best_ch_k": 2,
+      "best_ch_val": 118.04541793570907,
+      "best_db_k": 3,
+      "best_db_val": 2.42148026953682
+    },
+    "B_LOG": {
+      "n_samples": 967,
+      "n_features": 24,
+      "best_silhouette_k": 2,
+      "best_silhouette_val": 0.11250446505887823,
+      "best_ch_k": 2,
+      "best_ch_val": 132.81069526816606,
+      "best_db_k": 3,
+      "best_db_val": 2.3954923126046164
+    }
+  }
+}
