@@ -1,0 +1,87 @@
+{
+  "experiment": "Experiment 6: Cross-Model Clustering Benchmark and K Selection",
+  "branch": "experiment/clustering-sandbox",
+  "timestamp_utc": "2026-09-14T06:29:09.192414",
+  "models_included": [
+    "K-Means",
+    "GMM",
+    "Spectral",
+    "Hierarchical (Ward/Complete/Average)"
+  ],
+  "hdbscan_role": "sanity check only \u2014 not included in K-based comparison",
+  "matrices": [
+    "A_RAW",
+    "A_LOG",
+    "B_RAW",
+    "B_LOG"
+  ],
+  "cohort_A": {
+    "matrices": [
+      "A_RAW",
+      "A_LOG"
+    ],
+    "N": 4482,
+    "p": 19
+  },
+  "cohort_B": {
+    "matrices": [
+      "B_RAW",
+      "B_LOG"
+    ],
+    "N": 967,
+    "p": 24
+  },
+  "K_primary": [
+    2,
+    3,
+    4
+  ],
+  "K_all_evaluated": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "pairwise_models_for_ARI": [
+    "K-Means",
+    "GMM",
+    "Spectral",
+    "Hier-Ward"
+  ],
+  "stability_sources": {
+    "K-Means": "kmeans_stability (B=200, 80% subsample, ARI)",
+    "Hierarchical-Ward": "hierarchical_stability (B=100, 80% subsample, participant-overlap ARI)",
+    "GMM": "NA \u2014 not generated",
+    "Spectral": "NA \u2014 not generated"
+  },
+  "degenerate_linkages_excluded_from_primary": [
+    "Complete",
+    "Average"
+  ],
+  "gmm_bic_minima_verified": {
+    "A_RAW": 4,
+    "A_LOG": 3,
+    "B_RAW": 2,
+    "B_LOG": 2
+  },
+  "spectral_eigengap_interpretation": "Lambda_3 to Lambda_4 gap in Cohort B (B_RAW: 0.080, B_LOG: 0.088) supports possible K=3 spectral cutoff (3 spectral dimensions) \u2014 weak secondary evidence only. Cohort A shows no meaningful eigengap beyond K=2.",
+  "seqn_audit": "PASSED \u2014 exact row-order match across all models/matrices",
+  "no_values_invented": true,
+  "no_commits_made": true,
+  "no_biological_interpretation": true,
+  "random_seeds": "not applicable (reading existing outputs only)",
+  "sklearn_version_source_experiments": "1.4.1.post1",
+  "outputs": {
+    "cross_model_master_metrics.csv": "All models \u00d7 matrices \u00d7 K internal metrics",
+    "cross_model_pairwise_ari.csv": "ARI between every model pair per matrix/K",
+    "cross_model_pairwise_nmi.csv": "NMI between every model pair per matrix/K",
+    "k_evidence_summary.csv": "Per-K aggregated evidence dimensions",
+    "k_comparison_report.md": "Qualitative evidence matrix + final K verdict",
+    "figures/fig1_silhouette_by_k.png": "Cross-model silhouette by K",
+    "figures/fig2_stability_by_k.png": "Stability ARI by K",
+    "figures/fig3_cross_model_ari_heatmaps.png": "6-panel ARI heatmaps K=2/3/4",
+    "figures/fig4_cluster_balance.png": "Min cluster proportion K=2/3/4"
+  }
+}
