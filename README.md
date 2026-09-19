@@ -79,8 +79,13 @@ Bioinformatics-Bridge/
 ├── run_scaling.py                       # Stage 4 entry point
 ├── run_pca.py                           # Stage 5 entry point
 ├── requirements.txt                     # Python dependencies
-└── README.md
+├── README.md
+│
+└── docs/
+    └── methodology_decision_log.md      # Formal methodology decisions (011–014)
 ```
+
+> **Note on the clustering sandbox**: Experiments 1–6 (K-Means, GMM, Spectral, Hierarchical, HDBSCAN, and the cross-model benchmark) were conducted on the `experiment/clustering-sandbox` branch. The complete computational evidence is preserved there under `clustering_sandbox/`. Only the formal decision (Decision 014) and this documentation are maintained on `master`.
 
 ---
 
@@ -131,6 +136,37 @@ Fits complete, independent Principal Component Analysis solutions for all 4 cand
 - **Recorded Methodological Decision**:
   > *PCA results demonstrate that variance is broadly distributed across many components (PC1 explains only ~14.5%–18.4% of total variance). Therefore, reducing the data to a small 2D/3D PCA representation would retain only a limited fraction of the total variance. PCA will **NOT** be used as the primary input space for downstream clustering; clustering will proceed on the full standardized feature representations, while the complete PCA outputs are preserved as an exploratory audit trail.*
 
+### Stage 6 — Exploratory Clustering Experiments (`experiment/clustering-sandbox`)
+
+Five independent clustering algorithms were evaluated across $K = 2$–$7$ for each of the four candidate representations (`A_RAW_scaled`, `A_LOG_scaled`, `B_RAW_scaled`, `B_LOG_scaled`):
+
+| Experiment | Method | Notes |
+| :--- | :--- | :--- |
+| Experiment 1 | K-Means | Euclidean distance; silhouette, stability ARI evaluated per K |
+| Experiment 2 | K-Means (extended diagnostics) | Distance-metric sensitivity, elbow curves |
+| Experiment 3 | Gaussian Mixture Models (GMM) | Full/diag/tied covariance; BIC, AIC, log-likelihood |
+| Experiment 4 | Spectral Clustering | kNN affinity ($k=10$); normalized Laplacian eigenvalue gap |
+| Experiment 5 | Agglomerative Hierarchical | Ward, Average, Complete, Single linkage; cophenetic correlation |
+| Experiment 6 | HDBSCAN | Density-based; min_cluster_size sweep; noise fraction tracking |
+
+All experiments are preserved on the `experiment/clustering-sandbox` branch under `clustering_sandbox/`.
+
+### Stage 7 — Cross-Model Clustering Benchmark (Experiment 6 synthesis)
+
+After completing the five individual algorithm experiments, a structured cross-model benchmark was run to evaluate K-selection agreement across methods for each cohort and representation:
+- **Cross-model ARI / NMI**: Pairwise agreement between K-Means, GMM, Spectral, and Hierarchical solutions at each candidate K.
+- **Silhouette profiles** and **stability ARI** (bootstrap, $n = 20$ resamples) across K.
+- **HDBSCAN density agreement**: Checked whether HDBSCAN solutions corroborate parametric method candidates.
+- **Formal conclusion (Decision 014)**: No single K achieves consistent, method-independent convergence across all representations and both cohorts. The cross-method evidence does not support declaring any K as a robustly established number of phenotype groups.
+  - **Cohort A**: $K=2$ is a weak majority candidate (silhouette-consistent for `A_LOG`; moderate cross-model ARI), retained as an exploratory partition only.
+  - **Cohort B**: $K=3$ is a weak majority candidate (better internal consistency relative to other K values in fasting-cohort representations), retained as an exploratory partition only.
+
+> ⚠️ Neither $K=2$ (Cohort A) nor $K=3$ (Cohort B) should be treated as optimal, validated, or biologically established cluster counts. They are pragmatic candidates for downstream exploratory characterisation — not confirmed phenotype groups.
+
+### Stage 8 — Downstream Phenotype Characterisation (planned)
+
+Following Decision 014, the next planned phase is an exploratory characterisation of the candidate partitions ($K=2$ for Cohort A, $K=3$ for Cohort B) using participant-level demographic and phenotype variables available in `output/analysis_cohort_a_broad.csv` and `output/analysis_cohort_b_fasting.csv`. This stage has not yet been executed.
+
 ---
 
 ## Installation & Running the Pipeline
@@ -176,6 +212,7 @@ python run_pca.py
 - **Variable Selection & Transformation Audit**: [`variable_selection_analysis.md`](variable_selection_analysis.md)
 - **Scaling Metadata**: [`output/scaled_matrices/scaled_matrices_metadata.json`](output/scaled_matrices/scaled_matrices_metadata.json)
 - **PCA Metadata & Recorded Decisions**: [`output/pca/pca_exploration_metadata.json`](output/pca/pca_exploration_metadata.json)
+- **Methodology Decision Log** (Decisions 011–014): [`docs/methodology_decision_log.md`](docs/methodology_decision_log.md)
 
 ---
 

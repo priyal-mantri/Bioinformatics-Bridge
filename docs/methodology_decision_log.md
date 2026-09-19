@@ -145,8 +145,7 @@ These candidate partitions are **exploratory** and do **not** constitute evidenc
 - Neither candidate achieves sufficient method-independent convergence to be declared a definitive number of phenotype groups. Retaining both candidates allows downstream phenotype characterization to proceed without prematurely asserting a natural cluster count that is not robustly established.
 
 ### Status
-
-⏳ **Proposed** — Formal K-selection decision following Experiment 6 (Cross-Model Clustering Benchmark). The full computational evidence base is preserved in the `experiment/clustering-sandbox` branch under `clustering_sandbox/cross_model/` and referenced in PR #4 (`Experiment 6: Cross-model clustering benchmark and K assessment`).
+✅ **Implemented** — Decision formalised following completion of Experiment 6 (Cross-Model Clustering Benchmark). Merged to `master` via PR #5. The full computational evidence base is preserved in the `experiment/clustering-sandbox` branch under `clustering_sandbox/cross_model/` and referenced in PR #4 (`Experiment 6: Cross-model clustering benchmark and K assessment`).
 
 ---
 
