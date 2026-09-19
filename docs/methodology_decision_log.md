@@ -146,7 +146,7 @@ These candidate partitions are **exploratory** and do **not** constitute evidenc
 
 ### Status
 
-⏳ **Proposed** — Formal K-selection decision following Experiment 6 (Cross-Model Clustering Benchmark). The full computational evidence base is preserved in the `experiment/clustering-sandbox` branch under `clustering_sandbox/cross_model/` and referenced in PR #4 (`Experiment 6: Cross-model clustering benchmark and K assessment`).
+✅ **Implemented** — Locked at merge of PR #5 into `master`. Formal K-selection decision following Experiment 6 (Cross-Model Clustering Benchmark). The full computational evidence base is preserved in the `experiment/clustering-sandbox` branch under `clustering_sandbox/cross_model/` and referenced in PR #4 (`Experiment 6: Cross-model clustering benchmark and K assessment`).
 
 ---
 
