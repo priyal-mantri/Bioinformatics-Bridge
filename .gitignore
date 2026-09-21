@@ -40,7 +40,6 @@ variable_dict_raw.txt
 
 # ── Old / duplicate files ─────────────────────────────────────────────────────
 preprocessing_decision_log_2
-variable_selection_analysis.md
 
 # ── OS and editor artifacts ──────────────────────────────────────────────────
 .DS_Store

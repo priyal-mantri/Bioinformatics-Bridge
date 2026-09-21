@@ -244,7 +244,7 @@ Net: +2 columns. Output file: 9,254 rows × 36 columns.
 Preprocess (`run_preprocess.py` → `pipeline/preprocess/bp_averaging.py`)
 
 **Status**
-✅ Implemented — `output/preprocessed.csv` generated with 9,254 rows × 36 columns
+Superseded — this entry used a simple nanmean approach. The implemented method follows the official CDC NHANES analytic protocol, recorded in the updated Decision 002 entry below.
 
 ---
 
@@ -309,7 +309,7 @@ None — only rows are filtered, no columns added or removed.
 Preprocess (next step after Decision 002)
 
 **Status**
-🔵 Proposed — not yet implemented
+Implemented — output/snapshot_decision_003_age_filtered.csv confirms 3,685 rows removed (9,254 → 5,569 rows, 36 columns)
 
 ---
 
@@ -380,7 +380,7 @@ Variables: DXDTOBMD, DXDTOPF, DXDTOLE set to NaN for invalid-scan participants
 Preprocess (after Decision 003)
 
 **Status**
-🔵 Proposed — not yet implemented
+Implemented — output/snapshot_decision_004_dexa_filtered.csv confirms DEXA variables set to NaN for invalid scans; row count unchanged at 5,569
 
 ---
 
@@ -442,7 +442,7 @@ Variables: `LBXIN` set to NaN for rows where `LBDINLC == 1`
 Preprocess (after Decision 004)
 
 **Status**
-🔵 Proposed — not yet implemented
+Implemented — output/snapshot_decision_005_insulin_lod.csv confirms insulin LOD values set to NaN; row count unchanged at 5,569
 
 ---
 
@@ -516,7 +516,7 @@ Preprocess (after Decision 005)
 **Status**
 ✅ Implemented — `output/preprocessed.csv` generated with 5,569 rows × 39 columns
 
-## Decision 002
+## Decision 002 (Updated — supersedes initial entry above)
 
 **Blood Pressure Averaging (Official CDC NHANES Protocol)**
 
