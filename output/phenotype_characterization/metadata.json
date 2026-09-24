@@ -1,0 +1,44 @@
+{
+  "pipeline_stage": "PHENOTYPE_CHARACTERIZATION_AND_LITERATURE_CONCORDANCE",
+  "cohort_a": {
+    "cohort": "A",
+    "representation": "RAW",
+    "retained_k": 2,
+    "source_file": "clustering_sandbox/kmeans/cluster_assignments/A_RAW_kmeans_assignments.csv",
+    "master_rows": 4482,
+    "assign_rows": 4482,
+    "merged_rows": 4482,
+    "join_status": "SUCCESS_100_PERCENT_MATCH"
+  },
+  "cohort_b": {
+    "cohort": "B",
+    "representation": "RAW",
+    "retained_k": 3,
+    "source_file": "clustering_sandbox/kmeans/cluster_assignments/B_RAW_kmeans_assignments.csv",
+    "master_rows": 967,
+    "assign_rows": 967,
+    "merged_rows": 967,
+    "join_status": "SUCCESS_100_PERCENT_MATCH"
+  },
+  "outputs_generated": {
+    "cohort_a_dir": "/home/naya/Documents/Research 2 [Bioinfo Bridge]/output/phenotype_characterization/cohort_a",
+    "cohort_b_dir": "/home/naya/Documents/Research 2 [Bioinfo Bridge]/output/phenotype_characterization/cohort_b",
+    "literature_concordance_dir": "/home/naya/Documents/Research 2 [Bioinfo Bridge]/output/phenotype_characterization/literature_concordance",
+    "sensitivity_dir": "/home/naya/Documents/Research 2 [Bioinfo Bridge]/output/phenotype_characterization/sensitivity",
+    "plots_dir": "/home/naya/Documents/Research 2 [Bioinfo Bridge]/output/phenotype_characterization/plots",
+    "figures": [
+      "fig1_cohort_a_zscore_heatmap.png",
+      "fig2_cohort_b_zscore_heatmap.png",
+      "fig3_cohort_a_discriminating_features_boxplots.png",
+      "fig4_cohort_b_discriminating_features_boxplots.png",
+      "fig5_derived_metabolic_ratios.png",
+      "fig6_literature_concordance_matrix.png"
+    ]
+  },
+  "anti_circularity_verification": {
+    "dosha_biomarker_phrase_count": 0,
+    "ayurvedic_cluster_labels_count": 0,
+    "dosha_probability_scores_calculated": false,
+    "decision_014_modified": false
+  }
+}

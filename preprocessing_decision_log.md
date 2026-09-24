@@ -155,11 +155,11 @@ Merge (`run_pipeline.py` → `pipeline/merge.py`)
 
 ---
 
-## Decision 002
+## Decision 002 (original draft — superseded)
 
-**Blood Pressure Averaging**
+**Blood Pressure Averaging (nanmean approach)**
 
----
+Note: This entry reflects the initial design. The implementation was subsequently updated to follow the official CDC NHANES analytic protocol, which drops Reading 1 when two or more valid readings are available rather than including it in the mean. The updated protocol entry immediately follows Decision 006 below. That entry is the implemented version.
 
 **Preprocessing Step**
 Convert three repeated systolic and diastolic blood pressure readings (BPXSY1, BPXSY2, BPXSY3, BPXDI1, BPXDI2, BPXDI3) into a single representative value per participant per direction.
@@ -177,32 +177,10 @@ Blood pressure is not a fixed quantity — it fluctuates continuously with respi
 The first reading is systematically elevated relative to subsequent readings in clinical examination settings. This is well-documented as the white-coat effect: participants experience mild stress at the start of a medical examination, raising their blood pressure transiently. Readings two and three are taken after the participant has had time to acclimatise. Averaging dampens this transient artifact and produces a value that more closely approximates the participant's habitual blood pressure.
 
 **Statistical Reasoning**
-1. **Variance reduction**: For independent measurements with the same true mean μ and variance σ², the mean of n readings has variance σ²/n. Even if readings are not fully independent, averaging reduces measurement noise relative to any single reading.
-2. **Bias reduction**: The first reading is upward-biased due to the white-coat effect. Averaging introduces readings taken at lower stress states, pulling the estimate toward the true resting level.
-3. **Sample size preservation**: Using only BPXSY1 as the BP variable loses all participants where the first reading is missing but a later reading is available. The nanmean approach retains those participants.
-4. **Alignment with clinical standards**: AHA guidelines and JNC-7 both specify that the average of two or more readings at a single visit should be used for clinical decision-making. NHANES analytic guidelines recommend using the average of available readings.
-
-**Implementation Details**
-- File: `pipeline/preprocess/bp_averaging.py`
-- Function: `compute_bp_averages(df)` — accepts a DataFrame, returns a new DataFrame with two new columns appended; input is never mutated
-- Missing value handling: `pandas.DataFrame.mean(axis=1, skipna=True)` — ignores NaN in the rowwise mean. If ALL three readings are NaN for a participant, the result is NaN (not zero).
-- Original columns BPXSY1, BPXSY2, BPXSY3, BPXDI1, BPXDI2, BPXDI3 are preserved in the output file
-- Run: `python run_preprocess.py` → reads `output/merged_raw.csv` → saves `output/preprocessed.csv`
-
-**Measured Results from Live Run**
-
-| Metric | Systolic | Diastolic |
-|--------|---------|---------|
-| Participants: 1st reading only valid | 6,302 | 6,302 |
-| Participants: average valid | **6,714** | **6,714** |
-| Coverage gain | **+412** | **+412** |
-| Missing % before | 31.9% | 31.9% |
-| Missing % after | **27.4%** | **27.4%** |
-| Mean (average) | 121.7 mm Hg | 68.3 mm Hg |
-| 3 readings used | 6,077 participants | 6,077 participants |
-| 2 readings used | 535 participants | 535 participants |
-| 1 reading used | 102 participants | 102 participants |
-| All missing → NaN | 2,540 participants | 2,540 participants |
+1. Variance reduction: For independent measurements with the same true mean and variance, the mean of n readings has variance reduced by 1/n. Even if readings are not fully independent, averaging reduces measurement noise relative to any single reading.
+2. Bias reduction: The first reading is upward-biased due to the white-coat effect. Averaging introduces readings taken at lower stress states, pulling the estimate toward the true resting level.
+3. Sample size preservation: Using only BPXSY1 as the BP variable loses all participants where the first reading is missing but a later reading is available. The nanmean approach retains those participants.
+4. Alignment with clinical standards: AHA guidelines and JNC-7 both specify that the average of two or more readings at a single visit should be used for clinical decision-making. NHANES analytic guidelines recommend using the average of available readings.
 
 **Alternative Methods Considered**
 
@@ -214,37 +192,8 @@ The first reading is systematically elevated relative to subsequent readings in 
 | Use the median of available readings | With only 3 measurements, the median equals the middle value exactly — provides no statistical advantage over the mean and is less commonly used in NHANES literature |
 | Impute missing readings before averaging | Imputation before the averaging step would compound uncertainty; NHANES guidelines recommend averaging available readings only |
 
-**Advantages**
-- Reduces measurement error and white-coat bias
-- Recovers 412 participants who would have been lost using first-reading-only
-- Reduces missing rate from 31.9% to 27.4%
-- Aligns with AHA, JNC-7, and NHANES analytic guidelines
-- Preserves all original raw readings for full traceability
-
-**Disadvantages**
-- Mixing readings taken under different stress states (reading 1 is biased high); however, averaging is still preferable to using the biased first reading alone
-- If a participant only had one reading because of an abnormal value (e.g., extremely high), that single reading becomes the average — not smoothed
-
-**Effect on Sample Size**
-No rows removed. 412 additional participants gain a valid `Avg_Systolic_BP` and `Avg_Diastolic_BP` value compared to using only the first reading.
-
-**Effect on Variables**
-Two new columns added: `Avg_Systolic_BP`, `Avg_Diastolic_BP`.
-Six raw columns preserved: BPXSY1, BPXSY2, BPXSY3, BPXDI1, BPXDI2, BPXDI3.
-Net: +2 columns. Output file: 9,254 rows × 36 columns.
-
-**Reproducibility Notes**
-- Module: `pipeline/preprocess/bp_averaging.py`
-- Entry point: `python run_preprocess.py`
-- Input: `output/merged_raw.csv`
-- Output: `output/preprocessed.csv`
-- The averaging constants (`SYSTOLIC_COLS`, `DIASTOLIC_COLS`, `AVG_SYSTOLIC_COL`, `AVG_DIASTOLIC_COL`) are defined at the top of `bp_averaging.py` so column names can be changed in one place
-
-**Pipeline Stage**
-Preprocess (`run_preprocess.py` → `pipeline/preprocess/bp_averaging.py`)
-
 **Status**
-Superseded — this entry used a simple nanmean approach. The implemented method follows the official CDC NHANES analytic protocol, recorded in the updated Decision 002 entry below.
+Superseded — replaced by updated CDC NHANES protocol implementation (see Decision 002 — CDC Protocol entry below, following Decision 006).
 
 ---
 
@@ -261,13 +210,13 @@ Filter the dataset to retain only adult participants aged 20 to 80 years inclusi
 NHANES covers the full age range from infancy through old age. The biological systems being measured respond differently across the lifespan. Children and adolescents have fundamentally different body composition profiles, blood pressure norms, lipid levels, and bone density trajectories than adults. Including them in a clustering intended to detect adult metabolic phenotypes would introduce age-driven clusters that reflect developmental stage rather than habitual phenotype.
 
 **Biological Reasoning**
-- **Children/adolescents**: BMI, bone density (DXDTOBMD), blood pressure, and lipid levels are all age-dependent in ways that do not reflect the adult metabolic variation the study is examining. The bone-density–based Kapha phenotype hypothesis, for example, is meaningless before peak bone mass is reached (~age 25–30).
-- **Very elderly (80+)**: NHANES codes age as 80 for all participants 80 and older. These participants cannot be distinguished by exact age, and extreme age introduces sarcopenia, polypharmacy effects, and other confounders.
-- **Lower bound 20**: Standard cutoff for adult NHANES analyses. Consistent with NIH, CDC, and most NHANES analytic papers.
+- Children/adolescents: BMI, bone density, blood pressure, and lipid levels are all age-dependent in ways that do not reflect adult metabolic variation. Including them would introduce age-driven clusters that reflect developmental stage rather than habitual phenotype.
+- Very elderly (80+): NHANES codes age as 80 for all participants aged 80 and older. These participants cannot be distinguished by exact age, and extreme age introduces sarcopenia, polypharmacy effects, and other confounders.
+- Lower bound 20: Standard cutoff for adult NHANES analyses. Consistent with NIH, CDC, and most NHANES analytic papers.
 
 **Statistical Reasoning**
 - Blood pressure reference ranges are age-stratified; including children would create spurious low-BP clusters
-- Blood pressure null rates drop significantly when age ≥ 20 (children often do not have full BP measurements)
+- Blood pressure null rates drop significantly when age >= 20 (children often do not have full BP measurements)
 - Keeping the analysis within a single developmental stage reduces confounder dimensionality
 - Consistent with the NHANES analytic and reporting guidelines
 
@@ -282,7 +231,7 @@ NHANES covers the full age range from infancy through old age. The biological sy
 | Alternative | Why Not Preferred |
 |-------------|-----------------|
 | Include all ages | Introduces developmental confounders; blood pressure and BMI in children are non-comparable to adults |
-| Age ≥ 18 | Common legal-adult cutoff but NHANES analytic convention uses 20; some measurements (DEXA) are also adult-only |
+| Age >= 18 | Common legal-adult cutoff but NHANES analytic convention uses 20; some measurements (DEXA) are also adult-only |
 | Stratify by age group and cluster separately | Valid approach but increases complexity; proposed as a sensitivity analysis in the paper, not the primary pipeline |
 
 **Advantages**
@@ -291,12 +240,11 @@ NHANES covers the full age range from infancy through old age. The biological sy
 - Consistent with published NHANES analytic practice
 
 **Disadvantages**
-- Reduces sample size; estimated loss of ~3,400 rows (those aged 0–19)
+- Reduces sample size
 - Excludes potentially interesting adolescent metabolic phenotypes
 
 **Effect on Sample Size**
-Estimated: 9,254 rows → ~5,800 rows (loss of ~3,454 participants under 20 or over 80)
-*Exact number to be confirmed when implemented.*
+9,254 rows (full merged dataset) filtered to 5,569 rows. Loss of 3,685 participants aged under 20 or recorded as 80+.
 
 **Effect on Variables**
 None — only rows are filtered, no columns added or removed.
@@ -304,12 +252,14 @@ None — only rows are filtered, no columns added or removed.
 **Reproducibility Notes**
 - Filter expression: `df = df[(df['RIDAGEYR'] >= 20) & (df['RIDAGEYR'] <= 80)]`
 - `RIDAGEYR` must be retained in the dataset (already included as per Decision 001)
+- Implemented in: `pipeline/preprocess/filters.py` → `apply_age_filter()`
+- Snapshot: `output/snapshot_decision_003_age_filtered.csv`
 
 **Pipeline Stage**
 Preprocess (next step after Decision 002)
 
 **Status**
-Implemented — output/snapshot_decision_003_age_filtered.csv confirms 3,685 rows removed (9,254 → 5,569 rows, 36 columns)
+Implemented — `output/snapshot_decision_003_age_filtered.csv` confirmed: 5,569 rows × 36 columns
 
 ---
 
@@ -362,8 +312,7 @@ Partial-scan values are not missing at random — they are missing because the s
 - Follows NHANES analytic guidelines on DEXA data quality
 
 **Disadvantages**
-- Increases missingness in DEXA variables beyond the current 60%
-- Exact number of additional NaNs depends on how many participants have DXAEXSTS != 1
+- Increases missingness in DEXA variables
 
 **Effect on Sample Size**
 Rows: no change (row-level operation is NOT performed)
@@ -375,12 +324,14 @@ Variables: DXDTOBMD, DXDTOPF, DXDTOLE set to NaN for invalid-scan participants
 **Reproducibility Notes**
 - `DXAEXSTS` must be retained in the dataset (already included as per Decision 001)
 - Filter expression: `df.loc[df['DXAEXSTS'] != 1, ['DXDTOBMD','DXDTOPF','DXDTOLE']] = np.nan`
+- Implemented in: `pipeline/preprocess/filters.py` → `apply_dexa_validity_filter()`
+- Snapshot: `output/snapshot_decision_004_dexa_filtered.csv`
 
 **Pipeline Stage**
 Preprocess (after Decision 003)
 
 **Status**
-Implemented — output/snapshot_decision_004_dexa_filtered.csv confirms DEXA variables set to NaN for invalid scans; row count unchanged at 5,569
+Implemented — `output/snapshot_decision_004_dexa_filtered.csv` confirmed: 5,569 rows × 36 columns. Row count unchanged; DEXA columns NaN-set for invalid-scan participants.
 
 ---
 
@@ -425,24 +376,26 @@ Very low fasting insulin values (below the detection limit) are physiologically 
 
 **Disadvantages**
 - Slightly increases missingness in `LBXIN`
-- Removes participants at the extreme low end of insulin distribution; if very-low-insulin is clinically important, this information is lost
+- Removes values at the extreme low end of the insulin distribution; if very-low-insulin is clinically important, this information is lost
 
 **Effect on Sample Size**
 Rows: no change
 Variables: `LBXIN` set to NaN for rows where `LBDINLC == 1`
 
 **Effect on Variables**
-`LBXIN` — small number of values replaced with NaN
+`LBXIN` — below-detection-limit values replaced with NaN
 
 **Reproducibility Notes**
 - `LBDINLC` must be retained in the dataset (already included as per Decision 001)
 - Filter expression: `df.loc[df['LBDINLC'] == 1, 'LBXIN'] = np.nan`
+- Implemented in: `pipeline/preprocess/filters.py` → `apply_insulin_lod_filter()`
+- Snapshot: `output/snapshot_decision_005_insulin_lod.csv`
 
 **Pipeline Stage**
 Preprocess (after Decision 004)
 
 **Status**
-Implemented — output/snapshot_decision_005_insulin_lod.csv confirms insulin LOD values set to NaN; row count unchanged at 5,569
+Implemented — `output/snapshot_decision_005_insulin_lod.csv` confirmed: 5,569 rows × 36 columns. Row count unchanged.
 
 ---
 
@@ -516,35 +469,36 @@ Preprocess (after Decision 005)
 **Status**
 ✅ Implemented — `output/preprocessed.csv` generated with 5,569 rows × 39 columns
 
-## Decision 002 (Updated — supersedes initial entry above)
+## Decision 002 — CDC Protocol (implemented version)
 
 **Blood Pressure Averaging (Official CDC NHANES Protocol)**
 
----
+This is the implemented version of Decision 002, replacing the nanmean approach documented above. The original entry is preserved above as historical record.
 
 **Preprocessing Step**
-Convert repeated systolic and diastolic blood pressure readings (`BPXSY1–3`, `BPXDI1–3`) into a single representative value per participant per direction following official CDC NHANES analytic protocol.
+Convert repeated systolic and diastolic blood pressure readings (`BPXSY1`–`BPXSY3`, `BPXDI1`–`BPXDI3`) into a single representative value per participant per direction following official CDC NHANES analytic protocol.
 
 New columns created:
 - `Avg_Systolic_BP`
 - `Avg_Diastolic_BP`
 
-**Official CDC NHANES Protocol**:
-1. **If 3 valid readings are present** (`BPXSY1`, `BPXSY2`, `BPXSY3`): Drop Reading 1 (to eliminate initial white-coat stress reactivity) and take the arithmetic mean of Readings 2 and 3: `mean(BPXSY2, BPXSY3)` and `mean(BPXDI2, BPXDI3)`.
-2. **If 2 valid readings are present**: If Readings 2 & 3 are present, average Readings 2 & 3. If Readings 1 & 2 are present, use Reading 2. If Readings 1 & 3 are present, use Reading 3.
-3. **If 1 valid reading is present**: Use that single available reading.
-4. **If 0 valid readings are present**: Set to `NaN`.
+**CDC NHANES Protocol**:
+1. If 3 valid readings are present: drop Reading 1 (white-coat reactivity) and average Readings 2 and 3.
+2. If 2 valid readings are present: if Readings 2 and 3 are present, average them. If Readings 1 and 2 are present, use Reading 2. If Readings 1 and 3 are present, use Reading 3.
+3. If 1 valid reading is present: use that reading.
+4. If 0 valid readings are present: set to NaN.
 
-**Why It Was Needed**
-NHANES takes up to three blood pressure readings at a single examination. Including all three raw readings as separate features would introduce artificial multicollinearity into the feature matrix. The first reading is systematically elevated due to white-coat reactivity. Dropping Reading 1 when $\ge 2$ readings exist aligns with CDC NCHS and AHA/ACC guidelines for analyzing NHANES BP data.
+**Why the Protocol Differs from the Original Draft**
+The original nanmean approach included Reading 1 in the mean. The CDC NHANES protocol drops Reading 1 when at least two readings are available because Reading 1 is systematically elevated by white-coat reactivity. Averaging Readings 2 and 3 produces a better estimate of resting blood pressure.
 
 **Implementation Details**
 - File: `pipeline/preprocess/bp_averaging.py`
 - Function: `compute_bp_averages(df)`
-- SAS XPT Zero handling: Floating point representations $< 10^{-10}$ (from SAS XPT zero export) are converted to clean float `0.0`.
-- Snapshot saved: `output/snapshot_decision_002_bp_averaged.csv`
+- SAS XPT zero handling: floating point values below 1e-10 from SAS XPT export are converted to clean float 0.0 (NHANES documentation explicitly states that diastolic BP of 0 mmHg is a valid measurement for some participants).
+- Snapshot: `output/snapshot_decision_002_bp_averaged.csv`
 
----
+**Status**
+Implemented — `output/snapshot_decision_002_bp_averaged.csv` confirmed: 9,254 rows × 36 columns.
 
 ## Decision 007
 

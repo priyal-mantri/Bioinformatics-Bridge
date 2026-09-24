@@ -138,15 +138,15 @@ Fits complete, independent Principal Component Analysis solutions for all 4 cand
 
 ### Stage 6 — Exploratory Clustering Experiments (`experiment/clustering-sandbox`)
 
-Five independent clustering algorithms were evaluated across $K = 2$–$7$ for each of the four candidate representations (`A_RAW_scaled`, `A_LOG_scaled`, `B_RAW_scaled`, `B_LOG_scaled`):
+Four K-based clustering algorithms were evaluated across $K = 2$–7 for each of the four candidate representations (`A_RAW_scaled`, `A_LOG_scaled`, `B_RAW_scaled`, `B_LOG_scaled`). HDBSCAN was evaluated separately using density-based parameter sweeps.
 
 | Experiment | Method | Notes |
 | :--- | :--- | :--- |
-| Experiment 1 | K-Means | Euclidean distance; silhouette, stability ARI evaluated per K |
+| Experiment 1 | K-Means | Euclidean distance; silhouette and stability ARI evaluated per K |
 | Experiment 2 | K-Means (extended diagnostics) | Distance-metric sensitivity, elbow curves |
 | Experiment 3 | Gaussian Mixture Models (GMM) | Full/diag/tied covariance; BIC, AIC, log-likelihood |
-| Experiment 4 | Spectral Clustering | kNN affinity ($k=10$); normalized Laplacian eigenvalue gap |
-| Experiment 5 | Agglomerative Hierarchical | Ward, Average, Complete, Single linkage; cophenetic correlation |
+| Experiment 4 | Spectral Clustering | kNN affinity ($k=10$); normalised Laplacian eigenvalue gap |
+| Experiment 5 | Agglomerative Hierarchical | Ward, Average, Complete, Single linkage; subsampling stability (ARI) per K |
 | Experiment 6 | HDBSCAN | Density-based; min_cluster_size sweep; noise fraction tracking |
 
 All experiments are preserved on the `experiment/clustering-sandbox` branch under `clustering_sandbox/`.
@@ -161,7 +161,7 @@ After completing the five individual algorithm experiments, a structured cross-m
   - **Cohort A**: $K=2$ is a weak majority candidate (silhouette-consistent for `A_LOG`; moderate cross-model ARI), retained as an exploratory partition only.
   - **Cohort B**: $K=3$ is a weak majority candidate (better internal consistency relative to other K values in fasting-cohort representations), retained as an exploratory partition only.
 
-> ⚠️ Neither $K=2$ (Cohort A) nor $K=3$ (Cohort B) should be treated as optimal, validated, or biologically established cluster counts. They are pragmatic candidates for downstream exploratory characterisation — not confirmed phenotype groups.
+> Neither $K=2$ (Cohort A) nor $K=3$ (Cohort B) should be treated as optimal, validated, or biologically established cluster counts. They are pragmatic candidates for downstream exploratory characterisation, not confirmed phenotype groups.
 
 ### Stage 8 — Downstream Phenotype Characterisation (planned)
 

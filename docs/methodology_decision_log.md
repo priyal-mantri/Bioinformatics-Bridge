@@ -98,7 +98,7 @@ The cross-model K assessment incorporated the following classes of evidence:
 - **GMM BIC diagnostics**: BIC model-selection profile across K=2–7 for full covariance structures
 - **Spectral eigengap diagnostics**: spectral gap profile $\lambda_k - \lambda_{k-1}$ across K=2–7, evaluated per matrix
 - **HDBSCAN density-structure diagnostics**: presence or absence of large stable density-separated groups across the min_cluster_size parameter sweep
-- **Hierarchical linkage sensitivity**: Ward vs. Complete vs. Average linkage; behavior of cophenetic structure and dendrogram stability
+- **Hierarchical linkage sensitivity**: Ward linkage was used as the primary hierarchical method; Complete and Average linkage were also evaluated and found to produce degenerate (chain-like) partitions. Subsampling stability ARI was the primary quality metric across K values for hierarchical clustering.
 - **Hierarchical distance-metric sensitivity**: Euclidean vs. Manhattan distance; reproducibility of partition quality across metrics
 
 ### Findings

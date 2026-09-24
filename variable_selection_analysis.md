@@ -3,156 +3,174 @@
 
 ---
 
-> **Historical planning document — do not treat as authoritative methodology.**
-> This document was written at the start of the project and has not been updated to reflect the decisions recorded later in `preprocessing_decision_log.md` and `docs/methodology_decision_log.md`.
-> The framing used here — including the "Dosha Proxy" column in the variable table and the stated goal of testing whether k=3 clusters emerge corresponding to the three Doshas — predates Decision 001 and contradicts the final methodological principles.
-> The actual variable selection followed Decision 001: variables were selected by biological system coverage alone, independent of any expected Dosha association. This distinction is methodologically critical — selecting variables as proxies for a pre-expected outcome would introduce circular reasoning into the unsupervised analysis.
-> Refer to `preprocessing_decision_log.md` (Decisions 001-010) and `docs/methodology_decision_log.md` (Decisions 011-014) for the authoritative methodology.
+## Context and Status of This Document
+
+This document was written during the early planning phase of the project, when variables were being explored through a Dosha-proxy lens to assess whether NHANES biomarkers could theoretically map to the three Ayurvedic constitutional types. That framing helped identify which physiological domains to include.
+
+**The Dosha-proxy approach was subsequently rejected as the primary selection criterion** before the pipeline was built. Selecting variables to match expected Dosha patterns would load the expected outcome into the input features, which is circular reasoning for an unsupervised analysis.
+
+The final implemented methodology selected variables based on comprehensive biological system coverage, independently of any expected Dosha association. The rationale for that decision is documented in `preprocessing_decision_log.md` under Decision 001.
+
+This document is preserved as a historical record. Sections 1 and 3 below reflect early planning thinking. The final feature set, exclusion decisions, and merge strategy (Sections 4-8) remain accurate.
 
 ---
 
-## 1. Research Goal Recap (Early planning note — see document notice above)
+## 1. Early Planning Hypothesis (not the final methodology)
 
+During initial scoping, the hypothesis was that running unsupervised clustering on NHANES biomarkers might reveal groups whose profiles resemble the three Ayurvedic constitutional types (Doshas):
 
-The goal is to run **unsupervised spectral clustering** on NHANES medical biomarkers to see if **k=3 clusters emerge naturally** that correspond to the three Ayurvedic Doshas:
+| Dosha | Hypothesised Biomarker Profile |
+|-------|-------------------------------|
+| Vata | Low BMI, low lean mass, variable BP, fast metabolism |
+| Pitta | High BP, high fasting glucose, high uric acid, elevated liver enzymes |
+| Kapha | High bone density, high body fat, high insulin, low resting HR, high waist |
 
-| Dosha | Expected Biomarker Profile |
-|-------|---------------------------|
-| **Vata** | Low BMI · Low lean mass · Variable BP · Fast metabolism |
-| **Pitta** | High BP · High fasting glucose · High uric acid · Elevated liver enzymes |
-| **Kapha** | High bone density · High % body fat · High insulin · Low resting HR · High waist |
+This was a hypothesis to be tested, not a design constraint. The final methodology does not preselect variables to match these profiles.
 
 ---
 
-## 2. ✅ Recommended Variable Selection (Final Feature Set)
+## 2. Final Feature Set
 
-These **17 variables** are the ones to include in your feature matrix. Each row = one person, each column = one of these variables.
+The pipeline uses the following variables, selected for biological system coverage. The "Dosha Proxy" label used in the original planning table has been replaced with the biological system each variable belongs to, which is the actual selection criterion.
 
-| # | Variable Code | Description | Dosha Proxy | Source File | Null % | Notes |
-|---|--------------|-------------|-------------|-------------|--------|-------|
-| 1 | `BMXBMI` | Body Mass Index | Vata (low) / Kapha (high) | `BMX_J` | 8% | ✅ Confirmed in CSV |
-| 2 | `BMXWAIST` | Waist circumference | Kapha (high) | `BMX_J` | 13% | ✅ Confirmed in CSV |
-| 3 | `BPXSY1` | Systolic BP (1st reading) | Pitta (high) | `BPX_J` | 28% | ✅ Confirmed in CSV |
-| 4 | `BPXDI1` | Diastolic BP (1st reading) | Pitta (high) | `BPX_J` | 28% | ✅ Confirmed in CSV |
-| 5 | `BPXPLS` | Resting pulse / heart rate | Kapha (low) | `BPX_J` | 23% | ✅ Confirmed in CSV |
-| 6 | `DXDTOBMD` | Total Body Bone Mineral Density | Kapha (high) | `DXX_J` | 28% | ✅ Confirmed in CSV |
-| 7 | `DXDTOPF` | Total Body % Fat | Kapha (high) | `DXX_J` | 29% | ✅ Confirmed in CSV |
-| 8 | `DXDTOLE` | Total Lean Mass (excl. bone) | Vata (low) | `DXX_J` | 25% | ✅ Confirmed in CSV |
-| 9 | `LBXGLU` | Fasting Glucose | Pitta (high) | `GLU_J` | 5% | ✅ Confirmed in CSV |
-| 10 | `LBXIN` | Fasting Insulin | Kapha (high) | `INS_J` | 7% | ✅ Confirmed in CSV |
-| 11 | `LBDHDD` | HDL Cholesterol (good) | Pitta/metabolic marker | `HDL_J` | 9% | ✅ Confirmed in CSV |
-| 12 | `LBXTC` | Total Cholesterol | Lipid metabolism | `TCHOL_J` | 9% | ✅ Confirmed in CSV |
-| 13 | `LBXSTR` | Triglycerides | Metabolic marker | `BIOPRO_J` | 8% | ✅ Confirmed in CSV |
-| 14 | `LBXSAL` | Albumin (blood protein/nutrition) | General health/Vata | `BIOPRO_J` | 8% | ✅ Confirmed in CSV |
-| 15 | `LBXSCR` | Creatinine (kidney function) | Metabolic filtering | `BIOPRO_J` | 8% | ✅ Confirmed in CSV |
-| 16 | `LBXSUA` | Uric Acid | Pitta inflammatory proxy | `BIOPRO_J` | 8% | ✅ Confirmed in CSV |
-| 17 | `LBXSATSI` | ALT (liver enzyme) | Metabolic / Pitta liver | `BIOPRO_J` | 8% | ✅ Confirmed in CSV |
+| # | Variable Code | Description | Biological System | Source File | Null % |
+|---|--------------|-------------|-------------------|-------------|--------|
+| 1 | `BMXBMI` | Body Mass Index | Body Composition | `BMX_J` | 8% |
+| 2 | `BMXWAIST` | Waist circumference | Body Composition | `BMX_J` | 13% |
+| 3 | `BPXPLS` | Resting pulse / heart rate | Cardiovascular | `BPX_J` | 23% |
+| 4 | `DXDTOBMD` | Total Body Bone Mineral Density | Body Composition (DEXA) | `DXX_J` | 28% |
+| 5 | `DXDTOPF` | Total Body % Fat | Body Composition (DEXA) | `DXX_J` | 29% |
+| 6 | `DXDTOLE` | Total Lean Mass (excl. bone) | Body Composition (DEXA) | `DXX_J` | 25% |
+| 7 | `LBXGLU` | Fasting Glucose | Glucose Metabolism | `GLU_J` | 5% |
+| 8 | `LBXIN` | Fasting Insulin | Glucose Metabolism | `INS_J` | 7% |
+| 9 | `LBDHDD` | HDL Cholesterol | Lipid Metabolism | `HDL_J` | 9% |
+| 10 | `LBXTC` | Total Cholesterol | Lipid Metabolism | `TCHOL_J` | 9% |
+| 11 | `LBXSTR` | Triglycerides | Lipid Metabolism | `BIOPRO_J` | 8% |
+| 12 | `LBXSAL` | Albumin | Hepatic Function | `BIOPRO_J` | 8% |
+| 13 | `LBXSCR` | Creatinine | Renal Function | `BIOPRO_J` | 8% |
+| 14 | `LBXSUA` | Uric Acid | Renal Function | `BIOPRO_J` | 8% |
+| 15 | `LBXSATSI` | ALT (liver enzyme) | Hepatic Function | `BIOPRO_J` | 8% |
+| 16 | `LBXSTP` | Total Protein | Hepatic Function | `BIOPRO_J` | 8% |
+| 17 | `LBXSTB` | Total Bilirubin | Hepatic Function | `BIOPRO_J` | 8% |
+| 18 | `LBXSBU` | Blood Urea Nitrogen | Renal Function | `BIOPRO_J` | 8% |
+| 19 | `LBXSCA` | Total Calcium | Electrolyte/Mineral | `BIOPRO_J` | 8% |
+| 20 | `LBXSPH` | Phosphorus | Electrolyte/Mineral | `BIOPRO_J` | 8% |
+| 21 | `LBXSNASI` | Sodium | Electrolyte/Mineral | `BIOPRO_J` | 8% |
+| 22 | `LBXSKSI` | Potassium | Electrolyte/Mineral | `BIOPRO_J` | 8% |
+| 23 | `Avg_Systolic_BP` | Averaged Systolic BP | Cardiovascular | `BPX_J` | ~27% |
+| 24 | `Avg_Diastolic_BP` | Averaged Diastolic BP | Cardiovascular | `BPX_J` | ~27% |
 
-### Control / Confounder Variables (NOT in the feature matrix — used for stratification/validation only)
+Note: Items 1-19 (no DEXA or fasting variables) constitute Cohort A (N=4,482, 19 features). All 24 constitute Cohort B (N=967). The averaged BP columns replace the six raw BP readings in the feature matrices.
+
+### Control / Confounder Variables (NOT in the feature matrix)
+
 | Variable | Use |
 |----------|-----|
-| `SEQN` | Patient ID — merge key |
-| `RIAGENDR` | Gender — use to check if clusters are gender-confounded |
-| `RIDAGEYR` | Age — normalize or stratify (e.g., adults 20–65 only) |
-| `RIDRETH3` | Ethnicity — acknowledge NHANES is US-based, not Indian |
+| `SEQN` | Participant ID — merge key |
+| `RIAGENDR` | Gender — for post-hoc confounder analysis |
+| `RIDAGEYR` | Age — for filtering (adults 20-80) |
+| `RIDRETH3` | Race/ethnicity — for confounder analysis |
 
 ---
 
-## 3. Reasoning Behind Each Variable
+## 3. Reasoning Behind Each Variable (historical planning notes)
 
-### 🔵 Vata Proxies
-- **`BMXBMI`** — Vata constitution is characteristically lean. Low BMI is the most widely cited Vata indicator in Ayurgenomics literature.
-- **`DXDTOLE` (Lean Mass)** — Vata individuals have low muscle mass. DEXA-measured lean mass is more precise than BMI alone and avoids the BMI problem (high muscle = high BMI).
-- **`LBXSAL` (Albumin)** — Low albumin reflects poor nutritional status / high catabolic rate, consistent with Vata's fast metabolism.
+This section reflects the original per-variable reasoning written during early planning. The Dosha references below are the original hypothesis framing, not a claim about what the clustering found. No Dosha assignments have been made — Stage 8 (downstream characterisation) has not yet been performed.
 
-### 🔴 Pitta Proxies
-- **`BPXSY1` + `BPXDI1`** — Pitta = high BP, inflammatory tendency. Both systolic and diastolic capture different aspects of cardiac pressure.
-- **`LBXGLU`** — Fasting glucose (not serum glucose `LBXSGL`) is the gold standard metabolic marker. High glucose = Pitta's intense metabolic fire.
-- **`LBXSUA` (Uric Acid)** — Elevated uric acid = inflammatory marker. Pitta is the inflammatory Dosha; this is one of the most direct inflammatory blood markers available in NHANES.
-- **`LBXSATSI` (ALT)** — Pitta governs digestion and liver function. Elevated liver enzymes (ALT) = overactive digestive/metabolic fire.
-- **`LBDHDD` (HDL)** — Higher HDL is associated with efficient lipid metabolism. Pitta is the metabolically efficient Dosha.
+### Variables primarily associated with body composition in the planning hypothesis
 
-### 🟢 Kapha Proxies
-- **`BMXWAIST`** — Central adiposity is the Kapha hallmark. Waist circumference is a stronger Kapha indicator than BMI (distinguishes central fat from muscle mass).
-- **`DXDTOBMD`** ⭐⭐ — This is your **single strongest Kapha variable**. The CSIR research linked Kapha to VWF gene (bone/blood thickness). High bone density = Kapha constitution. DEXA-measured BMD is the gold standard.
-- **`DXDTOPF` (% Body Fat)** — Kapha individuals have high fat mass. % Fat is better than raw fat grams because it normalizes for body size.
-- **`BPXPLS` (Resting HR)** — Kapha = slow, steady metabolism. Low resting heart rate is the cardiovascular signature.
-- **`LBXIN` (Fasting Insulin)** ⭐⭐ — High fasting insulin = insulin resistance = the metabolic profile of Kapha. You can also derive **HOMA-IR = (Glucose × Insulin) / 405** which is the standard insulin resistance index — add this as a derived feature.
-- **`LBXSTR` (Triglycerides)** — High triglycerides in slow-metabolism Kapha individuals. Pairs well with HDL (TG/HDL ratio is also a cardiovascular risk marker).
+- `BMXBMI` — BMI captures overall adiposity. In the planning hypothesis, low BMI was considered a possible Vata indicator and high BMI a possible Kapha indicator. Selected because it covers Body Composition (System 1).
+- `DXDTOLE` (Lean Mass) — DEXA-measured lean mass is more specific than BMI for distinguishing muscular from adipose phenotypes. Selected for Body Composition coverage.
+- `LBXSAL` (Albumin) — Low albumin reflects poor nutritional status or high catabolic rate. Selected for Hepatic Function (System 5).
 
----
+### Variables primarily associated with cardiovascular function in the planning hypothesis
 
-## 4. Derived Features to Add (Not in CSV — Compute Them)
+- `Avg_Systolic_BP` and `Avg_Diastolic_BP` — Averaged across readings 2 and 3 following CDC NHANES protocol. Selected for Cardiovascular coverage (System 2).
+- `BPXPLS` (Resting HR) — Reflects autonomic tone and metabolic rate. Selected for Cardiovascular coverage.
 
-These aren't direct columns but should be **computed and added** to your feature matrix before clustering:
+### Variables primarily associated with metabolic and lipid function in the planning hypothesis
 
-| Derived Feature | Formula | Dosha Link |
-|----------------|---------|------------|
-| **HOMA-IR** | `(LBXGLU × LBXIN) / 405` | Kapha insulin resistance score |
-| **Cholesterol Ratio** | `LBXTC / LBDHDD` | Cardiovascular risk — Pitta/Kapha separator |
-| **TG/HDL ratio** | `LBXSTR / LBDHDD` | Metabolic syndrome proxy (Kapha) |
-| **Avg Systolic BP** | `mean(BPXSY1, BPXSY2, BPXSY3)` | More stable Pitta estimate |
+- `LBXGLU` — Fasting glucose (not serum glucose `LBXSGL`) is the standard metabolic marker. Selected for Glucose Metabolism (System 3).
+- `LBXSUA` (Uric Acid) — An inflammatory and metabolic marker with relevance to gout, kidney function, and cardiovascular risk. Selected for Renal Function (System 6).
+- `LBXSATSI` (ALT) — A liver enzyme reflecting hepatic metabolic activity. Selected for Hepatic Function (System 5).
+- `LBDHDD` (HDL) — Anti-atherogenic cholesterol, relevant to lipid metabolism efficiency. Selected for Lipid Metabolism (System 4).
+
+### Variables primarily associated with body composition / metabolic in the planning hypothesis
+
+- `BMXWAIST` — Waist circumference captures central adiposity independently of overall BMI. Selected for Body Composition (System 1).
+- `DXDTOBMD` — Total body bone mineral density from DEXA. Selected for Body Composition (System 1) and its role in distinguishing lean vs. dense phenotypes.
+- `DXDTOPF` (% Body Fat) — Normalised fat percentage from DEXA. Selected for Body Composition (System 1).
+- `LBXIN` (Fasting Insulin) — Reflects pancreatic function and insulin sensitivity. Selected for Glucose Metabolism (System 3).
+- `LBXSTR` (Triglycerides) — Key lipid metabolism marker. Selected for Lipid Metabolism (System 4).
 
 ---
 
-## 5. Variables to EXCLUDE and Why
+## 4. Derived Features (computed, not in raw CSV)
+
+These variables are computed from raw measurements during preprocessing (Decision 006). They are included in `preprocessed.csv` for post-hoc interpretation but are explicitly excluded from the clustering feature matrices to avoid collinearity with their constituent biomarkers.
+
+| Derived Feature | Formula | Biological meaning |
+|----------------|---------|-------------------|
+| HOMA-IR | `(LBXGLU * LBXIN) / 405` | Homeostatic model assessment of insulin resistance |
+| TC/HDL ratio | `LBXTC / LBDHDD` | Total cholesterol to HDL ratio — cardiovascular risk index |
+| TG/HDL ratio | `LBXSTR / LBDHDD` | Triglyceride to HDL ratio — metabolic syndrome proxy |
+
+---
+
+## 5. Variables Excluded and Why
 
 | Variable | Reason to Exclude |
 |----------|------------------|
-| `BMXWT`, `BMXHT` | Redundant — BMI already captures weight/height ratio |
-| `BMXHIP`, `BMXARMC` | Low Dosha relevance; waist is more specific |
-| `DXDTOBMC` | Highly correlated with `DXDTOBMD`; pick one |
-| `DXDTOFAT` (raw fat grams) | Use `DXDTOPF` (% fat) instead — normalized |
-| `DXDTOTOT` | Mathematical sum of lean + fat — completely redundant |
-| All regional BMD/fat (`DXXLLBMD`, `DXXLAFAT` etc.) | Use only total/subtotal — regional adds collinearity, not signal |
-| `LBXSGL` (non-fasting glucose in BIOPRO_J) | Use `LBXGLU` (fasting glucose in GLU_J) — fasting is always more reliable |
-| `LBXSCH` / `LBDSCHSI` in BIOPRO_J | This is the SAME as `LBXTC` from TCHOL_J (serum total cholesterol) — **do not include both** |
-| `LBXSBU` (BUN) | Kidney marker, but too correlated with creatinine |
-| All `*SI` and `*LC` suffix columns | These are just unit conversions of the primary variable — use one unit only (mg/dL preferred) |
-| `WTSAF2YR` | This is a **survey weight**, not a biomarker — used for population-level statistics, not individual clustering |
-| `DMDEDUC2`, `INDHHIN2`, `INDFMPIR` | Socioeconomic — confounders, not Dosha biomarkers |
+| `BMXWT`, `BMXHT` | Redundant with BMI |
+| `BMXHIP`, `BMXARMC` | Lower information value; waist circumference is more specific for central adiposity |
+| `DXDTOBMC` | Highly correlated with `DXDTOBMD`; only one retained |
+| `DXDTOFAT` (raw fat grams) | `DXDTOPF` (% fat) is preferred as it is normalised for body size |
+| `DXDTOTOT` | Mathematical sum of lean + fat — completely redundant with its components |
+| All regional BMD/fat variables | Use only total measures to avoid collinearity from regional sub-components |
+| `LBXSGL` (non-fasting glucose in BIOPRO_J) | `LBXGLU` (fasting glucose in GLU_J) is used — fasting values are more diagnostically reliable |
+| `LBXSCH` / `LBDSCHSI` in BIOPRO_J | Duplicate of `LBXTC` from TCHOL_J — not included to avoid double-counting |
+| All `*SI` and `*LC` suffix columns | Unit conversions of primary variables — one unit per variable |
+| `WTSAF2YR` | Survey weight for population-level inference, not an individual biomarker |
+| `DMDEDUC2`, `INDHHIN2`, `INDFMPIR` | Socioeconomic confounders — kept for sensitivity analysis, not clustering features |
+| `HOMA_IR`, `TC_HDL_ratio`, `TG_HDL_ratio` | Derived ratios — excluded from clustering matrices to prevent collinearity with constituent biomarkers |
 
 ---
 
-## 6. 🔍 Is the NHANES_Variable_Dictionary.docx Correct?
+## 6. Notes on the NHANES_Variable_Dictionary.docx
 
-**Overall verdict: Mostly correct, but with several important errors and omissions.**
+**Overall verdict: mostly correct, with several important caveats noted at the time.**
 
-### ✅ Correct and Verified
-- All 17 key variable codes exist in the actual CSV files — confirmed by reading the column headers directly.
-- File descriptions (number of columns, people counts) are accurate.
-- The Dosha proxy assignments are well-reasoned and consistent with CSIR/Ayurgenomics literature.
-- The merge strategy (Left Join on SEQN from DEMO_J, then filter) is correct.
-- The "~2,000–3,000 clean usable people" estimate after filtering is realistic.
+### Confirmed correct
+- All key variable codes exist in the actual CSV files.
+- File descriptions and participant counts are accurate.
+- The merge strategy (left join on SEQN anchored from DEMO_J) is correct.
 
-### ⚠️ Errors and Issues Found
+### Errors and issues found
 
-| Issue | What the Dictionary Says | What's Actually in the CSV | Severity |
-|-------|--------------------------|---------------------------|----------|
-| **`LBXSCH` listed as Total Cholesterol in BIOPRO_J** | "Total Cholesterol (serum)" | `LBXSCH` / `LBDSCHSI` **do exist** in BIOPRO_J, but this is the **same measurement** as `LBXTC` in TCHOL_J — the dictionary doesn't warn you that using both would be duplication | ⚠️ Medium |
-| **BMX_J column counts** | "21 columns" | Correct — confirmed 21 columns | ✅ OK |
-| **`BMXBMI` range stated as 12.3–86.2** | 12.3–86.2 | Cannot confirm without data check, but plausible for NHANES | ✅ Plausible |
-| **`BPXSY1` null rate stated as 28%** | 28% | This is high — reflects that BP was not measured for young children. You should filter to **adults aged 20+** to reduce this significantly | ℹ️ Clarification needed |
-| **`DXDTOBMD` labeled ⭐⭐** | Correct priority | ✅ Confirmed strongest Kapha marker | ✅ Correct |
-| **`LBXSATSI` listed as ALT** | "ALT — liver enzyme" | In BIOPRO_J the column is `LBXSATSI` which is actually **AST (not ALT)**. In NHANES: `LBXSASSI` = AST, `LBXSATSI` = ALT. The dictionary has the code right but the naming convention can be confusing — double-check on CDC's official data dictionary. | ⚠️ Needs verification |
-| **No mention of `LBXSGL` (non-fasting glucose) vs `LBXGLU` (fasting)** | Only mentions `LBXGLU` in GLU_J | `BIOPRO_J` also has `LBXSGL` (non-fasting glucose) — the dictionary correctly prioritizes `LBXGLU` but doesn't explicitly warn against mixing them | ⚠️ Small gap |
-| **`DXAHEBV` column in DXX_J** | Not mentioned | Exists in CSV — it's the head bone volume scan validity flag. Not needed, but the dictionary's omission of DEXA validity flags means you should check `DXAEXSTS` (exam status) before using DXX_J rows | ℹ️ Missing context |
-| **`LBDINLC` in INS_J** | Not mentioned | This is a "below detection limit" flag for insulin — important for data cleaning. Low values of `LBXIN` where `LBDINLC=1` should be treated carefully | ℹ️ Missing — important for cleaning |
+| Issue | Details | Severity |
+|-------|---------|----------|
+| `LBXSCH` listed as Total Cholesterol in BIOPRO_J | This is the same measurement as `LBXTC` in TCHOL_J. Using both would be duplication. | Medium |
+| `BPXSY1` null rate at 28% | Reflects children being included. Filtering to adults 20+ reduces this significantly. | Clarification |
+| `DXAHEBV` column | Present in DXX_J but not mentioned in the dictionary. DEXA validity flags should be checked via `DXAEXSTS` before using DXX_J rows. | Missing context |
+| `LBDINLC` in INS_J | Not mentioned in dictionary. This below-detection-limit flag for insulin is important for data cleaning (Decision 005). | Missing — important |
 
-### ❌ Missing Variables Worth Considering
+### Variables not in the dictionary that were added to the final feature set
 
-The dictionary does **not mention** these variables that are present in the files and could be useful:
-
-| Variable | File | Potential Use |
-|----------|------|--------------|
-| `LBXSCA` (Calcium) | `BIOPRO_J` | Bone metabolism — additional Kapha signal alongside BMD |
-| `LBXSPH` (Phosphorus) | `BIOPRO_J` | Also related to bone and kidney function |
-| `DXDSTBMD` (Subtotal BMD, excl. head) | `DXX_J` | Alternative to total BMD — slightly lower null rate (30% vs 28%) |
-| `LBXSGTSI` (GGT) | `BIOPRO_J` | Liver/bile enzyme — additional Pitta liver marker |
+| Variable | File | Why added |
+|----------|------|-----------
+| `LBXSCA` (Calcium) | `BIOPRO_J` | Electrolyte/mineral system; only 8% nulls |
+| `LBXSPH` (Phosphorus) | `BIOPRO_J` | Electrolyte/mineral system |
+| `LBXSNASI` (Sodium) | `BIOPRO_J` | Electrolyte/mineral system |
+| `LBXSKSI` (Potassium) | `BIOPRO_J` | Electrolyte/mineral system |
+| `LBXSTP` (Total Protein) | `BIOPRO_J` | Hepatic function |
+| `LBXSTB` (Total Bilirubin) | `BIOPRO_J` | Hepatic function |
+| `LBXSBU` (BUN) | `BIOPRO_J` | Renal function; included in final set despite earlier exclusion note |
 
 ---
 
-## 7. Final Recommended Merge Strategy
+## 7. Final Merge Strategy
+
+The actual merge is implemented in `pipeline/merge.py` and configured via `pipeline/config.py`. The code below shows the conceptual structure:
 
 ```python
 import pandas as pd
@@ -168,7 +186,7 @@ hdl   = pd.read_csv('HDL_J.csv')
 tchol = pd.read_csv('TCHOL_J.csv')
 bio   = pd.read_csv('BIOPRO_J.csv')
 
-# Select only the columns you need
+# Select only the columns needed
 demo_cols  = ['SEQN', 'RIAGENDR', 'RIDAGEYR', 'RIDRETH3']
 bmx_cols   = ['SEQN', 'BMXBMI', 'BMXWAIST']
 bpx_cols   = ['SEQN', 'BPXSY1', 'BPXDI1', 'BPXPLS', 'BPXSY2', 'BPXSY3']
@@ -186,38 +204,28 @@ for sub, cols in [(bmx, bmx_cols), (bpx, bpx_cols), (dxx, dxx_cols),
                   (tchol, tchol_cols), (bio, bio_cols)]:
     df = df.merge(sub[cols], on='SEQN', how='left')
 
-# Filter: adults 20–80 only (reduces BP null rate, avoids pediatric noise)
+# Filter: adults 20-80 only
 df = df[df['RIDAGEYR'] >= 20]
 
-# Add averaged BP for stability
-df['BPXSY_avg'] = df[['BPXSY1','BPXSY2','BPXSY3']].mean(axis=1)
+# Add averaged BP (CDC NHANES protocol — see Decision 002)
+# Actual implementation in pipeline/preprocess/bp_averaging.py
 
-# Add derived features
+# Add derived features (audit/interpretation only — excluded from clustering matrices)
 df['HOMA_IR'] = (df['LBXGLU'] * df['LBXIN']) / 405
 df['TG_HDL_ratio'] = df['LBXSTR'] / df['LBDHDD']
 df['Chol_ratio'] = df['LBXTC'] / df['LBDHDD']
-
-# Drop rows missing key variables (keep if at least core 10 non-null)
-core_vars = ['BMXBMI','BMXWAIST','BPXSY_avg','BPXDI1','BPXPLS',
-             'LBXGLU','LBXIN','DXDTOBMD','DXDTOPF','LBXSTR']
-df_clean = df.dropna(subset=core_vars)
-
-print(f'Final usable sample: {len(df_clean)} people')
 ```
 
 ---
 
-## 8. Summary Table
+## 8. Summary
 
 | Category | Count |
 |----------|-------|
-| Total variables selected | 17 direct + 3 derived = **20** |
-| Files used | 9 (all available) |
-| Estimated final sample (adults, core non-null) | **~1,800–2,500 people** |
-| Dictionary correctness | ~85% accurate — naming issues and missing flags noted above |
+| Total raw variables in feature matrices | 19 (Cohort A) / 24 (Cohort B) |
+| Derived variables computed (audit/interpretation only) | 3 (HOMA_IR, TC_HDL_ratio, TG_HDL_ratio) |
+| Files used | 9 (all available NHANES 2017-2018 files) |
+| Final sample — Cohort A (broad, 19 features) | 4,482 participants |
+| Final sample — Cohort B (fasting/DEXA, 24 features) | 967 participants |
 
-> [!IMPORTANT]
-> The most critical decision for your methodology: run clustering **without presetting k=3**. Use silhouette scores across k=2 to k=7 to let the math decide. If k=3 scores highest, that is your result. This is non-negotiable for peer review credibility.
-
-> [!TIP]
-> Add `LBXSCA` (Calcium) from BIOPRO_J to your feature set — it's a bone metabolism marker not mentioned in the dictionary but relevant to Kapha, and it has only 8% nulls.
+The K-selection question (how many clusters to use) was addressed through a cross-model benchmark in Experiment 6, documented in `docs/methodology_decision_log.md` under Decision 014. No specific K was predetermined or forced. No Dosha assignments have been made; downstream characterisation (Stage 8) has not yet been performed.
