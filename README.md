@@ -7,24 +7,29 @@
 
 ## Overview
 
-This repository contains the end-to-end bioinformatics pipeline for an exploratory population health study applying **unsupervised machine learning** to the **NHANES 2017–2018** health survey dataset.
+This repository contains the complete bioinformatics pipeline for an exploratory population health study applying **unsupervised machine learning** to the **NHANES 2017–2018** health survey dataset. The project investigates whether natural phenotypic groupings discoverable from large-scale biomarker data show directional overlap with physiological descriptions in Ayurvedic constitutional (Prakriti / Tridosha) literature.
 
-### Core Research Questions
+The analysis pipeline (Stages 1–8) is fully complete. All outputs are preserved in `output/`.
 
-- **Primary Research Question**:
-  > *Can unsupervised machine learning discover natural biological constitutions / phenotypic groupings in humans using population-scale health and biomarker data, without being given predefined constitutional labels?*
+## Research Questions
 
-- **Secondary Research Question**:
-  > *If natural biological groupings are discovered, how do their biological profiles compare with characteristics described in Ayurvedic constitutional (Prakriti / Tridosha) literature?*
+**Primary**: Can unsupervised machine learning discover natural phenotypic groupings in a human population using biomarker data, without being given predefined constitutional labels?
 
-### Methodological Principles
+**Secondary**: If natural groupings are discoverable, how do their physiological profiles compare directionally with characteristics described in Ayurvedic constitutional literature?
 
-1. **Independent Variable Selection**: Biomarkers were selected solely because they represent major physiological systems (body composition, cardiovascular, glucose metabolism, lipid profile, hepatic, renal, electrolyte balance) — never because they match expected Ayurvedic descriptions.
-2. **Dual Cohort Strategy**:
-   - **Primary Analysis A** (Broad Cohort, $N = 4,482$, 19 features): Maximizes sample size and statistical power across non-fasting serum biomarkers.
-   - **Secondary Analysis B** (Fasting Cohort, $N = 967$, 24 features): Incorporates fasting glucose, fasting insulin, triglycerides, and DEXA body composition metrics. *(Note: Derived features such as HOMA-IR and lipid ratios were calculated during preprocessing for exploratory audit but explicitly excluded from candidate feature matrices to prevent collinearity with constituent biomarkers).*
-3. **Data-Driven Skewness Criteria**: Candidate log-transformations (`log1p`) are evaluated against empirical cohort skewness thresholds ($|S| > 1.0$) rather than arbitrary hardcoding.
-4. **Strict Audit Trail & Stage-Gating**: Every stage (Preprocessing, Matrix Preparation, Scaling, PCA) is independently locked, validated, and recorded in version control.
+> **Scope note**: This project does not claim to prove that Dosha groups exist as biological categories, nor does it assign cluster labels to specific Doshas. Any comparison with Ayurvedic literature is exploratory and directional only.
+
+---
+
+## Methodological Principles
+
+1. **Independent variable selection**: Biomarkers were selected because they represent major physiological systems — never because they match expected Ayurvedic descriptions.
+2. **Dual cohort strategy**:
+   - **Cohort A** (Broad, N = 4,482, 19 features): Maximises sample size across non-fasting serum biomarkers.
+   - **Cohort B** (Fasting, N = 967, 24 features): Adds fasting glucose, fasting insulin, triglycerides, and DEXA body composition metrics.
+3. **Data-driven skewness criterion**: log1p transformations are applied only where empirical skewness exceeds |S| > 1.0.
+4. **Exclusion of derived ratios**: HOMA-IR, TC/HDL, and TG/HDL are calculated during preprocessing for audit purposes but excluded from all feature matrices to prevent collinearity.
+5. **Stage-gated audit trail**: Every stage is independently validated and recorded; preprocessing snapshots are preserved in `output/`.
 
 ---
 
@@ -34,185 +39,240 @@ This repository contains the end-to-end bioinformatics pipeline for an explorato
 Bioinformatics-Bridge/
 │
 ├── pipeline/                            # Core Python package
-│   ├── __init__.py
 │   ├── config.py                        # Single source of truth: variables, paths, merge schemas
-│   ├── merge.py                         # Stage 1: Merge orchestration
-│   ├── utils.py                         # Shared helper functions & data IO
+│   ├── merge.py                         # Stage 1: Dataset merge orchestration
+│   ├── utils.py                         # Shared helper functions and data I/O
 │   ├── preprocess/                      # Stage 2: Preprocessing sub-package
-│   │   ├── __init__.py
 │   │   ├── bp_averaging.py              # BP averaging across up to 3 readings
 │   │   ├── filters.py                   # Age (20–80), DEXA validity, insulin LOD filtering
-│   │   └── derived_features.py          # HOMA-IR, TC/HDL, TG/HDL ratio calculations (audit only)
+│   │   └── derived_features.py          # HOMA-IR, TC/HDL, TG/HDL calculations (audit only)
 │   ├── feature_matrices.py              # Stage 3: Candidate feature matrix construction
 │   ├── scaling.py                       # Stage 4: Z-score standardization pipeline
-│   └── pca.py                           # Stage 5: Exploratory PCA analysis & validation suite
+│   ├── pca.py                           # Stage 5: Exploratory PCA analysis and validation
+│   └── characterization/               # Stage 8: Phenotype characterization modules
 │
-├── output/                              # Pipeline outputs & data artifacts
-│   ├── merged_raw.csv                   # Stage 1 merged raw dataset (9,254 rows × 34 cols)
+├── scripts/                             # Executable entry points (run these)
+│   ├── run_pipeline.py                  # Stage 1
+│   ├── run_preprocess.py                # Stage 2
+│   ├── run_feature_matrices.py          # Stage 3
+│   ├── run_scaling.py                   # Stage 4
+│   ├── run_pca.py                       # Stage 5
+│   ├── run_eda.py                       # Exploratory Data Analysis (audit)
+│   └── run_characterization.py          # Stage 8
+│
+├── output/                              # All pipeline outputs and data artifacts
+│   ├── merged_raw.csv                   # Stage 1 merged dataset (9,254 rows × 34 cols)
 │   ├── preprocessed.csv                 # Stage 2 preprocessed cohort (5,569 rows × 39 cols)
 │   ├── analysis_cohort_a_broad.csv      # Primary Cohort A (4,482 rows × 26 cols)
 │   ├── analysis_cohort_b_fasting.csv    # Secondary Cohort B (967 rows × 31 cols)
-│   ├── feature_matrices/                # Stage 3 candidate matrices
-│   │   ├── A_RAW.csv                    (4,482 × 19)
-│   │   ├── A_LOG.csv                    (4,482 × 19)
-│   │   ├── B_RAW.csv                    (967 × 24)
-│   │   └── B_LOG.csv                    (967 × 24)
-│   ├── scaled_matrices/                 # Stage 4 Z-score standardized matrices
-│   │   ├── A_RAW_scaled.csv             (4,482 × 19)
-│   │   ├── A_LOG_scaled.csv             (4,482 × 19)
-│   │   ├── B_RAW_scaled.csv             (967 × 24)
-│   │   ├── B_LOG_scaled.csv             (967 × 24)
-│   │   └── scaled_matrices_metadata.json
-│   └── pca/                             # Stage 5 PCA exploratory outputs & diagnostics
-│       ├── A_RAW_pca_scores.csv / loadings.csv / variance.csv
-│       ├── A_LOG_pca_scores.csv / loadings.csv / variance.csv
-│       ├── B_RAW_pca_scores.csv / loadings.csv / variance.csv
-│       ├── B_LOG_pca_scores.csv / loadings.csv / variance.csv
-│       ├── pca_exploration_metadata.json
-│       └── plots/                       # High-res scree, cum-variance & PC1-vs-PC2 plots
+│   ├── snapshot_decision_*.csv          # Preprocessing audit snapshots (Decisions 002–010)
+│   ├── feature_matrices/                # Stage 3: A_RAW, A_LOG, B_RAW, B_LOG
+│   ├── scaled_matrices/                 # Stage 4: standardized matrices + metadata JSON
+│   ├── pca/                             # Stage 5: scores, loadings, variance tables, plots
+│   ├── eda/                             # EDA audit outputs
+│   └── phenotype_characterization/      # Stage 8: all characterization outputs
+│       ├── cohort_a/                    # Cluster profiles and statistical tests, Cohort A
+│       ├── cohort_b/                    # Cluster profiles and statistical tests, Cohort B
+│       ├── literature_concordance/      # Directional concordance tables (A, B, and combined)
+│       ├── sensitivity/                 # Cross-representation sensitivity analysis
+│       ├── plots/                       # Figures 1–6
+│       └── metadata.json               # Stage 8 run provenance and join-integrity record
 │
-├── preprocessing_decision_log.md        # Detailed rationale for every preprocessing step
-├── variable_selection_analysis.md       # Empirical skewness audit & transformation rationale
-├── run_pipeline.py                      # Stage 1 entry point
-├── run_preprocess.py                    # Stage 2 entry point
-├── run_feature_matrices.py              # Stage 3 entry point
-├── run_scaling.py                       # Stage 4 entry point
-├── run_pca.py                           # Stage 5 entry point
-├── requirements.txt                     # Python dependencies
-├── README.md
+├── docs/                                # Methodology documentation and decision logs
+│   ├── preprocessing_decision_log.md    # Decisions 001–010: preprocessing rationale
+│   ├── variable_selection_analysis.md   # Skewness audit and transformation rationale
+│   ├── methodology_decision_log.md      # Decisions 011–014: matrices, scaling, PCA, K-selection
+│   └── Research2_Final_Operationalization.md  # Ayurvedic variable operationalization mapping
 │
-└── docs/
-    └── methodology_decision_log.md      # Formal methodology decisions (011–014)
+├── tests/                               # Dataset integrity tests
+├── DATASET/                             # Raw NHANES source files (not tracked by Git)
+├── requirements.txt
+└── README.md
 ```
 
-> **Note on the clustering sandbox**: Experiments 1–6 (K-Means, GMM, Spectral, Hierarchical, HDBSCAN, and the cross-model benchmark) were conducted on the `experiment/clustering-sandbox` branch. The complete computational evidence is preserved there under `clustering_sandbox/`. Only the formal decision (Decision 014) and this documentation are maintained on `master`.
+> **Clustering experiments**: Experiments 1–6 (K-Means, GMM, Spectral, Hierarchical, HDBSCAN, cross-model benchmark) were conducted on the `experiment/clustering-sandbox` branch. The full computational evidence is preserved there under `clustering_sandbox/`. Only the formal decision record (Decision 014) and the cluster assignments used in Stage 8 are maintained on `master`.
 
 ---
 
-## Biological Systems Covered
+## Biological Systems and Features
 
-The feature selection covers **7 major physiological systems** using 24 primary NHANES biomarkers:
+Feature selection spans **7 major physiological systems**. Derived ratios were excluded from all feature matrices to prevent collinearity with their constituent biomarkers.
 
-| Biological System | Primary Biomarkers | Included in Cohort A (19) | Included in Cohort B (24) |
+| Biological System | Primary Variables | Cohort A (p=19) | Cohort B (p=24) |
 | :--- | :--- | :---: | :---: |
-| **Body Composition** | BMI (`BMXBMI`), Waist (`BMXWAIST`), Total Fat (`DXDTOPF`), Total Lean (`DXDTOLE`), Bone Density (`DXDTOBMD`) | BMI, Waist | All 5 |
-| **Cardiovascular** | Avg Systolic BP, Avg Diastolic BP, Resting Pulse (`BPXPLS`) | BP (Sys, Dia) | All 3 |
-| **Glucose Metabolism** | Fasting Glucose (`LBXGLU`), Fasting Insulin (`LBXIN`) *(HOMA-IR derived in preprocessing but excluded from feature matrices to avoid collinearity)* | — | Glucose, Insulin |
-| **Lipid Metabolism** | Total Cholesterol (`LBXTC`), HDL (`LBDHDD`), Triglycerides (`LBXSTR`) *(Ratios derived in preprocessing but excluded from feature matrices to avoid collinearity)* | TC, HDL | All 3 |
-| **Hepatic Function** | ALT (`LBXSATSI`), Albumin (`LBXSAL`), Total Protein (`LBXSTP`), Total Bilirubin (`LBXSTB`) | Albumin, Protein, Bilirubin | All 4 |
-| **Renal Function** | Serum Creatinine (`LBXSCR`), Uric Acid (`LBXSUA`), BUN (`LBXSBU`) | All 3 | All 3 |
-| **Electrolytes/Minerals** | Sodium (`LBXSNASI`), Potassium (`LBXSKSI`), Calcium (`LBXSCA`), Phosphorus (`LBXSPH`) | All 4 | All 4 |
+| Body Composition | BMI, Waist, Total fat %, Total lean mass, Bone mineral density | BMI, Waist | All 5 |
+| Cardiovascular | Avg. systolic BP, Avg. diastolic BP, Resting pulse | Sys, Dia BP | All 3 |
+| Glucose Metabolism | Fasting glucose, Fasting insulin | — | Both |
+| Lipid Profile | Total cholesterol, HDL cholesterol, Triglycerides | TC, HDL | All 3 |
+| Hepatic Function | ALT, Albumin, Total protein, Total bilirubin | Albumin, Protein, Bilirubin | All 4 |
+| Renal Function | Serum creatinine, Uric acid, BUN | All 3 | All 3 |
+| Electrolytes / Minerals | Sodium, Potassium, Calcium, Phosphorus | All 4 | All 4 |
 
 ---
 
-## Pipeline Execution & Workflow Stages
+## Pipeline Stages
 
-### Stage 1 — Dataset Merging (`run_pipeline.py`)
-Merges 9 NHANES 2017–2018 SAS/CSV files on `SEQN` using left-joins anchored on Demographics (`DEMO_J`).
-- **Input**: Raw NHANES CSV files in `DATASET/`
-- **Output**: `output/merged_raw.csv` ($9,254$ rows × $34$ columns)
+### Stage 1 — Dataset Merging
 
-### Stage 2 — Preprocessing & Cohort Filtering (`run_preprocess.py`)
-Applies blood pressure averaging, age filtering ($20 \le \text{Age} \le 80$), DEXA validity filtering, insulin limit-of-detection (LOD) handling, and ratio derivations.
+Merges 9 NHANES 2017–2018 XPT/CSV files on `SEQN` using left-joins anchored on the Demographics file (`DEMO_J`).
+
+- **Input**: Raw NHANES CSVs in `DATASET/`
+- **Output**: `output/merged_raw.csv` (9,254 rows × 34 columns)
+- **Entry point**: `scripts/run_pipeline.py`
+
+### Stage 2 — Preprocessing and Cohort Filtering
+
+Applies blood pressure averaging (up to 3 readings), age filtering (20–80 years), DEXA validity filtering, insulin limit-of-detection handling, and derived-ratio calculations (audit only).
+
 - **Input**: `output/merged_raw.csv`
-- **Output**: `output/preprocessed.csv` ($5,569$ rows × $39$ columns)
+- **Output**: `output/preprocessed.csv` (5,569 rows × 39 columns); audit snapshots in `output/snapshot_decision_*.csv`
+- **Entry point**: `scripts/run_preprocess.py`
+- **Decision log**: `docs/preprocessing_decision_log.md`
 
-### Stage 3 — Candidate Feature Matrix Construction (`run_feature_matrices.py`)
-Constructs four candidate feature matrices with complete case analysis and empirical skewness checks:
-- **Output**:
-  - `output/feature_matrices/A_RAW.csv` ($N=4,482$, $p=19$)
-  - `output/feature_matrices/A_LOG.csv` ($N=4,482$, $p=19$)
-  - `output/feature_matrices/B_RAW.csv` ($N=967$, $p=24$)
-  - `output/feature_matrices/B_LOG.csv` ($N=967$, $p=24$)
+### Stage 3 — Candidate Feature Matrix Construction
 
-### Stage 4 — Z-Score Scaling & Standardization (`run_scaling.py`)
-Independently standardizes each feature matrix to zero mean ($\mu = 0$) and unit variance ($\sigma = 1$).
-- **Input**: Candidate feature matrices in `output/feature_matrices/`
-- **Output**: Scaled feature matrices in `output/scaled_matrices/`
+Constructs four candidate matrices using complete-case analysis and empirical skewness evaluation (|S| > 1.0 threshold for log1p):
 
-### Stage 5 — Exploratory PCA & Methodological Audit (`run_pca.py`)
-Fits complete, independent Principal Component Analysis solutions for all 4 candidate representations ($19$ PCs for A; $24$ PCs for B).
-- **Outputs**: Transformed score matrices, loading matrices, variance tables, scree plots, cumulative variance curves, and `output/pca/pca_exploration_metadata.json`.
-- **Recorded Methodological Decision**:
-  > *PCA results demonstrate that variance is broadly distributed across many components (PC1 explains only ~14.5%–18.4% of total variance). Therefore, reducing the data to a small 2D/3D PCA representation would retain only a limited fraction of the total variance. PCA will **NOT** be used as the primary input space for downstream clustering; clustering will proceed on the full standardized feature representations, while the complete PCA outputs are preserved as an exploratory audit trail.*
+| Matrix | Cohort | Transformation | N | p |
+| :--- | :--- | :--- | ---: | ---: |
+| A_RAW | Broad | None | 4,482 | 19 |
+| A_LOG | Broad | log1p | 4,482 | 19 |
+| B_RAW | Fasting | None | 967 | 24 |
+| B_LOG | Fasting | log1p | 967 | 24 |
 
-### Stage 6 — Exploratory Clustering Experiments (`experiment/clustering-sandbox`)
+- **Output**: `output/feature_matrices/`
+- **Entry point**: `scripts/run_feature_matrices.py`
 
-Four K-based clustering algorithms were evaluated across $K = 2$–7 for each of the four candidate representations (`A_RAW_scaled`, `A_LOG_scaled`, `B_RAW_scaled`, `B_LOG_scaled`). HDBSCAN was evaluated separately using density-based parameter sweeps.
+### Stage 4 — Z-Score Standardization
 
-| Experiment | Method | Notes |
+Each candidate matrix is independently standardized to zero mean (μ = 0) and unit variance (σ = 1). No parameters are shared across cohorts or representations.
+
+- **Output**: `output/scaled_matrices/`
+- **Entry point**: `scripts/run_scaling.py`
+
+### Stage 5 — Exploratory PCA
+
+Complete PCA solutions computed for all four scaled matrices (19 PCs for Cohort A; 24 PCs for Cohort B).
+
+Key finding: variance is broadly distributed with no dominant axis (PC1 explains ~14.5%–18.4% of total variance). **Decision 013**: PCA is retained as an exploratory audit tool only; downstream clustering proceeds on the full standardized feature space.
+
+- **Output**: `output/pca/` — scores, loadings, variance tables, scree plots, cumulative variance curves, `pca_exploration_metadata.json`
+- **Entry point**: `scripts/run_pca.py`
+
+### Stage 6 — Clustering Experiments (`experiment/clustering-sandbox`)
+
+Five clustering algorithm families were evaluated across K = 2–7 on all four standardized representations.
+
+| Experiment | Method | Key Diagnostics |
 | :--- | :--- | :--- |
-| Experiment 1 | K-Means | Euclidean distance; silhouette and stability ARI evaluated per K |
-| Experiment 2 | K-Means (extended diagnostics) | Distance-metric sensitivity, elbow curves |
-| Experiment 3 | Gaussian Mixture Models (GMM) | Full/diag/tied covariance; BIC, AIC, log-likelihood |
-| Experiment 4 | Spectral Clustering | kNN affinity ($k=10$); normalised Laplacian eigenvalue gap |
-| Experiment 5 | Agglomerative Hierarchical | Ward, Average, Complete, Single linkage; subsampling stability (ARI) per K |
-| Experiment 6 | HDBSCAN | Density-based; min_cluster_size sweep; noise fraction tracking |
+| Experiment 1 | K-Means | Silhouette, subsampling stability ARI (B=100, 80% subsamples) |
+| Experiment 2 | K-Means (extended) | Distance-metric sensitivity, elbow curves |
+| Experiment 3 | Gaussian Mixture Models | Full covariance; BIC, AIC, log-likelihood profiles |
+| Experiment 4 | Spectral Clustering | kNN affinity (k=10); normalised Laplacian eigengap |
+| Experiment 5 | Agglomerative Hierarchical | Ward/Average/Complete/Single linkage; Euclidean and Manhattan sensitivity |
+| Experiment 6 (synthesis) | HDBSCAN + Cross-Model Benchmark | min_cluster_size sweep; cross-model ARI/NMI; GMM BIC; spectral eigengap |
 
 All experiments are preserved on the `experiment/clustering-sandbox` branch under `clustering_sandbox/`.
 
-### Stage 7 — Cross-Model Clustering Benchmark (Experiment 6 synthesis)
+### Stage 7 — Cross-Model Clustering Benchmark
 
-After completing the five individual algorithm experiments, a structured cross-model benchmark was run to evaluate K-selection agreement across methods for each cohort and representation:
-- **Cross-model ARI / NMI**: Pairwise agreement between K-Means, GMM, Spectral, and Hierarchical solutions at each candidate K.
-- **Silhouette profiles** and **stability ARI** (bootstrap, $n = 20$ resamples) across K.
-- **HDBSCAN density agreement**: Checked whether HDBSCAN solutions corroborate parametric method candidates.
-- **Formal conclusion (Decision 014)**: No single K achieves consistent, method-independent convergence across all representations and both cohorts. The cross-method evidence does not support declaring any K as a robustly established number of phenotype groups.
-  - **Cohort A**: $K=2$ is a weak majority candidate (silhouette-consistent for `A_LOG`; moderate cross-model ARI), retained as an exploratory partition only.
-  - **Cohort B**: $K=3$ is a weak majority candidate (better internal consistency relative to other K values in fasting-cohort representations), retained as an exploratory partition only.
+A structured benchmark evaluated K-selection agreement across all model families:
 
-> Neither $K=2$ (Cohort A) nor $K=3$ (Cohort B) should be treated as optimal, validated, or biologically established cluster counts. They are pragmatic candidates for downstream exploratory characterisation, not confirmed phenotype groups.
+**Formal conclusion (Decision 014)**: No single K achieves consistent, method-independent convergence across all representations and both cohorts.
 
-### Stage 8 — Downstream Phenotype Characterisation (planned)
+- **Cohort A**: K=2 is a weak candidate — strongest K-Means subsampling stability (~0.95–0.97), but low cross-model ARI (~0.24–0.26) and weak silhouette (~0.06–0.10). GMM BIC, Spectral, and HDBSCAN do not independently support K=2.
+- **Cohort B**: K=3 is a weak candidate — stronger B_RAW K-Means stability (~0.877), secondary spectral eigengap signal, moderate cross-model ARI (~0.26–0.34); GMM BIC favours K=2 and HDBSCAN does not corroborate K=3.
 
-Following Decision 014, the next planned phase is an exploratory characterisation of the candidate partitions ($K=2$ for Cohort A, $K=3$ for Cohort B) using participant-level demographic and phenotype variables available in `output/analysis_cohort_a_broad.csv` and `output/analysis_cohort_b_fasting.csv`. This stage has not yet been executed.
+> Neither K=2 (Cohort A) nor K=3 (Cohort B) represents a validated or biologically established cluster count. They are pragmatic candidates for downstream exploratory characterisation only.
+
+### Stage 8 — Phenotype Characterisation and Literature Concordance
+
+The candidate partitions (Cohort A K=2; Cohort B K=3) were characterised using participant-level phenotypic variables. Join integrity was verified at 100% match for both cohorts (N=4,482 and N=967 respectively).
+
+**Outputs** (`output/phenotype_characterization/`):
+
+| Output | Description |
+| :--- | :--- |
+| `cohort_a/cohort_a_primary_profiles.csv` | Mean ± SD biomarker profiles per cluster, Cohort A |
+| `cohort_a/cohort_a_statistical_tests.csv` | Between-cluster statistical tests, Cohort A |
+| `cohort_a/cohort_a_membership.csv` | Cluster membership sizes, Cohort A |
+| `cohort_b/cohort_b_primary_profiles.csv` | Mean ± SD biomarker profiles per cluster, Cohort B |
+| `cohort_b/cohort_b_statistical_tests.csv` | Between-cluster statistical tests, Cohort B |
+| `cohort_b/cohort_b_membership.csv` | Cluster membership sizes, Cohort B |
+| `literature_concordance/cohort_a_literature_concordance.csv` | Directional concordance with Dosha literature, Cohort A |
+| `literature_concordance/cohort_b_literature_concordance.csv` | Directional concordance with Dosha literature, Cohort B |
+| `literature_concordance/literature_concordance_summary.csv` | Combined concordance summary (both cohorts) |
+| `sensitivity/cross_model_pairwise_ari.csv` | Cross-representation ARI sensitivity |
+| `sensitivity/raw_vs_log_feature_persistence.csv` | RAW vs. LOG feature characterisation consistency |
+| `plots/fig1_cohort_a_zscore_heatmap.png` | Z-score heatmap — Cohort A clusters |
+| `plots/fig2_cohort_b_zscore_heatmap.png` | Z-score heatmap — Cohort B clusters |
+| `plots/fig3_cohort_a_discriminating_features_boxplots.png` | Top discriminating features, Cohort A |
+| `plots/fig4_cohort_b_discriminating_features_boxplots.png` | Top discriminating features, Cohort B |
+| `plots/fig5_derived_metabolic_ratios.png` | Derived metabolic ratio profiles (audit; excluded from clustering) |
+| `plots/fig6_literature_concordance_matrix.png` | Concordance summary matrix across Doshas and cohorts |
+
+- **Entry point**: `scripts/run_characterization.py`
 
 ---
 
-## Installation & Running the Pipeline
+## Installation and Execution
 
-### 1. Requirements
+### Requirements
 
-Ensure Python 3.10+ is installed:
+Python 3.10+ is required.
+
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Data Setup
+### Data Setup
 
-Download the 9 NHANES 2017–2018 XPT datasets from CDC NHANES and convert them to CSV in `DATASET/`:
-- `DEMO_J.csv`, `BMX_J.csv`, `BPX_J.csv`, `DXX_J.csv`, `GLU_J.csv`, `INS_J.csv`, `HDL_J.csv`, `TCHOL_J.csv`, `BIOPRO_J.csv`
+Download the 9 NHANES 2017–2018 XPT datasets from [CDC NHANES](https://www.cdc.gov/nchs/nhanes/) and convert them to CSV in `DATASET/`:
 
-### 3. Execution Commands
+```
+DEMO_J.csv   BMX_J.csv   BPX_J.csv   DXX_J.csv   GLU_J.csv
+INS_J.csv    HDL_J.csv   TCHOL_J.csv BIOPRO_J.csv
+```
 
-Run each stage sequentially:
+### Running the Pipeline
+
+Run each stage sequentially from the repository root:
 
 ```bash
-# Stage 1: Merge raw datasets
-python run_pipeline.py
+# Stage 1: Merge raw NHANES datasets
+python scripts/run_pipeline.py
 
-# Stage 2: Execute preprocessing & cohort filters
-python run_preprocess.py
+# Stage 2: Preprocessing and cohort filtering
+python scripts/run_preprocess.py
 
 # Stage 3: Construct candidate feature matrices
-python run_feature_matrices.py
+python scripts/run_feature_matrices.py
 
-# Stage 4: Standardize feature matrices using Z-score scaling
-python run_scaling.py
+# Stage 4: Z-score standardization
+python scripts/run_scaling.py
 
-# Stage 5: Run exploratory PCA & compute variance metrics
-python run_pca.py
+# Stage 5: Exploratory PCA
+python scripts/run_pca.py
+
+# Stage 8: Phenotype characterisation and literature concordance
+python scripts/run_characterization.py
 ```
+
+> **Note**: Stages 6 and 7 (clustering experiments and cross-model benchmark) are preserved on the `experiment/clustering-sandbox` branch and are not re-runnable from `master`. The formal outcome (Decision 014) and the K-Means cluster assignments used in Stage 8 are committed to `master`.
 
 ---
 
-## Documentation Links
+## Documentation
 
-- **Preprocessing Rationale**: [`preprocessing_decision_log.md`](preprocessing_decision_log.md)
-- **Variable Selection & Transformation Audit**: [`variable_selection_analysis.md`](variable_selection_analysis.md)
-- **Scaling Metadata**: [`output/scaled_matrices/scaled_matrices_metadata.json`](output/scaled_matrices/scaled_matrices_metadata.json)
-- **PCA Metadata & Recorded Decisions**: [`output/pca/pca_exploration_metadata.json`](output/pca/pca_exploration_metadata.json)
-- **Methodology Decision Log** (Decisions 011–014): [`docs/methodology_decision_log.md`](docs/methodology_decision_log.md)
+| Document | Location | Contents |
+| :--- | :--- | :--- |
+| Preprocessing decision log | `docs/preprocessing_decision_log.md` | Rationale for every preprocessing step (Decisions 001–010) |
+| Variable selection and transformation | `docs/variable_selection_analysis.md` | Empirical skewness audit and log-transformation rationale |
+| Methodology decision log | `docs/methodology_decision_log.md` | Feature matrices, scaling, PCA, and K-selection decisions (011–014) |
+| Operationalization reference | `docs/Research2_Final_Operationalization.md` | Ayurvedic variable-to-biomarker mapping methodology |
+| Scaling metadata | `output/scaled_matrices/scaled_matrices_metadata.json` | Per-matrix scaling parameters and provenance |
+| PCA metadata | `output/pca/pca_exploration_metadata.json` | PCA variance records and recorded decision |
+| Stage 8 metadata | `output/phenotype_characterization/metadata.json` | Stage 8 run provenance and join-integrity record |
 
 ---
 
