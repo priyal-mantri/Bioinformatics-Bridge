@@ -14,16 +14,16 @@
 
 | # | Step | Pipeline Stage | Status |
 |---|------|---------------|--------|
-| [001](#decision-001) | Variable Selection by Biological System | Merge | ✅ Implemented |
-| [002](#decision-002) | Blood Pressure Averaging | Preprocess | ✅ Implemented |
-| [003](#decision-003) | Participant Age Filter | Preprocess | ✅ Implemented |
-| [004](#decision-004) | DEXA Scan Validity Filter | Preprocess | ✅ Implemented |
-| [005](#decision-005) | Insulin Below-Detection-Limit Handling | Preprocess | ✅ Implemented |
-| [006](#decision-006) | Derived Feature Engineering | Preprocess | ✅ Implemented |
-| [007](#decision-007) | Outlier & Invalid Value Handling | Preprocess | ✅ Implemented |
-| [008](#decision-008) | Raw vs. Derived Feature Designation | Preprocess | ✅ Implemented |
-| [009](#decision-009) | Missing Data & Dual Cohort Configurations | Preprocess | ✅ Implemented |
-| [010](#decision-010) | Skewness Transformation Evaluation | Preprocess | ✅ Implemented |
+| [001](#decision-001) | Variable Selection by Biological System | Merge | Implemented |
+| [002](#decision-002) | Blood Pressure Averaging | Preprocess | Implemented |
+| [003](#decision-003) | Participant Age Filter | Preprocess | Implemented |
+| [004](#decision-004) | DEXA Scan Validity Filter | Preprocess | Implemented |
+| [005](#decision-005) | Insulin Below-Detection-Limit Handling | Preprocess | Implemented |
+| [006](#decision-006) | Derived Feature Engineering | Preprocess | Implemented |
+| [007](#decision-007) | Outlier & Invalid Value Handling | Preprocess | Implemented |
+| [008](#decision-008) | Raw vs. Derived Feature Designation | Preprocess | Implemented |
+| [009](#decision-009) | Missing Data & Dual Cohort Configurations | Preprocess | Implemented |
+| [010](#decision-010) | Skewness Transformation Evaluation | Preprocess | Implemented |
 
 ---
 
@@ -151,7 +151,7 @@ Reduced from hundreds of available NHANES columns to 28 selected + 6 auxiliary =
 Merge (`run_pipeline.py` → `pipeline/merge.py`)
 
 **Status**
-✅ Implemented — `output/merged_raw.csv` generated with 9,254 rows × 34 columns
+Implemented — `output/merged_raw.csv` generated with 9,254 rows × 34 columns
 
 ---
 
@@ -467,7 +467,7 @@ Three new columns added: `HOMA_IR`, `TC_HDL_ratio`, `TG_HDL_ratio`.
 Preprocess (after Decision 005)
 
 **Status**
-✅ Implemented — `output/preprocessed.csv` generated with 5,569 rows × 39 columns
+Implemented — `output/preprocessed.csv` generated with 5,569 rows × 39 columns
 
 ## Decision 002 — CDC Protocol (implemented version)
 
@@ -510,7 +510,7 @@ Implemented — `output/snapshot_decision_002_bp_averaged.csv` confirmed: 9,254 
 Retain all NHANES-valid observations without arbitrary deletion. The previous custom `< 20 mmHg` invalidation rule is REMOVED.
 
 **Why It Was Needed**
-Official NHANES documentation ([BPX_J.pdf](file:///home/naya/Documents/Research%202%20%5BBioinfo%20Bridge%5D/Downloads/Docs/BPX_J.pdf), Page 2) explicitly states: *"Diastolic BP can be zero"* and codebook pages 12–21 list `0 to 136 mm Hg` as the valid range. In auscultatory measurement, Korotkoff Phase V sounds can continue down to 0 mmHg in hyperdynamic circulation or young healthy individuals.
+Official NHANES documentation (NHANES BPX_J codebook, Page 2) explicitly states: *"Diastolic BP can be zero"* and codebook pages 12–21 list `0 to 136 mm Hg` as the valid range. In auscultatory measurement, Korotkoff Phase V sounds can continue down to 0 mmHg in hyperdynamic circulation or young healthy individuals.
 
 **Biological & Statistical Reasoning**
 - **NHANES Compatibility**: 0.0 mmHg diastolic BP values (18 adult participants) are valid recorded codes per CDC documentation and are retained as valid observations.
@@ -534,7 +534,7 @@ Official NHANES documentation ([BPX_J.pdf](file:///home/naya/Documents/Research%
 Designate the 24 measured raw variables as the PRIMARY clustering feature matrix, while retaining the 3 derived features (`HOMA_IR`, `TC_HDL_ratio`, `TG_HDL_ratio`) in `preprocessed.csv` for post-clustering biological interpretation and sensitivity analysis.
 
 **Methodological Caveat on Triglycerides (`LBXSTR` vs `LBXTR`)**:
-Official NHANES documentation ([BIOPRO_J.pdf](file:///home/naya/Documents/Research%202%20%5BBioinfo%20Bridge%5D/Downloads/Docs/BIOPRO_J.pdf), Page 11) notes that reference-method `LBXTR` (from `TRIGLY_J.csv`) is generally recommended over `LBXSTR` (from standard profile `BIOPRO_J.csv`) for triglyceride-specific analyses. However, `LBXTR` was measured ONLY on the morning fasting sub-sample (~57% missingness in general population). Using `LBXTR` in Analysis A would collapse Analysis A from $N=4,482$ down to $N \approx 967$. Therefore, `LBXSTR` is retained in BOTH Analysis A and Analysis B to maintain a consistent core feature space across cohorts.
+Official NHANES documentation (NHANES BIOPRO_J codebook, Page 11) notes that reference-method `LBXTR` (from `TRIGLY_J.csv`) is generally recommended over `LBXSTR` (from standard profile `BIOPRO_J.csv`) for triglyceride-specific analyses. However, `LBXTR` was measured ONLY on the morning fasting sub-sample (~57% missingness in general population). Using `LBXTR` in Analysis A would collapse Analysis A from N = 4,482 down to approximately N = 967. Therefore, `LBXSTR` is retained in BOTH Analysis A and Analysis B to maintain a consistent core feature space across cohorts.
 
 **Implementation Details**
 - File: `pipeline/preprocess/cohorts.py`
@@ -567,7 +567,7 @@ Do NOT perform imputation at this stage. Instead, define TWO complementary, repr
 **Implementation Details**
 - File: `pipeline/preprocess/cohorts.py`
 - Function: `apply_feature_and_cohort_designations(df, output_dir)`
-- Cohorts exported: `output/analysis_cohort_a_broad.csv` (PRIMARY, $N=4,482$) and `output/analysis_cohort_b_fasting.csv` (SECONDARY, $N=967$)
+- Cohorts exported: `output/analysis_cohort_a_broad.csv` (PRIMARY, N = 4,482) and `output/analysis_cohort_b_fasting.csv` (SECONDARY, N = 967)
 
 ---
 
@@ -615,7 +615,7 @@ Downstream methodological evaluations will compare:
 Preprocess (after Decision 009)
 
 **Status**
-✅ Implemented — `output/snapshot_decision_010_skewness_evaluated.csv`
+Implemented — `output/snapshot_decision_010_skewness_evaluated.csv`
 
 ---
 

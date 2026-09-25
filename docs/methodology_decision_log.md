@@ -15,18 +15,18 @@ This document records key methodological decisions made during the feature matri
 
 ### Context
 Construct four candidate feature matrices from preprocessed NHANES 2017–2018 data:
-1. `A_RAW`: Broad Cohort, Raw Scale ($N = 4,482$, $p = 19$)
-2. `A_LOG`: Broad Cohort, Log1p Scale ($N = 4,482$, $p = 19$)
-3. `B_RAW`: Fasting Cohort, Raw Scale ($N = 967$, $p = 24$)
-4. `B_LOG`: Fasting Cohort, Log1p Scale ($N = 967$, $p = 24$)
+1. `A_RAW`: Broad Cohort, Raw Scale (N = 4,482, p = 19)
+2. `A_LOG`: Broad Cohort, Log1p Scale (N = 4,482, p = 19)
+3. `B_RAW`: Fasting Cohort, Raw Scale (N = 967, p = 24)
+4. `B_LOG`: Fasting Cohort, Log1p Scale (N = 967, p = 24)
 
 ### Rationale
 - **Dual Cohort Strategy**: Cohort A maximizes sample size and statistical power across non-fasting serum biomarkers. Cohort B provides deep phenotyping including fasting glucose, fasting insulin, triglycerides, and DEXA body composition metrics.
-- **Log Transformation Criterion**: Features with skewness $|S| > 1.0$ (e.g., insulin `LBXIN`, triglycerides `LBXSTR`, uric acid `LBXSUA`) were evaluated for `log1p` transformation to stabilize variance.
+- **Log Transformation Criterion**: Features with skewness |S| > 1.0 (e.g., insulin `LBXIN`, triglycerides `LBXSTR`, uric acid `LBXSUA`) were evaluated for `log1p` transformation to stabilize variance.
 - **Exclusion of Derived Ratios**: Derived variables (`HOMA_IR`, `TC_HDL_ratio`, `TG_HDL_ratio`) calculated during preprocessing (Decision 006) were **explicitly excluded** from the candidate feature matrices to prevent collinearity and mathematical redundancy with their constituent primary biomarkers (`LBXGLU`, `LBXIN`, `LBXTC`, `LBDHDD`, `LBXSTR`).
 
 ### Status
-✅ **Implemented** — Locked at commit `f789516`. Outputs saved in `output/feature_matrices/`.
+**Implemented** — Locked at commit `f789516`. Outputs saved in `output/feature_matrices/`.
 
 ---
 
@@ -36,19 +36,19 @@ Construct four candidate feature matrices from preprocessed NHANES 2017–2018 d
 Standardize each of the four candidate feature matrices prior to dimensionality reduction and unsupervised clustering.
 
 ### Rationale
-- Biomarkers are measured in disparate physical units ($\text{mg/dL}$, $\text{mmol/L}$, $\text{mmHg}$, $\text{kg/m}^2$, $\text{g/cm}^2$). Unscaled distance-based or variance-based algorithms would be dominated by features with large absolute scales.
-- Each matrix was standardized **100% independently** to zero mean ($\mu = 0$) and unit variance ($\sigma = 1$).
+- Biomarkers are measured in disparate physical units (mg/dL, mmol/L, mmHg, kg/m², g/cm²). Unscaled distance-based or variance-based algorithms would be dominated by features with large absolute scales.
+- Each matrix was standardized **100% independently** to zero mean (μ = 0) and unit variance (σ = 1).
 - No parameter sharing or data leakage occurred between Cohort A and Cohort B, or between RAW and LOG representations.
 
 ### Status
-✅ **Implemented** — Locked at commit `6f5b3d4`. Outputs saved in `output/scaled_matrices/`.
+**Implemented** — Locked at commit `6f5b3d4`. Outputs saved in `output/scaled_matrices/`.
 
 ---
 
 ## Decision 013 — Exploratory PCA & Non-Truncation for Main Clustering
 
 ### Context
-Compute complete Principal Component Analysis (PCA) solutions for all four scaled matrices ($19$ PCs for Analysis A; $24$ PCs for Analysis B) to evaluate variance distribution, scree profiles, and feature loadings.
+Compute complete Principal Component Analysis (PCA) solutions for all four scaled matrices (19 PCs for Analysis A; 24 PCs for Analysis B) to evaluate variance distribution, scree profiles, and feature loadings.
 
 ### Empirical Findings
 - **Variance Distribution**: Total variance is broadly distributed across many components without a single dominant axis:
@@ -56,7 +56,7 @@ Compute complete Principal Component Analysis (PCA) solutions for all four scale
   - `A_LOG`: PC1 = 15.37%, PC2 = 11.64%, PC3 = 10.13% (Top 3 PCs = 37.13% cumulative variance)
   - `B_RAW`: PC1 = 16.90%, PC2 = 13.76%, PC3 = 8.29% (Top 3 PCs = 38.95% cumulative variance)
   - `B_LOG`: PC1 = 18.42%, PC2 = 14.08%, PC3 = 8.38% (Top 3 PCs = 40.89% cumulative variance)
-- **Kaiser Rule ($\lambda \ge 1.0$)**: Retains 7 components for Analysis A (~61.7%–62.7% variance) and 8–9 components for Analysis B (~66.8%–69.1% variance).
+- **Kaiser Rule (eigenvalue ≥ 1.0)**: Retains 7 components for Analysis A (~61.7%–62.7% variance) and 8–9 components for Analysis B (~66.8%–69.1% variance).
 
 ### Decision & Rationale
 > **Decision**: PCA will **NOT** be used as the primary input space for main downstream clustering.
@@ -64,7 +64,7 @@ Compute complete Principal Component Analysis (PCA) solutions for all four scale
 > **Rationale**: PCA results demonstrate that variance is broadly distributed across many components. Reducing the data to a small 2D/3D PCA representation would retain only a limited fraction of the total variance. Therefore, downstream clustering will proceed on the **full standardized feature representations**, while complete PCA outputs are preserved as an exploratory audit trail and for post-hoc visualization.
 
 ### Status
-✅ **Implemented** — Locked at commit `ec526d8` and merged to `master`. Outputs saved in `output/pca/`.
+**Implemented** — Locked at commit `ec526d8` and merged to `master`. Outputs saved in `output/pca/`.
 
 ---
 
@@ -96,7 +96,7 @@ The cross-model K assessment incorporated the following classes of evidence:
 - **RAW vs. LOG comparison**: consistency of evidence across raw-scale and log1p-scale representations within each cohort
 - **Cohort A vs. Cohort B comparison**: consistency of evidence across the broad cohort (A; N=4,482; p=19) and the fasting cohort (B; N=967; p=24)
 - **GMM BIC diagnostics**: BIC model-selection profile across K=2–7 for full covariance structures
-- **Spectral eigengap diagnostics**: spectral gap profile $\lambda_k - \lambda_{k-1}$ across K=2–7, evaluated per matrix
+- **Spectral eigengap diagnostics**: spectral gap profile λₖ − λₖ₋₁ across K=2–7, evaluated per matrix
 - **HDBSCAN density-structure diagnostics**: presence or absence of large stable density-separated groups across the min_cluster_size parameter sweep
 - **Hierarchical linkage sensitivity**: Ward linkage was used as the primary hierarchical method; Complete and Average linkage were also evaluated and found to produce degenerate (chain-like) partitions. Subsampling stability ARI was the primary quality metric across K values for hierarchical clustering.
 - **Hierarchical distance-metric sensitivity**: Euclidean vs. Manhattan distance; reproducibility of partition quality across metrics
@@ -121,7 +121,7 @@ The cross-model K assessment incorporated the following classes of evidence:
 - **Cluster balance**: K=3 cluster sizes were reasonably balanced in B_RAW.
 - **Silhouette**: Silhouette scores remained weak throughout Cohort B across all models and K values. No K achieved strong internal separation.
 - **Cross-model ARI**: Cross-model pairwise ARI at K=3 was somewhat higher than in Cohort A K=2 (approximately 0.26–0.34), suggesting marginally more model-independent convergence, though the level of agreement remained moderate rather than strong.
-- **Spectral eigengap**: A secondary eigengap signal was observed around the third spectral cutoff (B_RAW: $\lambda_3 \to \lambda_4$ gap $\approx$ 0.080; B_LOG: $\lambda_3 \to \lambda_4$ gap $\approx$ 0.088). This constitutes weak-to-secondary evidence for a possible K=3 spectral structure. The primary eigengap in Cohort B remained at K=2, and the secondary signal does not overcome the low silhouette.
+- **Spectral eigengap**: A secondary eigengap signal was observed around the third spectral cutoff (B_RAW: λ₃→λ₄ gap ≈ 0.080; B_LOG: λ₃→λ₄ gap ≈ 0.088). This constitutes weak-to-secondary evidence for a possible K=3 spectral structure. The primary eigengap in Cohort B remained at K=2, and the secondary signal does not overcome the low silhouette.
 - **GMM BIC**: BIC minimum favoured K=2 in both B_RAW and B_LOG. GMM therefore opposes K=3 in Cohort B on model-selection grounds.
 - **HDBSCAN**: The HDBSCAN parameter sweep did not independently recover a stable three-group density structure in Cohort B at any calibration setting.
 - **Hierarchical Ward stability**: Hierarchical Ward stability was low throughout Cohort B and did not independently support K=3.
@@ -145,7 +145,7 @@ These candidate partitions are **exploratory** and do **not** constitute evidenc
 - Neither candidate achieves sufficient method-independent convergence to be declared a definitive number of phenotype groups. Retaining both candidates allows downstream phenotype characterization to proceed without prematurely asserting a natural cluster count that is not robustly established.
 
 ### Status
-✅ **Implemented** — Decision formalised following completion of Experiment 6 (Cross-Model Clustering Benchmark). Merged to `master` via PR #5. The full computational evidence base is preserved in the `experiment/clustering-sandbox` branch under `clustering_sandbox/cross_model/` and referenced in PR #4 (`Experiment 6: Cross-model clustering benchmark and K assessment`).
+**Implemented** — Decision formalised following completion of Experiment 6 (Cross-Model Clustering Benchmark). Merged to `master` via PR #5. The full computational evidence base is preserved in the `experiment/clustering-sandbox` branch under `clustering_sandbox/cross_model/` and referenced in PR #4 (`Experiment 6: Cross-model clustering benchmark and K assessment`).
 
 ---
 
@@ -154,6 +154,6 @@ These candidate partitions are **exploratory** and do **not** constitute evidenc
 | Decision ID | Stage | Topic | Decision Outcome |
 | :--- | :--- | :--- | :--- |
 | **Decision 011** | Feature Matrices | Cohort & Transformation Strategy | Established 4 candidate matrices (A_RAW, A_LOG, B_RAW, B_LOG); excluded derived ratios to prevent collinearity |
-| **Decision 012** | Scaling | Standardization | Independent Z-score scaling ($\mu=0, \sigma=1$) across all 4 candidate matrices |
+| **Decision 012** | Scaling | Standardization | Independent Z-score scaling (μ = 0, σ = 1) across all 4 candidate matrices |
 | **Decision 013** | PCA Exploration | Input Space for Clustering | PCA performed for exploratory audit only; main clustering to run on full standardized feature space |
 | **Decision 014** | Clustering — K Selection | Cross-Model Benchmark | No universal K identified; Cohort A K=2 and Cohort B K=3 retained as exploratory candidate partitions only |

@@ -75,7 +75,7 @@ Note: Items 1-19 (no DEXA or fasting variables) constitute Cohort A (N=4,482, 19
 
 ## 3. Reasoning Behind Each Variable (historical planning notes)
 
-This section reflects the original per-variable reasoning written during early planning. The Dosha references below are the original hypothesis framing, not a claim about what the clustering found. No Dosha assignments have been made — Stage 8 (downstream characterisation) has not yet been performed.
+This section reflects the original per-variable reasoning written during early planning. The Dosha references below are the original hypothesis framing, not a claim about what the clustering found. No Dosha assignments have been made — Stage 8 (downstream characterisation) has since been completed.
 
 ### Variables primarily associated with body composition in the planning hypothesis
 
@@ -228,4 +228,4 @@ df['Chol_ratio'] = df['LBXTC'] / df['LBDHDD']
 | Final sample — Cohort A (broad, 19 features) | 4,482 participants |
 | Final sample — Cohort B (fasting/DEXA, 24 features) | 967 participants |
 
-The K-selection question (how many clusters to use) was addressed through a cross-model benchmark in Experiment 6, documented in `docs/methodology_decision_log.md` under Decision 014. No specific K was predetermined or forced. No Dosha assignments have been made; downstream characterisation (Stage 8) has not yet been performed.
+The K-selection question (how many clusters to use) was addressed through a cross-model benchmark in Experiment 6, documented in `docs/methodology_decision_log.md` under Decision 014. No specific K was predetermined or forced. No Dosha assignments have been made; downstream characterisation (Stage 8) has since been completed.
